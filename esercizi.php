@@ -50,11 +50,7 @@ if (!$db) {
             echo "<li>" . $sottoargomento_info['titolo'] . "</li>";
             echo "</ul>";
             echo "</div>";
-            
-            echo "<h2>Esercizi di: " . $sottoargomento_info['titolo'] . "</h2>";
         }
-    } else {
-        echo "<h2>Tutti gli Esercizi</h2>";
     }
 
     // --- Gestione del form per creare un nuovo esercizio ---
@@ -109,94 +105,22 @@ if (!$db) {
         echo "<div class='message $message_class'>$message</div>";
     }
     
-    // --- Form per creare/modificare un esercizio ---
-    if (isset($_GET['edit'])) {
-        // Modifica un esercizio esistente
-        $esercizio->id = $_GET['edit'];
-        if ($esercizio->readOne()) {
-            echo "<h2>Modifica Esercizio</h2>";
-            echo "<form action='' method='POST'>";
-            echo "<input type='hidden' name='id' value='" . $esercizio->id . "'>";
-        } else {
-            echo "<p class='message error'>Esercizio non trovato.</p>";
-        }
+    // --- PRIMA MOSTRA LA LISTA DEGLI ESERCIZI ESISTENTI ---
+    echo "<div class='header-with-button'>";
+    if ($sottoargomento_id) {
+        echo "<h2>Esercizi di: " . $sottoargomento_info['titolo'] . "</h2>";
     } else {
-        // Crea un nuovo esercizio
-        echo "<h2>Crea Nuovo Esercizio</h2>";
-        echo "<form action='' method='POST'>";
+        echo "<h2>Tutti gli Esercizi</h2>";
     }
+    echo "<button id='showCreateFormBtn' class='btn-primary'>Aggiungi Nuovo Esercizio</button>";
+    echo "</div>";
     
-    if (!isset($_GET['edit']) || (isset($_GET['edit']) && $esercizio->readOne())) {
-        // Gestione sottoargomento
-        if ($sottoargomento_id) {
-            // Se siamo in una pagina di sottoargomento specifico, mostra solo quel sottoargomento
-            $sottoargomento->id = $sottoargomento_id;
-            $sottoargomento_info = $sottoargomento->readOne();
-            echo "<input type='hidden' name='sottoargomento_id' value='$sottoargomento_id'>";
-            echo "<div class='form-group'>";
-            echo "<label>Sottoargomento</label>";
-            echo "<div class='form-control-static'>" . $sottoargomento_info['titolo'] . "</div>";
-            echo "</div>";
-        } else {
-            // Altrimenti mostra il menu a tendina con tutti i sottoargomenti
-            $stmt_sottoargomenti = $sottoargomento->readAll();
-            
-            echo "<label for='sottoargomento_id'>Sottoargomento</label>";
-            echo "<select name='sottoargomento_id' required>";
-            
-            while ($row_sottoargomento = $stmt_sottoargomenti->fetch(PDO::FETCH_ASSOC)) {
-                $selected = "";
-                if ((isset($_GET['edit']) && $esercizio->sottoargomento_id == $row_sottoargomento['id']) || 
-                    (!isset($_GET['edit']) && isset($_GET['sottoargomento_id']) && $_GET['sottoargomento_id'] == $row_sottoargomento['id'])) {
-                    $selected = "selected";
-                }
-                echo "<option value='" . $row_sottoargomento['id'] . "' $selected>" . $row_sottoargomento['titolo'] . "</option>";
-            }
-            
-            echo "</select>";
-        }
-        
-        // Campi per i dati dell'esercizio
-        $titolo_value = isset($esercizio->titolo) ? $esercizio->titolo : "";
-        $testo_value = isset($esercizio->testo) ? $esercizio->testo : "";
-        $soluzione_value = isset($esercizio->soluzione) ? $esercizio->soluzione : "";
-        $difficolta_value = isset($esercizio->difficolta) ? $esercizio->difficolta : "2";
-        
-        echo "<label for='titolo'>Titolo Esercizio</label>";
-        echo "<input type='text' name='titolo' value='$titolo_value' required>";
-        
-        echo "<label for='testo'>Testo dell'Esercizio</label>";
-        echo "<textarea name='testo' rows='6'>$testo_value</textarea>";
-        
-        echo "<label for='soluzione'>Soluzione</label>";
-        echo "<textarea name='soluzione' rows='6'>$soluzione_value</textarea>";
-        
-        echo "<label for='difficolta'>Livello di Difficoltà</label>";
-        echo "<select name='difficolta'>";
-        echo "<option value='1'" . ($difficolta_value == 1 ? " selected" : "") . ">Facile</option>";
-        echo "<option value='2'" . ($difficolta_value == 2 ? " selected" : "") . ">Media</option>";
-        echo "<option value='3'" . ($difficolta_value == 3 ? " selected" : "") . ">Difficile</option>";
-        echo "</select>";
-        
-        // Pulsanti di submit
-        if (isset($_GET['edit'])) {
-            echo "<button type='submit' name='update'>Aggiorna Esercizio</button>";
-        } else {
-            echo "<button type='submit' name='create'>Crea Esercizio</button>";
-        }
-        
-        echo "<a href='esercizi.php" . ($sottoargomento_id ? "?sottoargomento_id=$sottoargomento_id" : "") . "' class='btn-secondary'>Annulla</a>";
-        echo "</form>";
-    }
-
-    // --- Leggi tutti gli esercizi o gli esercizi di un sottoargomento specifico ---
+    // Leggi tutti gli esercizi o gli esercizi di un sottoargomento specifico
     if ($sottoargomento_id) {
         $stmt = $esercizio->readBySottoArgomento($sottoargomento_id);
     } else {
         $stmt = $esercizio->readAll();
     }
-    
-    echo "<h2>Lista Esercizi</h2>";
     
     // Conta gli esercizi
     $num = $stmt->rowCount();
@@ -207,7 +131,7 @@ if (!$db) {
             extract($row);
             
             // Mostra sottoargomento solo se stiamo visualizzando tutti gli esercizi
-            $sottoargomento_info = isset($sottoargomento_titolo) ? "<div class='item-meta'>Sottoargomento: $sottoargomento_titolo</div>" : "";
+            $sottoargomento_info_display = isset($sottoargomento_titolo) ? "<div class='item-meta'>Sottoargomento: $sottoargomento_titolo</div>" : "";
             
             // Determina la classe CSS in base alla difficoltà
             $difficolta_class = "difficulty-$difficolta";
@@ -215,7 +139,7 @@ if (!$db) {
             
             echo "<li class='$difficolta_class'>
                     <div class='item-title'>$titolo</div>
-                    $sottoargomento_info
+                    $sottoargomento_info_display
                     <div class='item-meta'>Difficoltà: $difficolta_text</div>
                     <div class='item-description'>
                         <strong>Testo:</strong><br>
@@ -236,6 +160,132 @@ if (!$db) {
     } else {
         echo "<p>Nessun esercizio trovato." . ($sottoargomento_id ? " Aggiungi un esercizio a questo sottoargomento." : "") . "</p>";
     }
+    
+    // --- POI MOSTRA I FORM DI MODIFICA/CREAZIONE ---
+    
+    // Form per modificare un esercizio
+    if (isset($_GET['edit'])) {
+        $esercizio->id = $_GET['edit'];
+        if ($esercizio->readOne()) {
+            echo "<div id='editFormContainer'>";
+            echo "<h2>Modifica Esercizio</h2>";
+            echo "<form action='' method='POST'>";
+            echo "<input type='hidden' name='id' value='" . $esercizio->id . "'>";
+            
+            // Carica tutti i sottoargomenti per il menu a tendina se non siamo in un contesto di sottoargomento specifico
+            if (!$sottoargomento_id) {
+                $stmt_sottoargomenti = $sottoargomento->readAll();
+                
+                echo "<label for='sottoargomento_id'>Sottoargomento</label>";
+                echo "<select name='sottoargomento_id' required>";
+                
+                while ($row_sottoargomento = $stmt_sottoargomenti->fetch(PDO::FETCH_ASSOC)) {
+                    $selected = ($esercizio->sottoargomento_id == $row_sottoargomento['id']) ? "selected" : "";
+                    echo "<option value='" . $row_sottoargomento['id'] . "' $selected>" . $row_sottoargomento['titolo'] . "</option>";
+                }
+                
+                echo "</select>";
+            } else {
+                echo "<input type='hidden' name='sottoargomento_id' value='$sottoargomento_id'>";
+                echo "<div class='form-group'>";
+                echo "<label>Sottoargomento</label>";
+                echo "<div class='form-control-static'>" . $sottoargomento_info['titolo'] . "</div>";
+                echo "</div>";
+            }
+            
+            echo "<label for='titolo'>Titolo Esercizio</label>";
+            echo "<input type='text' name='titolo' value='" . $esercizio->titolo . "' required>";
+            
+            echo "<label for='testo'>Testo dell'Esercizio</label>";
+            echo "<textarea name='testo' rows='6'>" . $esercizio->testo . "</textarea>";
+            
+            echo "<label for='soluzione'>Soluzione</label>";
+            echo "<textarea name='soluzione' rows='6'>" . $esercizio->soluzione . "</textarea>";
+            
+            echo "<label for='difficolta'>Livello di Difficoltà</label>";
+            echo "<select name='difficolta'>";
+            echo "<option value='1'" . ($esercizio->difficolta == 1 ? " selected" : "") . ">Facile</option>";
+            echo "<option value='2'" . ($esercizio->difficolta == 2 ? " selected" : "") . ">Media</option>";
+            echo "<option value='3'" . ($esercizio->difficolta == 3 ? " selected" : "") . ">Difficile</option>";
+            echo "</select>";
+            
+            echo "<button type='submit' name='update'>Aggiorna Esercizio</button>";
+            echo "<a href='esercizi.php" . ($sottoargomento_id ? "?sottoargomento_id=$sottoargomento_id" : "") . "' class='btn-secondary'>Annulla</a>";
+            echo "</form>";
+            echo "</div>";
+        }
+    }
+    
+    // Form per creare un nuovo esercizio (inizialmente nascosto)
+    echo "<div id='createFormContainer' style='display: none;'>";
+    echo "<h2>Crea Nuovo Esercizio</h2>";
+    echo "<form action='' method='POST'>";
+    
+    // Carica tutti i sottoargomenti per il menu a tendina
+    if ($sottoargomento_id) {
+        // Se siamo in una pagina di sottoargomento specifico, usa quel sottoargomento
+        echo "<input type='hidden' name='sottoargomento_id' value='$sottoargomento_id'>";
+        echo "<div class='form-group'>";
+        echo "<label>Sottoargomento</label>";
+        echo "<div class='form-control-static'>" . $sottoargomento_info['titolo'] . "</div>";
+        echo "</div>";
+    } else {
+        // Altrimenti mostra il menu a tendina
+        $stmt_sottoargomenti = $sottoargomento->readAll();
+        
+        echo "<label for='sottoargomento_id'>Sottoargomento</label>";
+        echo "<select name='sottoargomento_id' required>";
+        
+        while ($row_sottoargomento = $stmt_sottoargomenti->fetch(PDO::FETCH_ASSOC)) {
+            echo "<option value='" . $row_sottoargomento['id'] . "'>" . $row_sottoargomento['titolo'] . "</option>";
+        }
+        
+        echo "</select>";
+    }
+    
+    echo "<label for='titolo'>Titolo Esercizio</label>";
+    echo "<input type='text' name='titolo' required>";
+    
+    echo "<label for='testo'>Testo dell'Esercizio</label>";
+    echo "<textarea name='testo' rows='6'></textarea>";
+    
+    echo "<label for='soluzione'>Soluzione</label>";
+    echo "<textarea name='soluzione' rows='6'></textarea>";
+    
+    echo "<label for='difficolta'>Livello di Difficoltà</label>";
+    echo "<select name='difficolta'>";
+    echo "<option value='1'>Facile</option>";
+    echo "<option value='2' selected>Media</option>";
+    echo "<option value='3'>Difficile</option>";
+    echo "</select>";
+    
+    echo "<button type='submit' name='create'>Crea Esercizio</button>";
+    echo "<button type='button' id='cancelCreateBtn' class='btn-secondary'>Annulla</button>";
+    echo "</form>";
+    echo "</div>";
+    
+    // JavaScript per mostrare/nascondere il form di creazione
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showCreateFormBtn = document.getElementById('showCreateFormBtn');
+            const createFormContainer = document.getElementById('createFormContainer');
+            const cancelCreateBtn = document.getElementById('cancelCreateBtn');
+            
+            if (showCreateFormBtn && createFormContainer) {
+                showCreateFormBtn.addEventListener('click', function() {
+                    createFormContainer.style.display = 'block';
+                    showCreateFormBtn.style.display = 'none';
+                });
+            }
+            
+            if (cancelCreateBtn && createFormContainer && showCreateFormBtn) {
+                cancelCreateBtn.addEventListener('click', function() {
+                    createFormContainer.style.display = 'none';
+                    showCreateFormBtn.style.display = 'inline-block';
+                });
+            }
+        });
+    </script>";
 }
 
 // Includi footer

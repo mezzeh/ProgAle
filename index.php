@@ -67,41 +67,14 @@ if (!$db) {
         echo "<div class='message $message_class'>$message</div>";
     }
     
-    // --- Form per creare un nuovo piano di studio ---
-    if (!isset($_GET['edit'])) {
-        echo "<h2>Crea Nuovo Piano di Studio</h2>";
-        echo "<form action='' method='POST'>
-                <label for='nome'>Nome</label>
-                <input type='text' name='nome' required>
-                <label for='descrizione'>Descrizione</label>
-                <textarea name='descrizione' required></textarea>
-                <button type='submit' name='create'>Crea Piano</button>
-            </form>";
-    }
-
-    // --- Modifica un piano di studio ---
-    if (isset($_GET['edit'])) {
-        $piano->id = $_GET['edit'];
-        if ($piano->readOne()) {
-            echo "<h2>Modifica Piano di Studio</h2>";
-            echo "<form action='' method='POST'>
-                    <input type='hidden' name='id' value='$piano->id'>
-                    <label for='nome'>Nome</label>
-                    <input type='text' name='nome' value='$piano->nome' required>
-                    <label for='descrizione'>Descrizione</label>
-                    <textarea name='descrizione' required>$piano->descrizione</textarea>
-                    <button type='submit' name='update'>Aggiorna Piano</button>
-                    <a href='index.php' class='btn-secondary'>Annulla</a>
-                </form>";
-        }
-    }
-
-    // --- Leggi tutti i piani di studio ---
-    $stmt = $piano->readAll();
-    
+    // --- PRIMA MOSTRA LA LISTA DEI PIANI DI STUDIO ESISTENTI ---
+    echo "<div class='header-with-button'>";
     echo "<h2>Piani di Studio</h2>";
+    echo "<button id='showCreateFormBtn' class='btn-primary'>Aggiungi Nuovo Piano</button>";
+    echo "</div>";
     
-    // Conta i piani di studio
+    // Leggi tutti i piani di studio
+    $stmt = $piano->readAll();
     $num = $stmt->rowCount();
     
     if ($num > 0) {
@@ -122,6 +95,63 @@ if (!$db) {
     } else {
         echo "<p>Nessun piano di studio trovato.</p>";
     }
+    
+    // --- POI MOSTRA I FORM DI CREAZIONE/MODIFICA ---
+    
+    // Form per modificare un piano di studio (mostrato solo quando si clicca "Modifica")
+    if (isset($_GET['edit'])) {
+        $piano->id = $_GET['edit'];
+        if ($piano->readOne()) {
+            echo "<div id='editFormContainer'>";
+            echo "<h2>Modifica Piano di Studio</h2>";
+            echo "<form action='' method='POST'>";
+            echo "<input type='hidden' name='id' value='$piano->id'>";
+            echo "<label for='nome'>Nome</label>";
+            echo "<input type='text' name='nome' value='$piano->nome' required>";
+            echo "<label for='descrizione'>Descrizione</label>";
+            echo "<textarea name='descrizione' required>$piano->descrizione</textarea>";
+            echo "<button type='submit' name='update'>Aggiorna Piano</button>";
+            echo "<a href='index.php' class='btn-secondary'>Annulla</a>";
+            echo "</form>";
+            echo "</div>";
+        }
+    }
+
+    // Form per creare un nuovo piano di studio (inizialmente nascosto)
+    echo "<div id='createFormContainer' style='display: " . (isset($_GET['edit']) ? "none" : "none") . ";'>";
+    echo "<h2>Crea Nuovo Piano di Studio</h2>";
+    echo "<form action='' method='POST'>";
+    echo "<label for='nome'>Nome</label>";
+    echo "<input type='text' name='nome' required>";
+    echo "<label for='descrizione'>Descrizione</label>";
+    echo "<textarea name='descrizione' required></textarea>";
+    echo "<button type='submit' name='create'>Crea Piano</button>";
+    echo "<button type='button' id='cancelCreateBtn' class='btn-secondary'>Annulla</button>";
+    echo "</form>";
+    echo "</div>";
+    
+    // JavaScript per mostrare/nascondere il form di creazione
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showCreateFormBtn = document.getElementById('showCreateFormBtn');
+            const createFormContainer = document.getElementById('createFormContainer');
+            const cancelCreateBtn = document.getElementById('cancelCreateBtn');
+            
+            if (showCreateFormBtn && createFormContainer) {
+                showCreateFormBtn.addEventListener('click', function() {
+                    createFormContainer.style.display = 'block';
+                    showCreateFormBtn.style.display = 'none';
+                });
+            }
+            
+            if (cancelCreateBtn && createFormContainer && showCreateFormBtn) {
+                cancelCreateBtn.addEventListener('click', function() {
+                    createFormContainer.style.display = 'none';
+                    showCreateFormBtn.style.display = 'inline-block';
+                });
+            }
+        });
+    </script>";
 }
 
 // Includi footer

@@ -56,11 +56,7 @@ if (!$db) {
             echo "<li>" . $esercizio_info['titolo'] . "</li>";
             echo "</ul>";
             echo "</div>";
-            
-            echo "<h2>Requisiti dell'Esercizio: " . $esercizio_info['titolo'] . "</h2>";
         }
-    } else {
-        echo "<h2>Tutti i Requisiti</h2>";
     }
 
     // --- Gestione del form per creare un nuovo requisito ---
@@ -109,78 +105,22 @@ if (!$db) {
         echo "<div class='message $message_class'>$message</div>";
     }
     
-    // --- Form per creare/modificare un requisito ---
-    if (isset($_GET['edit'])) {
-        // Modifica un requisito esistente
-        $requisito->id = $_GET['edit'];
-        if ($requisito->readOne()) {
-            echo "<h2>Modifica Requisito</h2>";
-            echo "<form action='' method='POST'>";
-            echo "<input type='hidden' name='id' value='" . $requisito->id . "'>";
-        } else {
-            echo "<p class='message error'>Requisito non trovato.</p>";
-        }
+    // --- PRIMA MOSTRA LA LISTA DEI REQUISITI ESISTENTI ---
+    echo "<div class='header-with-button'>";
+    if ($esercizio_id) {
+        echo "<h2>Requisiti dell'Esercizio: " . $esercizio_info['titolo'] . "</h2>";
     } else {
-        // Crea un nuovo requisito
-        echo "<h2>Crea Nuovo Requisito</h2>";
-        echo "<form action='' method='POST'>";
+        echo "<h2>Tutti i Requisiti</h2>";
     }
+    echo "<button id='showCreateFormBtn' class='btn-primary'>Aggiungi Nuovo Requisito</button>";
+    echo "</div>";
     
-    if (!isset($_GET['edit']) || (isset($_GET['edit']) && $requisito->readOne())) {
-        // Gestione esercizio
-        if ($esercizio_id) {
-            // Se siamo in una pagina di esercizio specifico, mostra solo quell'esercizio
-            $esercizio->id = $esercizio_id;
-            $esercizio_info = $esercizio->readOne();
-            echo "<input type='hidden' name='esercizio_id' value='$esercizio_id'>";
-            echo "<div class='form-group'>";
-            echo "<label>Esercizio</label>";
-            echo "<div class='form-control-static'>" . $esercizio_info['titolo'] . "</div>";
-            echo "</div>";
-        } else {
-            // Altrimenti mostra il menu a tendina con tutti gli esercizi
-            $stmt_esercizi = $esercizio->readAll();
-            
-            echo "<label for='esercizio_id'>Esercizio</label>";
-            echo "<select name='esercizio_id' required>";
-            
-            while ($row_esercizio = $stmt_esercizi->fetch(PDO::FETCH_ASSOC)) {
-                $selected = "";
-                if ((isset($_GET['edit']) && $requisito->esercizio_id == $row_esercizio['id']) || 
-                    (!isset($_GET['edit']) && isset($_GET['esercizio_id']) && $_GET['esercizio_id'] == $row_esercizio['id'])) {
-                    $selected = "selected";
-                }
-                echo "<option value='" . $row_esercizio['id'] . "' $selected>" . $row_esercizio['titolo'] . "</option>";
-            }
-            
-            echo "</select>";
-        }
-        
-        // Campi per i dati del requisito
-        $descrizione_value = isset($requisito->descrizione) ? $requisito->descrizione : "";
-        
-        echo "<label for='descrizione'>Descrizione del Requisito</label>";
-        echo "<textarea name='descrizione' rows='4' required>$descrizione_value</textarea>";
-        
-        // Pulsanti di submit
-        if (isset($_GET['edit'])) {
-            echo "<button type='submit' name='update'>Aggiorna Requisito</button>";
-        } else {
-            echo "<button type='submit' name='create'>Crea Requisito</button>";
-        }
-        
-        echo "<a href='requisiti.php" . ($esercizio_id ? "?esercizio_id=$esercizio_id" : "") . "' class='btn-secondary'>Annulla</a>";
-        echo "</form>";
-    }
-
-    // --- Leggi tutti i requisiti o i requisiti di un esercizio specifico ---
+    // Leggi tutti i requisiti o i requisiti di un esercizio specifico
     if ($esercizio_id) {
         $stmt = $requisito->readByEsercizio($esercizio_id);
     } else {
         $stmt = $requisito->readAll();
     }
-    
-    echo "<h2>Lista Requisiti</h2>";
     
     // Conta i requisiti
     $num = $stmt->rowCount();
@@ -191,11 +131,11 @@ if (!$db) {
             extract($row);
             
             // Mostra esercizio solo se stiamo visualizzando tutti i requisiti
-            $esercizio_info = isset($esercizio_titolo) ? "<div class='item-meta'>Esercizio: $esercizio_titolo</div>" : "";
+            $esercizio_info_display = isset($esercizio_titolo) ? "<div class='item-meta'>Esercizio: $esercizio_titolo</div>" : "";
             
             echo "<li>
                     <div class='item-description'>$descrizione</div>
-                    $esercizio_info
+                    $esercizio_info_display
                     <div class='item-actions'>
                         <a href='?edit=$id" . ($esercizio_id ? "&esercizio_id=$esercizio_id" : "") . "'>Modifica</a> | 
                         <a href='?delete=$id" . ($esercizio_id ? "&esercizio_id=$esercizio_id" : "") . "' onclick='return confirm(\"Sei sicuro di voler eliminare questo requisito?\");'>Elimina</a>
@@ -206,6 +146,106 @@ if (!$db) {
     } else {
         echo "<p>Nessun requisito trovato." . ($esercizio_id ? " Aggiungi requisiti per questo esercizio." : "") . "</p>";
     }
+    
+    // --- POI MOSTRA I FORM DI MODIFICA/CREAZIONE ---
+    
+    // Form per modificare un requisito
+    if (isset($_GET['edit'])) {
+        $requisito->id = $_GET['edit'];
+        if ($requisito->readOne()) {
+            echo "<div id='editFormContainer'>";
+            echo "<h2>Modifica Requisito</h2>";
+            echo "<form action='' method='POST'>";
+            echo "<input type='hidden' name='id' value='" . $requisito->id . "'>";
+            
+            // Carica tutti gli esercizi per il menu a tendina se non siamo in un contesto di esercizio specifico
+            if (!$esercizio_id) {
+                $stmt_esercizi = $esercizio->readAll();
+                
+                echo "<label for='esercizio_id'>Esercizio</label>";
+                echo "<select name='esercizio_id' required>";
+                
+                while ($row_esercizio = $stmt_esercizi->fetch(PDO::FETCH_ASSOC)) {
+                    $selected = ($requisito->esercizio_id == $row_esercizio['id']) ? "selected" : "";
+                    echo "<option value='" . $row_esercizio['id'] . "' $selected>" . $row_esercizio['titolo'] . "</option>";
+                }
+                
+                echo "</select>";
+            } else {
+                echo "<input type='hidden' name='esercizio_id' value='$esercizio_id'>";
+                echo "<div class='form-group'>";
+                echo "<label>Esercizio</label>";
+                echo "<div class='form-control-static'>" . $esercizio_info['titolo'] . "</div>";
+                echo "</div>";
+            }
+            
+            echo "<label for='descrizione'>Descrizione del Requisito</label>";
+            echo "<textarea name='descrizione' rows='4' required>" . $requisito->descrizione . "</textarea>";
+            
+            echo "<button type='submit' name='update'>Aggiorna Requisito</button>";
+            echo "<a href='requisiti.php" . ($esercizio_id ? "?esercizio_id=$esercizio_id" : "") . "' class='btn-secondary'>Annulla</a>";
+            echo "</form>";
+            echo "</div>";
+        }
+    }
+    
+    // Form per creare un nuovo requisito (inizialmente nascosto)
+    echo "<div id='createFormContainer' style='display: none;'>";
+    echo "<h2>Crea Nuovo Requisito</h2>";
+    echo "<form action='' method='POST'>";
+    
+    // Carica tutti gli esercizi per il menu a tendina
+    if ($esercizio_id) {
+        // Se siamo in una pagina di esercizio specifico, usa quell'esercizio
+        echo "<input type='hidden' name='esercizio_id' value='$esercizio_id'>";
+        echo "<div class='form-group'>";
+        echo "<label>Esercizio</label>";
+        echo "<div class='form-control-static'>" . $esercizio_info['titolo'] . "</div>";
+        echo "</div>";
+    } else {
+        // Altrimenti mostra il menu a tendina
+        $stmt_esercizi = $esercizio->readAll();
+        
+        echo "<label for='esercizio_id'>Esercizio</label>";
+        echo "<select name='esercizio_id' required>";
+        
+        while ($row_esercizio = $stmt_esercizi->fetch(PDO::FETCH_ASSOC)) {
+            echo "<option value='" . $row_esercizio['id'] . "'>" . $row_esercizio['titolo'] . "</option>";
+        }
+        
+        echo "</select>";
+    }
+    
+    echo "<label for='descrizione'>Descrizione del Requisito</label>";
+    echo "<textarea name='descrizione' rows='4' required></textarea>";
+    
+    echo "<button type='submit' name='create'>Crea Requisito</button>";
+    echo "<button type='button' id='cancelCreateBtn' class='btn-secondary'>Annulla</button>";
+    echo "</form>";
+    echo "</div>";
+    
+    // JavaScript per mostrare/nascondere il form di creazione
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showCreateFormBtn = document.getElementById('showCreateFormBtn');
+            const createFormContainer = document.getElementById('createFormContainer');
+            const cancelCreateBtn = document.getElementById('cancelCreateBtn');
+            
+            if (showCreateFormBtn && createFormContainer) {
+                showCreateFormBtn.addEventListener('click', function() {
+                    createFormContainer.style.display = 'block';
+                    showCreateFormBtn.style.display = 'none';
+                });
+            }
+            
+            if (cancelCreateBtn && createFormContainer && showCreateFormBtn) {
+                cancelCreateBtn.addEventListener('click', function() {
+                    createFormContainer.style.display = 'none';
+                    showCreateFormBtn.style.display = 'inline-block';
+                });
+            }
+        });
+    </script>";
 }
 
 // Includi footer

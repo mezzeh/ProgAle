@@ -44,11 +44,7 @@ if (!$db) {
             echo "<li>" . $argomento_info['titolo'] . "</li>";
             echo "</ul>";
             echo "</div>";
-            
-            echo "<h2>Sottoargomenti di: " . $argomento_info['titolo'] . "</h2>";
         }
-    } else {
-        echo "<h2>Tutti i Sottoargomenti</h2>";
     }
 
     // --- Gestione del form per creare un nuovo sottoargomento ---
@@ -101,91 +97,22 @@ if (!$db) {
         echo "<div class='message $message_class'>$message</div>";
     }
     
-    // --- Form per creare/modificare un sottoargomento ---
-    if (isset($_GET['edit'])) {
-        // Modifica un sottoargomento esistente
-        $sottoargomento->id = $_GET['edit'];
-        if ($sottoargomento->readOne()) {
-            echo "<h2>Modifica Sottoargomento</h2>";
-            echo "<form action='' method='POST'>";
-            echo "<input type='hidden' name='id' value='" . $sottoargomento->id . "'>";
-        } else {
-            echo "<p class='message error'>Sottoargomento non trovato.</p>";
-        }
+    // --- PRIMA MOSTRA LA LISTA DEI SOTTOARGOMENTI ESISTENTI ---
+    echo "<div class='header-with-button'>";
+    if ($argomento_id) {
+        echo "<h2>Sottoargomenti di: " . $argomento_info['titolo'] . "</h2>";
     } else {
-        // Crea un nuovo sottoargomento
-        echo "<h2>Crea Nuovo Sottoargomento</h2>";
-        echo "<form action='' method='POST'>";
+        echo "<h2>Tutti i Sottoargomenti</h2>";
     }
+    echo "<button id='showCreateFormBtn' class='btn-primary'>Aggiungi Nuovo Sottoargomento</button>";
+    echo "</div>";
     
-    if (!isset($_GET['edit']) || (isset($_GET['edit']) && $sottoargomento->readOne())) {
-        // Gestione argomento
-        if ($argomento_id) {
-            // Se siamo in una pagina di argomento specifico, mostra solo quell'argomento
-            $argomento->id = $argomento_id;
-            $argomento_info = $argomento->readOne();
-            echo "<input type='hidden' name='argomento_id' value='$argomento_id'>";
-            echo "<div class='form-group'>";
-            echo "<label>Argomento</label>";
-            echo "<div class='form-control-static'>" . $argomento_info['titolo'] . "</div>";
-            echo "</div>";
-        } else {
-            // Altrimenti mostra il menu a tendina con tutti gli argomenti
-            $stmt_argomenti = $argomento->readAll();
-            
-            echo "<label for='argomento_id'>Argomento</label>";
-            echo "<select name='argomento_id' required>";
-            
-            while ($row_argomento = $stmt_argomenti->fetch(PDO::FETCH_ASSOC)) {
-                $selected = "";
-                if ((isset($_GET['edit']) && $sottoargomento->argomento_id == $row_argomento['id']) || 
-                    (!isset($_GET['edit']) && isset($_GET['argomento_id']) && $_GET['argomento_id'] == $row_argomento['id'])) {
-                    $selected = "selected";
-                }
-                echo "<option value='" . $row_argomento['id'] . "' $selected>" . $row_argomento['titolo'] . "</option>";
-            }
-            
-            echo "</select>";
-        }
-        
-        // Campi per i dati del sottoargomento
-        $titolo_value = isset($sottoargomento->titolo) ? $sottoargomento->titolo : "";
-        $descrizione_value = isset($sottoargomento->descrizione) ? $sottoargomento->descrizione : "";
-        $livello_value = isset($sottoargomento->livello_profondita) ? $sottoargomento->livello_profondita : "1";
-        
-        echo "<label for='titolo'>Titolo Sottoargomento</label>";
-        echo "<input type='text' name='titolo' value='$titolo_value' required>";
-        
-        echo "<label for='descrizione'>Descrizione</label>";
-        echo "<textarea name='descrizione'>$descrizione_value</textarea>";
-        
-        echo "<label for='livello_profondita'>Livello di Profondità (1-5)</label>";
-        echo "<select name='livello_profondita'>";
-        for ($i = 1; $i <= 5; $i++) {
-            $selected = ($livello_value == $i) ? "selected" : "";
-            echo "<option value='$i' $selected>Livello $i</option>";
-        }
-        echo "</select>";
-        
-        // Pulsanti di submit
-        if (isset($_GET['edit'])) {
-            echo "<button type='submit' name='update'>Aggiorna Sottoargomento</button>";
-        } else {
-            echo "<button type='submit' name='create'>Crea Sottoargomento</button>";
-        }
-        
-        echo "<a href='sottoargomenti.php" . ($argomento_id ? "?argomento_id=$argomento_id" : "") . "' class='btn-secondary'>Annulla</a>";
-        echo "</form>";
-    }
-
-    // --- Leggi tutti i sottoargomenti o i sottoargomenti di un argomento specifico ---
+    // Leggi tutti i sottoargomenti o i sottoargomenti di un argomento specifico
     if ($argomento_id) {
         $stmt = $sottoargomento->readByArgomento($argomento_id);
     } else {
         $stmt = $sottoargomento->readAll();
     }
-    
-    echo "<h2>Lista Sottoargomenti</h2>";
     
     // Conta i sottoargomenti
     $num = $stmt->rowCount();
@@ -196,11 +123,11 @@ if (!$db) {
             extract($row);
             
             // Mostra argomento solo se stiamo visualizzando tutti i sottoargomenti
-            $argomento_info = isset($argomento_titolo) ? "<div class='item-meta'>Argomento: $argomento_titolo</div>" : "";
+            $argomento_info_display = isset($argomento_titolo) ? "<div class='item-meta'>Argomento: $argomento_titolo</div>" : "";
             
             echo "<li class='depth-$livello_profondita'>
                     <div class='item-title'>$titolo</div>
-                    $argomento_info
+                    $argomento_info_display
                     <div class='item-meta'>Livello di profondità: $livello_profondita</div>
                     <div class='item-description'>$descrizione</div>
                     <div class='item-actions'>
@@ -214,6 +141,128 @@ if (!$db) {
     } else {
         echo "<p>Nessun sottoargomento trovato." . ($argomento_id ? " Aggiungi un sottoargomento a questo argomento." : "") . "</p>";
     }
+    
+    // --- POI MOSTRA I FORM DI MODIFICA/CREAZIONE ---
+    
+    // Form per modificare un sottoargomento
+    if (isset($_GET['edit'])) {
+        $sottoargomento->id = $_GET['edit'];
+        if ($sottoargomento->readOne()) {
+            echo "<div id='editFormContainer'>";
+            echo "<h2>Modifica Sottoargomento</h2>";
+            echo "<form action='' method='POST'>";
+            echo "<input type='hidden' name='id' value='" . $sottoargomento->id . "'>";
+            
+            // Carica tutti gli argomenti per il menu a tendina se non siamo in un contesto di argomento specifico
+            if (!$argomento_id) {
+                $stmt_argomenti = $argomento->readAll();
+                
+                echo "<label for='argomento_id'>Argomento</label>";
+                echo "<select name='argomento_id' required>";
+                
+                while ($row_argomento = $stmt_argomenti->fetch(PDO::FETCH_ASSOC)) {
+                    $selected = ($sottoargomento->argomento_id == $row_argomento['id']) ? "selected" : "";
+                    echo "<option value='" . $row_argomento['id'] . "' $selected>" . $row_argomento['titolo'] . "</option>";
+                }
+                
+                echo "</select>";
+            } else {
+                echo "<input type='hidden' name='argomento_id' value='$argomento_id'>";
+                echo "<div class='form-group'>";
+                echo "<label>Argomento</label>";
+                echo "<div class='form-control-static'>" . $argomento_info['titolo'] . "</div>";
+                echo "</div>";
+            }
+            
+            echo "<label for='titolo'>Titolo Sottoargomento</label>";
+            echo "<input type='text' name='titolo' value='" . $sottoargomento->titolo . "' required>";
+            
+            echo "<label for='descrizione'>Descrizione</label>";
+            echo "<textarea name='descrizione'>" . $sottoargomento->descrizione . "</textarea>";
+            
+            echo "<label for='livello_profondita'>Livello di Profondità (1-5)</label>";
+            echo "<select name='livello_profondita'>";
+            for ($i = 1; $i <= 5; $i++) {
+                $selected = ($sottoargomento->livello_profondita == $i) ? "selected" : "";
+                echo "<option value='$i' $selected>Livello $i</option>";
+            }
+            echo "</select>";
+            
+            echo "<button type='submit' name='update'>Aggiorna Sottoargomento</button>";
+            echo "<a href='sottoargomenti.php" . ($argomento_id ? "?argomento_id=$argomento_id" : "") . "' class='btn-secondary'>Annulla</a>";
+            echo "</form>";
+            echo "</div>";
+        }
+    }
+    
+    // Form per creare un nuovo sottoargomento (inizialmente nascosto)
+    echo "<div id='createFormContainer' style='display: none;'>";
+    echo "<h2>Crea Nuovo Sottoargomento</h2>";
+    echo "<form action='' method='POST'>";
+    
+    // Carica tutti gli argomenti per il menu a tendina
+    if ($argomento_id) {
+        // Se siamo in una pagina di argomento specifico, usa quell'argomento
+        echo "<input type='hidden' name='argomento_id' value='$argomento_id'>";
+        echo "<div class='form-group'>";
+        echo "<label>Argomento</label>";
+        echo "<div class='form-control-static'>" . $argomento_info['titolo'] . "</div>";
+        echo "</div>";
+    } else {
+        // Altrimenti mostra il menu a tendina
+        $stmt_argomenti = $argomento->readAll();
+        
+        echo "<label for='argomento_id'>Argomento</label>";
+        echo "<select name='argomento_id' required>";
+        
+        while ($row_argomento = $stmt_argomenti->fetch(PDO::FETCH_ASSOC)) {
+            echo "<option value='" . $row_argomento['id'] . "'>" . $row_argomento['titolo'] . "</option>";
+        }
+        
+        echo "</select>";
+    }
+    
+    echo "<label for='titolo'>Titolo Sottoargomento</label>";
+    echo "<input type='text' name='titolo' required>";
+    
+    echo "<label for='descrizione'>Descrizione</label>";
+    echo "<textarea name='descrizione'></textarea>";
+    
+    echo "<label for='livello_profondita'>Livello di Profondità (1-5)</label>";
+    echo "<select name='livello_profondita'>";
+    for ($i = 1; $i <= 5; $i++) {
+        $selected = ($i == 1) ? "selected" : ""; // Default: livello 1
+        echo "<option value='$i' $selected>Livello $i</option>";
+    }
+    echo "</select>";
+    
+    echo "<button type='submit' name='create'>Crea Sottoargomento</button>";
+    echo "<button type='button' id='cancelCreateBtn' class='btn-secondary'>Annulla</button>";
+    echo "</form>";
+    echo "</div>";
+    
+    // JavaScript per mostrare/nascondere il form di creazione
+    echo "<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const showCreateFormBtn = document.getElementById('showCreateFormBtn');
+            const createFormContainer = document.getElementById('createFormContainer');
+            const cancelCreateBtn = document.getElementById('cancelCreateBtn');
+            
+            if (showCreateFormBtn && createFormContainer) {
+                showCreateFormBtn.addEventListener('click', function() {
+                    createFormContainer.style.display = 'block';
+                    showCreateFormBtn.style.display = 'none';
+                });
+            }
+            
+            if (cancelCreateBtn && createFormContainer && showCreateFormBtn) {
+                cancelCreateBtn.addEventListener('click', function() {
+                    createFormContainer.style.display = 'none';
+                    showCreateFormBtn.style.display = 'inline-block';
+                });
+            }
+        });
+    </script>";
 }
 
 // Includi footer
