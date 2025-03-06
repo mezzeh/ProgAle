@@ -12,92 +12,108 @@ class PianoDiStudio {
         $this->conn = $db;
     }
     
-    // Crea nuovo piano di studio
+    // CREATE
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " 
                   SET nome=:nome, descrizione=:descrizione";
-        
         $stmt = $this->conn->prepare($query);
         
-        // Sanitizzazione
         $this->nome = htmlspecialchars(strip_tags($this->nome));
         $this->descrizione = htmlspecialchars(strip_tags($this->descrizione));
         
-        // Binding
         $stmt->bindParam(":nome", $this->nome);
         $stmt->bindParam(":descrizione", $this->descrizione);
         
-        if($stmt->execute()) {
-            return true;
-        }
-        
-        return false;
+        return $stmt->execute();
     }
     
-    // Leggi tutti i piani
+    // READ ALL
     public function readAll() {
         $query = "SELECT * FROM " . $this->table_name . " ORDER BY data_creazione DESC";
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        
         return $stmt;
     }
     
-    // Leggi singolo piano
+    public function readAllPaginated($from_record_num, $records_per_page) {
+        $query = "SELECT * FROM " . $this->table_name . "
+                  ORDER BY data_creazione DESC
+                  LIMIT :from_record_num, :records_per_page";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":from_record_num", $from_record_num, PDO::PARAM_INT);
+        $stmt->bindParam(":records_per_page", $records_per_page, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt;
+    }
+    
+    // READ ONE
     public function readOne() {
         $query = "SELECT * FROM " . $this->table_name . " WHERE id = ? LIMIT 0,1";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(1, $this->id);
         $stmt->execute();
-        
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if($row) {
+        if ($row) {
             $this->nome = $row['nome'];
             $this->descrizione = $row['descrizione'];
             $this->data_creazione = $row['data_creazione'];
-            return true;
+            return $row;
         }
-        
-        return false;
+        return [];
     }
     
-    // Aggiorna piano
+    // UPDATE
     public function update() {
         $query = "UPDATE " . $this->table_name . "
                   SET nome = :nome, descrizione = :descrizione
                   WHERE id = :id";
-        
         $stmt = $this->conn->prepare($query);
-        
-        // Sanitizzazione
         $this->nome = htmlspecialchars(strip_tags($this->nome));
         $this->descrizione = htmlspecialchars(strip_tags($this->descrizione));
         $this->id = htmlspecialchars(strip_tags($this->id));
-        
-        // Binding
         $stmt->bindParam(':nome', $this->nome);
         $stmt->bindParam(':descrizione', $this->descrizione);
         $stmt->bindParam(':id', $this->id);
-        
-        if($stmt->execute()) {
-            return true;
-        }
-        
-        return false;
+        return $stmt->execute();
     }
     
-    // Elimina piano
+    // DELETE
     public function delete() {
-        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(1, $this->id);
-        
-        if($stmt->execute()) {
-            return true;
+        $stmt->bindParam(':id', $this->id, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+
+    public function deleteMultiple($ids) {
+        if (empty($ids)) return false;
+        $inQuery = implode(',', array_fill(0, count($ids), '?'));
+        $query = "DELETE FROM " . $this->table_name . " WHERE id IN ($inQuery)";
+        $stmt = $this->conn->prepare($query);
+        foreach ($ids as $index => $id) {
+            $stmt->bindValue($index + 1, $id, PDO::PARAM_INT);
         }
-        
-        return false;
+        return $stmt->execute();
+    }
+
+    // SEARCH
+    public function search($keywords) {
+        $query = "SELECT * FROM " . $this->table_name . "
+                  WHERE nome LIKE :keywords
+                  ORDER BY data_creazione DESC";
+        $stmt = $this->conn->prepare($query);
+        $keywords = "%{$keywords}%";
+        $stmt->bindParam(":keywords", $keywords);
+        $stmt->execute();
+        return $stmt;
+    }
+
+    // COUNT
+    public function count() {
+        $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name;
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total_rows'];
     }
 }
-?>
