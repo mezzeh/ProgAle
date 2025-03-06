@@ -134,26 +134,23 @@ class Argomento {
     }
     
     // SEARCH
-   public function search($keyword) {
-    // Query SQL con ricerca LIKE
-    $query = "SELECT id, nome, descrizione, esame_id FROM " . $this->table_name . 
-             " WHERE nome LIKE ? OR descrizione LIKE ? ORDER BY nome";
+   // SEARCH
+public function search($keywords) {
+    $query = "SELECT a.*, e.nome as esame_nome
+              FROM " . $this->table_name . " a
+              LEFT JOIN esami e ON a.esame_id = e.id
+              WHERE a.titolo LIKE :keywords 
+              OR a.descrizione LIKE :keywords
+              ORDER BY a.livello_importanza DESC, a.titolo ASC";
     
-    // Preparazione della query
     $stmt = $this->conn->prepare($query);
-    
-    // Formattazione parola chiave
-    $keyword = "%{$keyword}%";
-    
-    // Binding dei parametri
-    $stmt->bindParam(1, $keyword);
-    $stmt->bindParam(2, $keyword);
-    
-    // Esecuzione della query
+    $keywords = "%{$keywords}%";
+    $stmt->bindParam(":keywords", $keywords);
     $stmt->execute();
     
     return $stmt;
 }
+
     // COUNT
     public function count() {
         $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name;
