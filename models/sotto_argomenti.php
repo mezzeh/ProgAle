@@ -1,14 +1,13 @@
 <?php
-class Esame {
+class SottoArgomento {
     private $conn;
-    private $table_name = "esami";
+    private $table_name = "sottoargomenti";
     
     public $id;
-    public $piano_id;
-    public $nome;
-    public $codice;
-    public $crediti;
+    public $argomento_id;
+    public $titolo;
     public $descrizione;
+    public $livello_profondita;
     
     public function __construct($db) {
         $this->conn = $db;
@@ -17,34 +16,32 @@ class Esame {
     // CREATE
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " 
-                  SET piano_id=:piano_id, nome=:nome, codice=:codice, 
-                  crediti=:crediti, descrizione=:descrizione";
+                  SET argomento_id=:argomento_id, titolo=:titolo, 
+                  descrizione=:descrizione, livello_profondita=:livello_profondita";
         
         $stmt = $this->conn->prepare($query);
         
         // Sanitizzazione
-        $this->piano_id = htmlspecialchars(strip_tags($this->piano_id));
-        $this->nome = htmlspecialchars(strip_tags($this->nome));
-        $this->codice = htmlspecialchars(strip_tags($this->codice));
-        $this->crediti = htmlspecialchars(strip_tags($this->crediti));
+        $this->argomento_id = htmlspecialchars(strip_tags($this->argomento_id));
+        $this->titolo = htmlspecialchars(strip_tags($this->titolo));
         $this->descrizione = htmlspecialchars(strip_tags($this->descrizione));
+        $this->livello_profondita = htmlspecialchars(strip_tags($this->livello_profondita));
         
         // Binding
-        $stmt->bindParam(":piano_id", $this->piano_id);
-        $stmt->bindParam(":nome", $this->nome);
-        $stmt->bindParam(":codice", $this->codice);
-        $stmt->bindParam(":crediti", $this->crediti);
+        $stmt->bindParam(":argomento_id", $this->argomento_id);
+        $stmt->bindParam(":titolo", $this->titolo);
         $stmt->bindParam(":descrizione", $this->descrizione);
+        $stmt->bindParam(":livello_profondita", $this->livello_profondita);
         
         return $stmt->execute();
     }
     
     // READ ALL
     public function readAll() {
-        $query = "SELECT e.*, p.nome as piano_nome 
-                  FROM " . $this->table_name . " e
-                  LEFT JOIN piani_di_studio p ON e.piano_id = p.id
-                  ORDER BY e.nome ASC";
+        $query = "SELECT s.*, a.titolo as argomento_titolo 
+                  FROM " . $this->table_name . " s
+                  LEFT JOIN argomenti a ON s.argomento_id = a.id
+                  ORDER BY s.livello_profondita ASC, s.titolo ASC";
         
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
@@ -52,14 +49,14 @@ class Esame {
         return $stmt;
     }
     
-    // READ BY PIANO
-    public function readByPiano($piano_id) {
+    // READ BY ARGOMENTO
+    public function readByArgomento($argomento_id) {
         $query = "SELECT * FROM " . $this->table_name . "
-                  WHERE piano_id = :piano_id
-                  ORDER BY nome ASC";
+                  WHERE argomento_id = :argomento_id
+                  ORDER BY livello_profondita ASC, titolo ASC";
         
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":piano_id", $piano_id);
+        $stmt->bindParam(":argomento_id", $argomento_id);
         $stmt->execute();
         
         return $stmt;
@@ -67,10 +64,10 @@ class Esame {
     
     // READ ONE
     public function readOne() {
-        $query = "SELECT e.*, p.nome as piano_nome 
-                  FROM " . $this->table_name . " e
-                  LEFT JOIN piani_di_studio p ON e.piano_id = p.id
-                  WHERE e.id = :id 
+        $query = "SELECT s.*, a.titolo as argomento_titolo 
+                  FROM " . $this->table_name . " s
+                  LEFT JOIN argomenti a ON s.argomento_id = a.id
+                  WHERE s.id = :id 
                   LIMIT 0,1";
         
         $stmt = $this->conn->prepare($query);
@@ -80,11 +77,10 @@ class Esame {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($row) {
-            $this->piano_id = $row['piano_id'];
-            $this->nome = $row['nome'];
-            $this->codice = $row['codice'];
-            $this->crediti = $row['crediti'];
+            $this->argomento_id = $row['argomento_id'];
+            $this->titolo = $row['titolo'];
             $this->descrizione = $row['descrizione'];
+            $this->livello_profondita = $row['livello_profondita'];
             return $row;
         }
         
@@ -94,27 +90,25 @@ class Esame {
     // UPDATE
     public function update() {
         $query = "UPDATE " . $this->table_name . "
-                  SET piano_id = :piano_id, nome = :nome, codice = :codice,
-                  crediti = :crediti, descrizione = :descrizione
+                  SET argomento_id = :argomento_id, titolo = :titolo,
+                  descrizione = :descrizione, livello_profondita = :livello_profondita
                   WHERE id = :id";
         
         $stmt = $this->conn->prepare($query);
         
         // Sanitizzazione
         $this->id = htmlspecialchars(strip_tags($this->id));
-        $this->piano_id = htmlspecialchars(strip_tags($this->piano_id));
-        $this->nome = htmlspecialchars(strip_tags($this->nome));
-        $this->codice = htmlspecialchars(strip_tags($this->codice));
-        $this->crediti = htmlspecialchars(strip_tags($this->crediti));
+        $this->argomento_id = htmlspecialchars(strip_tags($this->argomento_id));
+        $this->titolo = htmlspecialchars(strip_tags($this->titolo));
         $this->descrizione = htmlspecialchars(strip_tags($this->descrizione));
+        $this->livello_profondita = htmlspecialchars(strip_tags($this->livello_profondita));
         
         // Binding
         $stmt->bindParam(":id", $this->id);
-        $stmt->bindParam(":piano_id", $this->piano_id);
-        $stmt->bindParam(":nome", $this->nome);
-        $stmt->bindParam(":codice", $this->codice);
-        $stmt->bindParam(":crediti", $this->crediti);
+        $stmt->bindParam(":argomento_id", $this->argomento_id);
+        $stmt->bindParam(":titolo", $this->titolo);
         $stmt->bindParam(":descrizione", $this->descrizione);
+        $stmt->bindParam(":livello_profondita", $this->livello_profondita);
         
         return $stmt->execute();
     }
@@ -141,11 +135,12 @@ class Esame {
     
     // SEARCH
     public function search($keywords) {
-        $query = "SELECT e.*, p.nome as piano_nome
-                  FROM " . $this->table_name . " e
-                  LEFT JOIN piani_di_studio p ON e.piano_id = p.id
-                  WHERE e.nome LIKE :keywords OR e.codice LIKE :keywords
-                  ORDER BY e.nome ASC";
+        $query = "SELECT s.*, a.titolo as argomento_titolo
+                  FROM " . $this->table_name . " s
+                  LEFT JOIN argomenti a ON s.argomento_id = a.id
+                  WHERE s.titolo LIKE :keywords 
+                  OR s.descrizione LIKE :keywords
+                  ORDER BY s.livello_profondita ASC, s.titolo ASC";
         
         $stmt = $this->conn->prepare($query);
         $keywords = "%{$keywords}%";
@@ -164,11 +159,11 @@ class Esame {
         return $row['total_rows'];
     }
     
-    // COUNT BY PIANO
-    public function countByPiano($piano_id) {
-        $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE piano_id = :piano_id";
+    // COUNT BY ARGOMENTO
+    public function countByArgomento($argomento_id) {
+        $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE argomento_id = :argomento_id";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":piano_id", $piano_id);
+        $stmt->bindParam(":argomento_id", $argomento_id);
         $stmt->execute();
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['total_rows'];
