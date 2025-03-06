@@ -140,20 +140,26 @@ class Esame {
     }
     
     // SEARCH
-    public function search($keywords) {
-        $query = "SELECT e.*, p.nome as piano_nome
-                  FROM " . $this->table_name . " e
-                  LEFT JOIN piani_di_studio p ON e.piano_id = p.id
-                  WHERE e.nome LIKE :keywords OR e.codice LIKE :keywords
-                  ORDER BY e.nome ASC";
-        
-        $stmt = $this->conn->prepare($query);
-        $keywords = "%{$keywords}%";
-        $stmt->bindParam(":keywords", $keywords);
-        $stmt->execute();
-        
-        return $stmt;
-    }
+   public function search($keyword) {
+    // Query SQL con ricerca LIKE
+    $query = "SELECT id, nome, descrizione, crediti, anno, semestre, piano_id FROM " . $this->table_name . 
+             " WHERE nome LIKE ? OR descrizione LIKE ? ORDER BY nome";
+    
+    // Preparazione della query
+    $stmt = $this->conn->prepare($query);
+    
+    // Formattazione parola chiave
+    $keyword = "%{$keyword}%";
+    
+    // Binding dei parametri
+    $stmt->bindParam(1, $keyword);
+    $stmt->bindParam(2, $keyword);
+    
+    // Esecuzione della query
+    $stmt->execute();
+    
+    return $stmt;
+}
     
     // COUNT
     public function count() {

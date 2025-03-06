@@ -96,18 +96,26 @@ class PianoDiStudio {
         return $stmt->execute();
     }
 
-    // SEARCH
-    public function search($keywords) {
-        $query = "SELECT * FROM " . $this->table_name . "
-                  WHERE nome LIKE :keywords
-                  ORDER BY data_creazione DESC";
-        $stmt = $this->conn->prepare($query);
-        $keywords = "%{$keywords}%";
-        $stmt->bindParam(":keywords", $keywords);
-        $stmt->execute();
-        return $stmt;
-    }
-
+  public function search($keyword) {
+    // Query SQL con ricerca LIKE
+    $query = "SELECT id, nome, descrizione FROM " . $this->table_name . 
+             " WHERE nome LIKE ? OR descrizione LIKE ? ORDER BY nome";
+    
+    // Preparazione della query
+    $stmt = $this->conn->prepare($query);
+    
+    // Formattazione parola chiave
+    $keyword = "%{$keyword}%";
+    
+    // Binding dei parametri
+    $stmt->bindParam(1, $keyword);
+    $stmt->bindParam(2, $keyword);
+    
+    // Esecuzione della query
+    $stmt->execute();
+    
+    return $stmt;
+}
     // COUNT
     public function count() {
         $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name;

@@ -1,4 +1,4 @@
-/* Stile base */
+/* ========== RESET E STILI DI BASE ========== */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -19,29 +19,56 @@ body {
     padding: 20px;
 }
 
-header {
-    margin-bottom: 30px;
+/* ========== TIPOGRAFIA ========== */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 15px;
+    color: #333;
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 h1 {
-    color: #333;
+    font-size: 32px;
     margin-bottom: 20px;
 }
 
 h2 {
+    font-size: 24px;
     color: #444;
-    margin-bottom: 15px;
+    padding-bottom: 8px;
     border-bottom: 1px solid #ddd;
-    padding-bottom: 5px;
 }
-/* Menu di navigazione */
+
+p {
+    margin-bottom: 15px;
+}
+
+/* ========== HEADER E NAVIGAZIONE ========== */
+header {
+    margin-bottom: 30px;
+}
+
+/* Navigazione principale */
+nav {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
 .main-menu {
     display: flex;
     list-style: none;
     background-color: #333;
-    padding: 0;
     border-radius: 5px;
-    margin-bottom: 20px;
+    margin: 0;
+    margin-right: auto;
+    /* Spinge la ricerca a destra */
 }
 
 .main-menu li {
@@ -55,7 +82,7 @@ h2 {
     display: block;
     color: white;
     text-decoration: none;
-    padding: 10px 15px;
+    padding: 12px 20px;
     transition: background-color 0.3s;
 }
 
@@ -63,7 +90,115 @@ h2 {
     background-color: #555;
     text-decoration: none;
 }
-/* Formattazione form */
+
+/* Barra di ricerca */
+#search-container {
+    position: relative;
+    width: 250px;
+    margin-left: 20px;
+}
+
+.nav-search {
+    display: flex;
+    align-items: center;
+    background-color: #333;
+    border-radius: 4px;
+    padding: 6px 12px;
+    transition: all 0.3s;
+}
+
+.nav-search:hover,
+.nav-search:focus-within {
+    background-color: #444;
+}
+
+.nav-search-icon {
+    color: white;
+    margin-right: 8px;
+    font-size: 16px;
+}
+
+#nav-search-input {
+    background: transparent;
+    border: none;
+    color: white;
+    width: 100%;
+    padding: 6px 0;
+    font-size: 14px;
+    outline: none;
+}
+
+#nav-search-input::placeholder {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Risultati di ricerca */
+#search-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    margin-top: 5px;
+    z-index: 1000;
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+}
+
+.search-result-item {
+    display: flex;
+    padding: 12px;
+    cursor: pointer;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background-color 0.2s;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #f8f9fa;
+}
+
+.result-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    font-size: 18px;
+    margin-right: 10px;
+}
+
+.result-content {
+    flex: 1;
+}
+
+.result-title {
+    font-weight: 500;
+    margin-bottom: 2px;
+}
+
+.result-title strong {
+    color: #3498db;
+}
+
+.result-type {
+    font-size: 12px;
+    color: #6c757d;
+}
+
+.no-results {
+    padding: 15px;
+    text-align: center;
+    color: #6c757d;
+    font-style: italic;
+}
+
+/* ========== FORM E INPUT ========== */
 form {
     background-color: white;
     padding: 20px;
@@ -74,7 +209,7 @@ form {
 
 label {
     display: block;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
     font-weight: bold;
 }
 
@@ -87,13 +222,23 @@ select {
     border: 1px solid #ddd;
     border-radius: 4px;
     font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 textarea {
     min-height: 100px;
+    resize: vertical;
 }
 
-button {
+button,
+.btn-primary {
     padding: 10px 20px;
     background-color: #4CAF50;
     color: white;
@@ -101,14 +246,46 @@ button {
     border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
 }
 
-button:hover {
+button:hover,
+.btn-primary:hover {
     background-color: #45a049;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Liste */
+.btn-secondary {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f4f4f4;
+    color: #333;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-left: 10px;
+    font-size: 16px;
+    transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+    background-color: #e2e2e2;
+    text-decoration: none;
+}
+
+/* Layout a colonne per i form */
+.form-row {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.form-col {
+    flex: 1;
+}
+
+/* ========== LISTE E CONTENUTI ========== */
 ul {
     list-style-type: none;
     margin-bottom: 20px;
@@ -116,28 +293,79 @@ ul {
 
 li {
     background-color: white;
-    margin: 5px 0;
-    padding: 10px;
+    margin: 8px 0;
+    padding: 12px;
     border-radius: 4px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
 }
 
 /* Link */
 a {
     text-decoration: none;
     color: #3498db;
-    margin-left: 10px;
+    transition: color 0.2s;
 }
 
 a:hover {
     text-decoration: underline;
+    color: #2980b9;
 }
 
-/* Messaggi di sistema */
+/* Item list con metadati */
+.item-list li {
+    padding: 15px;
+    margin-bottom: 12px;
+    border-left: 4px solid #4CAF50;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.item-list li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.item-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 6px;
+}
+
+.item-meta {
+    background-color: #f8f9fa;
+    padding: 5px 8px;
+    border-radius: 3px;
+    display: inline-block;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.item-description {
+    margin-bottom: 10px;
+    color: #555;
+    line-height: 1.5;
+}
+
+.item-actions {
+    font-size: 14px;
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.item-actions a {
+    margin-left: 0;
+}
+
+/* ========== MESSAGGI E FEEDBACK ========== */
 .message {
-    padding: 10px;
+    padding: 12px 15px;
     margin-bottom: 20px;
     border-radius: 4px;
+    position: relative;
+    animation: fadeIn 0.3s ease-out;
 }
 
 .success {
@@ -158,169 +386,8 @@ a:hover {
     border: 1px solid #bce8f1;
 }
 
-/* Paginazione */
-.pagination {
-    display: flex;
-    list-style: none;
-    justify-content: center;
-    margin: 20px 0;
-}
-
-.pagination li {
-    margin: 0 5px;
-    box-shadow: none;
-    background: none;
-    padding: 0;
-}
-
-.pagination a,
-.pagination span {
-    display: block;
-    padding: 8px 12px;
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    color: #333;
-}
-
-.pagination a:hover {
-    background-color: #f4f4f4;
-    text-decoration: none;
-}
-
-.pagination .active span {
-    background-color: #4CAF50;
-    color: white;
-    border-color: #4CAF50;
-}
-
-/* Footer */
-footer {
-    margin-top: 30px;
-    text-align: center;
-    color: #777;
-    font-size: 14px;
-}
-
-/* Responsive */
-@media (max-width: 768px) {
-    .main-menu {
-        flex-direction: column;
-    }
-
-    .container {
-        width: 95%;
-    }
-}
-/* Stili per liste di elementi con metadati */
-.item-list li {
-    padding: 15px;
-    margin-bottom: 10px;
-    border-left: 4px solid #4CAF50;
-}
-
-.item-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.item-meta {
-    font-size: 14px;
-    color: #666;
-    margin-bottom: 5px;
-}
-
-.item-description {
-    margin-bottom: 10px;
-}
-
-.item-actions {
-    font-size: 14px;
-    margin-top: 5px;
-}
-
-/* Pulsante secondario */
-.btn-secondary {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #f4f4f4;
-    color: #333;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    text-decoration: none;
-    margin-left: 10px;
-    font-size: 16px;
-}
-
-.btn-secondary:hover {
-    background-color: #e4e4e4;
-    text-decoration: none;
-}
-
-/* Livelli di importanza per argomenti */
-.importance-1 {
-    border-left-color: #DC3545;
-}
-
-/* Molto importante */
-.importance-2 {
-    border-left-color: #FD7E14;
-}
-
-.importance-3 {
-    border-left-color: #FFC107;
-}
-
-.importance-4 {
-    border-left-color: #20C997;
-}
-
-.importance-5 {
-    border-left-color: #6C757D;
-}
-
-/* Meno importante */
-
-/* Livelli di profondità per sottoargomenti */
-.depth-1 {
-    margin-left: 0;
-}
-
-.depth-2 {
-    margin-left: 20px;
-}
-
-.depth-3 {
-    margin-left: 40px;
-}
-
-.depth-4 {
-    margin-left: 60px;
-}
-
-.depth-5 {
-    margin-left: 80px;
-}
-
-/* Livelli di difficoltà per esercizi */
-.difficulty-1 {
-    background-color: #d1e7dd;
-}
-
-/* Facile */
-.difficulty-2 {
-    background-color: #fff3cd;
-}
-
-/* Medio */
-.difficulty-3 {
-    background-color: #f8d7da;
-}
-
-/* Difficile */
-
-/* Breadcrumb di navigazione */
+/* ========== LAYOUT SPECIFICI ========== */
+/* Breadcrumb */
 .breadcrumb {
     display: flex;
     list-style: none;
@@ -353,21 +420,41 @@ footer {
     color: #6c757d;
 }
 
-/* Box per formule */
-.formula-box {
-    background-color: #f8f9fa;
+/* Paginazione */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.pagination li {
+    margin: 0 5px;
+    box-shadow: none;
+    background: none;
+    padding: 0;
+}
+
+.pagination a,
+.pagination span {
+    display: block;
+    padding: 8px 12px;
+    background-color: white;
     border: 1px solid #ddd;
     border-radius: 4px;
-    padding: 15px;
-    margin-bottom: 20px;
+    color: #333;
 }
 
-.formula-name {
-    font-weight: bold;
-    margin-bottom: 5px;
+.pagination a:hover {
+    background-color: #f4f4f4;
 }
 
-/* Stile per intestazione con pulsante */
+.pagination .active span {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #4CAF50;
+}
+
+/* Header con pulsanti */
 .header-with-button {
     display: flex;
     justify-content: space-between;
@@ -377,42 +464,282 @@ footer {
 
 .header-with-button h2 {
     margin: 0;
+    border-bottom: none;
 }
 
-/* Stili per i pulsanti */
-.btn-primary {
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-}
-
-.btn-primary:hover {
-    background-color: #45a049;
-}
-
-/* Stili per i container dei form */
+/* Container dei form */
 #createFormContainer,
 #editFormContainer {
-    background-color: #f9f9f9;
+    background-color: white;
     border: 1px solid #ddd;
     border-radius: 5px;
     padding: 20px;
-    margin-top: 30px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 20px 0 30px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    max-height: unset;
+    overflow: visible;
 }
 
-/* Animazioni per mostrare/nascondere il form */
-#createFormContainer {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out;
+/* Stili per la navigazione a tab */
+.nav-tabs {
+    display: flex;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 20px;
 }
 
-#createFormContainer.visible {
-    max-height: 500px;
+.nav-tabs a {
+    padding: 10px 15px;
+    margin-right: 5px;
+    border: 1px solid transparent;
+    border-bottom: none;
+    border-radius: 4px 4px 0 0;
+    color: #333;
+    text-decoration: none;
+    background-color: #f8f9fa;
+}
+
+.nav-tabs a.active {
+    background-color: white;
+    border-color: #ddd;
+    border-bottom-color: white;
+    margin-bottom: -1px;
+}
+
+/* Pulsanti di azione */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* ========== CLASSI DI UTILITÀ ========== */
+/* Classi di colore per piani di studio */
+.anno-1 {
+    border-left-color: #007bff;
+}
+
+.anno-2 {
+    border-left-color: #28a745;
+}
+
+.anno-3 {
+    border-left-color: #fd7e14;
+}
+
+.anno-4 {
+    border-left-color: #6f42c1;
+}
+
+.anno-5 {
+    border-left-color: #e83e8c;
+}
+
+.semestre-1 {
+    border-right: 4px solid #17a2b8;
+}
+
+.semestre-2 {
+    border-right: 4px solid #ffc107;
+}
+
+/* Livelli di importanza per argomenti */
+.importance-1 {
+    border-left-color: #DC3545;
+}
+
+.importance-2 {
+    border-left-color: #FD7E14;
+}
+
+.importance-3 {
+    border-left-color: #FFC107;
+}
+
+.importance-4 {
+    border-left-color: #20C997;
+}
+
+.importance-5 {
+    border-left-color: #6C757D;
+}
+
+/* Livelli di profondità per sottoargomenti */
+.depth-1 {
+    margin-left: 0;
+}
+
+.depth-2 {
+    margin-left: 20px;
+}
+
+.depth-3 {
+    margin-left: 40px;
+}
+
+.depth-4 {
+    margin-left: 60px;
+}
+
+.depth-5 {
+    margin-left: 80px;
+}
+
+/* Livelli di difficoltà per esercizi */
+.difficulty-1 {
+    background-color: #d1e7dd;
+}
+
+.difficulty-2 {
+    background-color: #fff3cd;
+}
+
+.difficulty-3 {
+    background-color: #f8d7da;
+}
+
+/* ========== ANIMAZIONI ========== */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}
+
+/* ========== RESPONSIVO ========== */
+@media (max-width: 992px) {
+    h1 {
+        font-size: 28px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 768px) {
+    nav {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .main-menu {
+        flex-direction: column;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+
+    #search-container {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .header-with-button {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .btn-secondary {
+        margin-left: 0;
+        margin-top: 10px;
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        width: 95%;
+        padding: 15px;
+    }
+
+    h1 {
+        font-size: 24px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+}
+
+/* ========== FOOTER ========== */
+footer {
+    margin-top: 40px;
+    padding-top: 20px;
+    text-align: center;
+    color: #777;
+    font-size: 14px;
+    border-top: 1px solid #eee;
+}
+/* Stili per la ricerca nel menu */
+.search-container {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.search-container form {
+    display: flex;
+    margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
+}
+
+.search-container input[type="text"] {
+    padding: 5px 10px;
+    margin: 0;
+    border: none;
+    border-radius: 4px 0 0 4px;
+    width: 150px;
+}
+
+.search-container button {
+    padding: 5px 10px;
+    margin: 0;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+/* Stili per i risultati di ricerca */
+.search-results li {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-left: 3px solid #4CAF50;
+}
+
+.search-results .item-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.search-results .item-description {
+    font-size: 14px;
+    color: #555;
 }
