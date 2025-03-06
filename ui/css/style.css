@@ -34,7 +34,6 @@ h2 {
     border-bottom: 1px solid #ddd;
     padding-bottom: 5px;
 }
-
 /* Menu di navigazione */
 .main-menu {
     display: flex;
@@ -42,10 +41,14 @@ h2 {
     background-color: #333;
     padding: 0;
     border-radius: 5px;
+    margin-bottom: 20px;
 }
 
 .main-menu li {
     margin: 0;
+    padding: 0;
+    background: none;
+    box-shadow: none;
 }
 
 .main-menu a {
@@ -60,7 +63,6 @@ h2 {
     background-color: #555;
     text-decoration: none;
 }
-
 /* Formattazione form */
 form {
     background-color: white;
@@ -365,9 +367,3 @@ footer {
     margin-bottom: 5px;
 }
 
-.formula-expression {
-    font-family: 'Courier New', monospace;
-    background-color: #e9ecef;
-    padding: 8px;
-    border-radius: 4px;
-    margin-

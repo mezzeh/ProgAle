@@ -146,6 +146,7 @@ class Esercizio {
                   LEFT JOIN sottoargomenti s ON e.sottoargomento_id = s.id
                   WHERE e.titolo LIKE :keywords 
                   OR e.testo LIKE :keywords
+                  OR e.soluzione LIKE :keywords
                   ORDER BY e.difficolta ASC, e.titolo ASC";
         
         $stmt = $this->conn->prepare($query);
@@ -161,4 +162,18 @@ class Esercizio {
         $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name;
         $stmt = $this->conn->prepare($query);
         $stmt->execute();
-        $row = $stmt->fetch(PD
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total_rows'];
+    }
+    
+    // COUNT BY SOTTOARGOMENTO
+    public function countBySottoArgomento($sottoargomento_id) {
+        $query = "SELECT COUNT(*) as total_rows FROM " . $this->table_name . " WHERE sottoargomento_id = :sottoargomento_id";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(":sottoargomento_id", $sottoargomento_id);
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $row['total_rows'];
+    }
+}
+?>
