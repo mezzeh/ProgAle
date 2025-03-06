@@ -5,107 +5,52 @@ include_once 'ui/includes/header.php';
 // Includi file di configurazione e modelli
 include_once 'config/database.php';
 include_once 'models/piano_di_studio.php';
-include_once 'models/esame.php';
-include_once 'models/argomento.php';
-include_once 'models/sottoargomento.php';
-include_once 'models/esercizio.php';
-include_once 'models/formula.php';
-
-// Inizializza variabili per messaggi
-$message = "";
-$message_class = "";
 
 // Verifica se è stata fornita una query di ricerca
 $search_term = isset($_GET['q']) ? trim($_GET['q']) : '';
 
 if (empty($search_term)) {
-    $message = "Inserisci un termine di ricerca.";
-    $message_class = "info";
+    echo "<div class='message info'>Inserisci il nome di un piano di studi da cercare.</div>";
 } else {
     // Connessione al database
     $database = new Database();
     $db = $database->getConnection();
 
     if (!$db) {
-        $message = "Problema di connessione al database.";
-        $message_class = "error";
+        echo "<div class='message error'>Problema di connessione al database.</div>";
     } else {
-        // Istanza dei modelli
+        // Istanza del modello PianoDiStudio
         $piano = new PianoDiStudio($db);
-        $esame = new Esame($db);
-        $argomento = new Argomento($db);
-        $sottoargomento = new SottoArgomento($db);
-        $esercizio = new Esercizio($db);
-        $formula = new Formula($db);
         
-        // Esegui ricerca in ciascun modello
-        $piani_results = $piano->search($search_term);
-        $esami_results = $esame->search($search_term);
-        $argomenti_results = $argomento->search($search_term);
-        $sottoargomenti_results = $sottoargomento->search($search_term);
-        $esercizi_results = $esercizio->search($search_term);
-        $formule_results = $formula->search($search_term);
+        // Cerca piani di studio che corrispondono al termine di ricerca
+        $results = $piano->search($search_term);
         
-        // Conta risultati
-        $total_results = 
-            $piani_results->rowCount() + 
-            $esami_results->rowCount() + 
-            $argomenti_results->rowCount() + 
-            $sottoargomenti_results->rowCount() + 
-            $esercizi_results->rowCount() + 
-            $formule_results->rowCount();
-        
-        if ($total_results == 0) {
-            $message = "Nessun risultato trovato per: " . htmlspecialchars($search_term);
-            $message_class = "info";
-        }
-    }
-}
-
-// Mostra il messaggio se presente
-if (!empty($message)) {
-    echo "<div class='message $message_class'>$message</div>";
-}
-
-// Mostra intestazione di ricerca
-echo "<h2>Risultati di ricerca per: " . htmlspecialchars($search_term) . "</h2>";
-
-// Funzione per mostrare i risultati di una tabella
-function displayResults($stmt, $title, $link_prefix, $id_field = 'id', $name_field = 'nome', $description_field = 'descrizione') {
-    if ($stmt->rowCount() > 0) {
-        echo "<h3>$title</h3>";
-        echo "<ul class='search-results'>";
-        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            echo "<li>";
-            echo "<div class='item-title'><a href='" . $link_prefix . $row[$id_field] . "'>" . $row[$name_field] . "</a></div>";
-            if (isset($row[$description_field]) && !empty($row[$description_field])) {
-                echo "<div class='item-description'>" . substr($row[$description_field], 0, 150) . (strlen($row[$description_field]) > 150 ? "..." : "") . "</div>";
+        if ($results->rowCount() > 0) {
+            echo "<h2>Risultati della ricerca per: " . htmlspecialchars($search_term) . "</h2>";
+            echo "<p>Seleziona un piano di studi per visualizzare i suoi esami:</p>";
+            echo "<ul class='item-list'>";
+            
+            while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
+                echo "<li>";
+                echo "<div class='item-title'>" . htmlspecialchars($row['nome']) . "</div>";
+                echo "<div class='item-description'>" . htmlspecialchars($row['descrizione']) . "</div>";
+                echo "<div class='item-actions'>";
+                echo "<a href='esami.php?piano_id=" . $row['id'] . "' class='btn-primary'>Visualizza Esami</a>";
+                echo "</div>";
+                echo "</li>";
             }
-            echo "</li>";
+            
+            echo "</ul>";
+        } else {
+            echo "<div class='message info'>Nessun piano di studi trovato per: " . htmlspecialchars($search_term) . "</div>";
+            echo "<p>Suggerimenti:</p>";
+            echo "<ul>";
+            echo "<li>Verifica che il nome del piano di studi sia scritto correttamente</li>";
+            echo "<li>Prova a usare parole chiave più generiche</li>";
+            echo "<li>Puoi <a href='index.php'>visualizzare tutti i piani di studio</a> disponibili</li>";
+            echo "</ul>";
         }
-        echo "</ul>";
     }
-}
-
-// Mostra i risultati se ci sono
-if (isset($total_results) && $total_results > 0) {
-    // Piani di studio
-    displayResults($piani_results, "Piani di Studio", "index.php?edit=");
-    
-    // Esami
-    displayResults($esami_results, "Esami", "esami.php?edit=");
-    
-    // Argomenti
-    displayResults($argomenti_results, "Argomenti", "argomenti.php?edit=", 'id', 'titolo');
-    
-    // Sottoargomenti
-    displayResults($sottoargomenti_results, "Sottoargomenti", "sottoargomenti.php?edit=", 'id', 'titolo');
-    
-    // Esercizi
-    displayResults($esercizi_results, "Esercizi", "esercizi.php?edit=", 'id', 'titolo', 'testo');
-    
-    // Formule
-    displayResults($formule_results, "Formule", "formule.php?edit=");
 }
 
 // Includi footer

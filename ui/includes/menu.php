@@ -7,9 +7,9 @@
         <li><a href="esercizi.php">Esercizi</a></li>
         <li><a href="requisiti.php">Requisiti</a></li>
         <li><a href="formule.php">Formule</a></li>
-        <li class="search-container">
-            <form action="search.php" method="GET">
-                <input type="text" name="q" placeholder="Cerca..." required>
+        <li class="search-item">
+            <form action="search.php" method="GET" class="search-form">
+                <input type="text" name="q" placeholder="Cerca piano di studi..." required>
                 <button type="submit">Cerca</button>
             </form>
         </li>
