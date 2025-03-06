@@ -28,12 +28,14 @@ if (empty($search_term)) {
         if ($results->rowCount() > 0) {
             echo "<h2>Risultati della ricerca per: " . htmlspecialchars($search_term) . "</h2>";
             echo "<p>Seleziona un piano di studi per visualizzare i suoi esami:</p>";
-            echo "<ul class='item-list'>";
+            echo "<ul class='item-list search-results'>";
             
             while ($row = $results->fetch(PDO::FETCH_ASSOC)) {
                 echo "<li>";
                 echo "<div class='item-title'>" . htmlspecialchars($row['nome']) . "</div>";
-                echo "<div class='item-description'>" . htmlspecialchars($row['descrizione']) . "</div>";
+                if (!empty($row['descrizione'])) {
+                    echo "<div class='item-description'>" . htmlspecialchars($row['descrizione']) . "</div>";
+                }
                 echo "<div class='item-actions'>";
                 echo "<a href='esami.php?piano_id=" . $row['id'] . "' class='btn-primary'>Visualizza Esami</a>";
                 echo "</div>";
