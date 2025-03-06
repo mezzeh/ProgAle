@@ -593,3 +593,82 @@ form button {
     padding: 3px;
     background: white;
 }
+/* Stili per le sezioni di ricerca */
+.search-section {
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.search-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+/* Stili per i risultati di ricerca */
+.search-results li {
+    margin-bottom: 15px;
+    border-left: 3px solid #4CAF50;
+    background-color: white;
+}
+
+.search-results .item-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.search-results .item-description {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.search-results .item-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.search-results .item-actions a {
+    margin: 0;
+}
+
+/* Stili per i pulsanti nei risultati di ricerca */
+.search-results .btn-primary,
+.search-results .btn-secondary {
+    padding: 6px 12px;
+    font-size: 14px;
+}
+
+/* Stili per il conteggio dei risultati */
+.search-results-count {
+    color: #666;
+    font-style: italic;
+    margin-bottom: 20px;
+}
+
+/* Stili per evidenziare i risultati della ricerca */
+.highlight {
+    background-color: #ffeb3b;
+    padding: 2px;
+    border-radius: 2px;
+}
+
+/* Responsive per i risultati di ricerca */
+@media (max-width: 768px) {
+    .search-results .item-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .search-results .btn-primary,
+    .search-results .btn-secondary {
+        display: block;
+        text-align: center;
+    }
+}

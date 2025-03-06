@@ -9,7 +9,7 @@
         <li><a href="formule.php">Formule</a></li>
         <li class="search-item">
             <form action="search.php" method="GET" class="search-form">
-                <input type="text" name="q" placeholder="Cerca piano di studi..." required>
+                <input type="text" name="q" placeholder="Cerca in tutto il sistema..." required>
                 <button type="submit">Cerca</button>
             </form>
         </li>
