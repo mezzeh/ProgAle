@@ -16,6 +16,7 @@ session_start();
             <!-- Menu semplificato per pagine che non richiedono autenticazione -->
             <nav>
                 <ul class="main-menu">
+                    <li><a href="../pages/index.php">Home</a></li>
                     <li><a href="login.php">Accedi</a></li>
                     <li><a href="register.php">Registrati</a></li>
                 </ul>
