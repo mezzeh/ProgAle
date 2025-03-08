@@ -15,3 +15,35 @@ Qunando inseriamo i requisiti, possiamo , riferirci direttamente a degli argomen
 Data negli esami; Possibilita di programmare lo studio degli argomenti, con ricevimento delle mail.
 
 (opzione utente) segnare se lo si ha completati o no con una spunta in casella.
+
+
+Piano di lavoro per il sistema di gestione dei piani di studio
+Fase 1: Autenticazione e Gestione Base degli Utenti (Già in corso)
+
+Sistema di login/registrazione utenti
+Ruoli utente (admin/user)
+Gestione dei piani di studio personali e visibilità (pubblico/privato)
+
+Fase 2: Sistema di Commenti e Interazione
+
+Commenti ai piani di studio, argomenti e sottoargomenti
+Visualizzazione dei commenti per elemento
+Possibilità di modificare/eliminare i propri commenti
+
+Fase 3: Riferimenti tra Elementi
+
+Collegamenti tra requisiti e argomenti esistenti
+Sistema per riferirsi ad argomenti quando si crea un nuovo requisito
+Visualizzazione dei collegamenti nelle pagine di dettaglio
+
+Fase 4: Calendario e Pianificazione
+
+Aggiunta di date agli esami
+Sistema di pianificazione dello studio
+Notifiche email per promemoria di studio
+
+Fase 5: Tracking del Progresso
+
+Caselle di spunta per segnare argomenti completati
+Visualizzazione dello stato di completamento
+Statistiche di progresso
