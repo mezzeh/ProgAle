@@ -1,0 +1,17 @@
+(interscambio)
+L'idea era: ognuno ha il suo e ognuno vede quello degli altri.,
+l'admin puo gestire quelli di tutti, ma si deve autenticare, l'ospite, puo vedere il suo modificare il suo, 
+e vedere gli altri, Devo aggiungere il nome dell'utente di quel piano di studio.
+username e password.
+
+
+(post it e commenti)
+Possibilita di arrecare commenti al piano di studio, argomenti , sottoargomenti??
+
+(Riferimenti)
+Qunando inseriamo i requisiti, possiamo , riferirci direttamente a degli argomenti presenti nel programma.
+
+(Calendario)
+Data negli esami; Possibilita di programmare lo studio degli argomenti, con ricevimento delle mail.
+
+(opzione utente) segnare se lo si ha completati o no con una spunta in casella.

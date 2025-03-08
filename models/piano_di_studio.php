@@ -12,20 +12,41 @@ class PianoDiStudio {
         $this->conn = $db;
     }
     
-    // CREATE
-    public function create() {
-        $query = "INSERT INTO " . $this->table_name . " 
-                  SET nome=:nome, descrizione=:descrizione";
-        $stmt = $this->conn->prepare($query);
-        
-        $this->nome = htmlspecialchars(strip_tags($this->nome));
-        $this->descrizione = htmlspecialchars(strip_tags($this->descrizione));
-        
-        $stmt->bindParam(":nome", $this->nome);
-        $stmt->bindParam(":descrizione", $this->descrizione);
-        
-        return $stmt->execute();
-    }
+    // In piano_di_studio.php aggiungi:
+public $user_id;
+public $visibility;
+
+// Modificare il metodo create:
+public function create() {
+    $query = "INSERT INTO " . $this->table_name . " 
+              SET nome=:nome, descrizione=:descrizione, 
+              user_id=:user_id, visibility=:visibility";
+    // ...binding aggiuntivi...
+    $stmt->bindParam(":user_id", $this->user_id);
+    $stmt->bindParam(":visibility", $this->visibility);
+    // ...
+}
+
+// Aggiungere un metodo per ottenere piani pubblici:
+public function readPublic() {
+    $query = "SELECT * FROM " . $this->table_name . " 
+              WHERE visibility = 'public'
+              ORDER BY data_creazione DESC";
+    $stmt = $this->conn->prepare($query);
+    $stmt->execute();
+    return $stmt;
+}
+
+// Aggiungere un metodo per ottenere i piani dell'utente:
+public function readByUser($user_id) {
+    $query = "SELECT * FROM " . $this->table_name . " 
+              WHERE user_id = :user_id
+              ORDER BY data_creazione DESC";
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":user_id", $user_id);
+    $stmt->execute();
+    return $stmt;
+}
     
     // READ ALL
     public function readAll() {
@@ -124,4 +145,5 @@ class PianoDiStudio {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['total_rows'];
     }
+    
 }

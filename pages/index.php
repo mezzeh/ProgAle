@@ -18,6 +18,26 @@ if (!$db) {
     $message = "Problema di connessione al database.";
     $message_class = "error";
 } else {
+    // Esempio in esami.php, argomenti.php, ecc.
+// All'inizio del file dopo la connessione al database:
+
+// Verifica se l'utente è loggato
+if(!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Se si sta modificando un piano, verificare che l'utente sia il proprietario o admin
+if(isset($_GET['piano_id'])) {
+    $piano->id = $_GET['piano_id'];
+    $piano_info = $piano->readOne();
+    
+    // Se non è il proprietario e non è admin, reindirizza
+    if($piano_info['user_id'] != $_SESSION['user_id'] && !$_SESSION['is_admin']) {
+        echo "<div class='message error'>Non hai i permessi per modificare questo piano.</div>";
+        exit;
+    }
+}
     // Istanza del modello PianoDiStudio
     $piano = new PianoDiStudio($db);
 
