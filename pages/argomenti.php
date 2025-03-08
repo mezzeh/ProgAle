@@ -275,5 +275,5 @@ if (!$db) {
 }
 
 // Includi footer
-include_once 'ui/includes/footer.php';
+include_once '../ui/includes/footer.php';
 ?>
