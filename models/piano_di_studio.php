@@ -92,7 +92,9 @@ class PianoDiStudio {
     }
     
     // UPDATE
-    public function update() {
+ public function update() 
+ {
+    try {
         $query = "UPDATE " . $this->table_name . "
                   SET nome = :nome, descrizione = :descrizione, visibility = :visibility
                   WHERE id = :id";
@@ -105,9 +107,19 @@ class PianoDiStudio {
         $stmt->bindParam(':descrizione', $this->descrizione);
         $stmt->bindParam(':visibility', $this->visibility);
         $stmt->bindParam(':id', $this->id);
-        return $stmt->execute();
+        
+        // Debug info
+        if (!$stmt->execute()) {
+            $errorInfo = $stmt->errorInfo();
+            error_log("SQL Error: " . implode(', ', $errorInfo));
+            return false;
+        }
+        return true;
+    } catch (PDOException $e) {
+        error_log("PDO Exception: " . $e->getMessage());
+        return false;
     }
-    
+}
     // DELETE
     public function delete() {
         $query = "DELETE FROM " . $this->table_name . " WHERE id = :id";
