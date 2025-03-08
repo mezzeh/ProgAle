@@ -1,15 +1,15 @@
 <?php
 // Includi header
-include_once 'ui/includes/header.php';
+include_once '../ui/includes/header.php';
 
 // Includi file di configurazione e modelli
-include_once 'config/database.php';
-include_once 'models/piano_di_studio.php';
-include_once 'models/esame.php';
-include_once 'models/argomento.php';
-include_once 'models/sottoargomento.php';
-include_once 'models/esercizio.php';
-include_once 'models/formula.php';
+include_once '../config/database.php';
+include_once '../models/piano_di_studio.php';
+include_once '../models/esame.php';
+include_once '../models/argomento.php';
+include_once '../models/sottoargomento.php';
+include_once '../models/esercizio.php';
+include_once '../models/formula.php';
 
 // Inizializza variabili per messaggi
 $message = "";
@@ -131,5 +131,5 @@ if (empty($search_term)) {
 }
 
 // Includi footer
-include_once 'ui/includes/footer.php';
+include_once '../ui/includes/footer.php';
 ?>

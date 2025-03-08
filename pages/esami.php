@@ -1,11 +1,11 @@
 <?php
 // Includi header
-include_once 'ui/includes/header.php';
+include_once '../ui/includes/header.php';
 
 // Includi file di configurazione e modelli
-include_once 'config/database.php';
-include_once 'models/esame.php';
-include_once 'models/piano_di_studio.php';
+include_once '../config/database.php';
+include_once '../models/esame.php';
+include_once '../models/piano_di_studio.php';
 
 // Inizializza variabili per messaggi
 $message = "";

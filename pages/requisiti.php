@@ -1,14 +1,14 @@
 <?php
 // Includi header
-include_once 'ui/includes/header.php';
+include_once '../ui/includes/header.php';
 
 // Includi file di configurazione e modelli
-include_once 'config/database.php';
-include_once 'models/requisito.php';
-include_once 'models/esercizio.php';
-include_once 'models/sottoargomento.php';
-include_once 'models/argomento.php';
-include_once 'models/esame.php';
+include_once '../config/database.php';
+include_once '../models/requisito.php';
+include_once '../models/esercizio.php';
+include_once '../models/sottoargomento.php';
+include_once '../models/argomento.php';
+include_once '../models/esame.php';
 
 // Inizializza variabili per messaggi
 $message = "";
@@ -249,5 +249,5 @@ if (!$db) {
 }
 
 // Includi footer
-include_once 'ui/includes/footer.php';
+include_once '../ui/includes/footer.php';
 ?>
