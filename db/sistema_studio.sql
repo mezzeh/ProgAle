@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 12, 2025 at 08:33 PM
+-- Generation Time: Mar 12, 2025 at 08:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -149,6 +149,14 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`, `created_at`) VALUES
+(1, 'fra', '$2y$10$Q3i5LI1cz0N8fg9B1ChumeUdZbVxkrCBIsuFoI8vkzoA0e7ue5q5S', 'fraff@gmail.com', 'user', '2025-03-12 19:36:10'),
+(3, 'admin', '$2y$10$GFyFe.FrTjJZfdb98WY5w.DOfLeeK4Gdfa2Wgi93BO5jRoW2zgBfG', 'admin@example.com', 'admin', '2025-03-12 19:41:20');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -266,7 +274,7 @@ ALTER TABLE `sottoargomenti`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
