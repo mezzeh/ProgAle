@@ -47,3 +47,27 @@ Fase 5: Tracking del Progresso
 Caselle di spunta per segnare argomenti completati
 Visualizzazione dello stato di completamento
 Statistiche di progresso
+
+Fase 6: 
+prima idea:
+aggiunta di modelli modificabili, 
+	es: planner di cose da  fare
+	problemi: trovare abbastanza planner per tutti gli utenti,
+			renderli modificabili.
+	pro: possibilita di avere un diario personale 
+		avere tanti planner per ogni ambito personale
+		es: planner scolastico, planner uscite, planner spesa, lavorativo
+
+seconda idea:
+avere un calendario che si collega ai planner 
+		es: imposto che devo studiare dalle 18 alle 20 ma gia a quellora
+			avevo un obbiettivo  sportivo
+	problemi: database complesso
+	pro: avere un calendario aggiornato con i vari colori delle cose che si fa ed 
+	avere laccesso immediato per aggiungere determinate cose
+	Puntiamo tutto sulla comodidita di avere solo un foglio e di avercelo 
+	sempre sul proprio smartphone in linea con obbiettivi personale
+	e l bellezze di scrivere qualcosa su un modello e non a pagine bianca
+
+    Fase 7:
+    fare un disegno del css 
