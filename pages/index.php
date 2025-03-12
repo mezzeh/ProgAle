@@ -120,10 +120,10 @@ if (!$db) {
                         <a href='view_piano.php?id=$id'>Visualizza</a>";
             
             // Mostra i pulsanti di modifica solo se l'utente è loggato ed è il proprietario o admin
-            if(isset($_SESSION['user_id']) && ($user_id == $_SESSION['user_id'] || $_SESSION['is_admin'])) {
-                echo " | <a href='?edit=$id'>Modifica</a> | 
-                      <a href='?delete=$id' onclick='return confirm(\"Sei sicuro di voler eliminare questo piano?\");'>Elimina</a>";
-            }
+            if(isset($_GET['action']) && $_GET['action'] == 'redirected') {
+    $message = "Sei stato reindirizzato alla pagina 'I Miei Piani' per modificare il tuo piano di studio.";
+    $message_class = "info";
+}
             
             echo "</div>
                 </li>";
@@ -135,67 +135,22 @@ if (!$db) {
     
     // Se l'utente è loggato, mostra anche i suoi piani privati
     if(isset($_SESSION['user_id'])) {
-        echo "<h2>I Miei Piani di Studio</h2>";
-        
-        $stmt = $piano->readByUser($_SESSION['user_id']);
-        $num = $stmt->rowCount();
-        
-        if ($num > 0) {
-            echo "<ul class='item-list'>";
-            while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                extract($row);
-                $visibility_text = ($visibility == 'public') ? "Pubblico" : "Privato";
-                
-                echo "<li>
-                        <div class='item-title'>$nome</div>
-                        <div class='item-meta'>Visibilità: $visibility_text</div>
-                        <div class='item-description'>$descrizione</div>
-                        <div class='item-actions'>
-                            <a href='esami.php?piano_id=$id'>Esami</a> | 
-                            <a href='?edit=$id'>Modifica</a> | 
-                            <a href='?delete=$id' onclick='return confirm(\"Sei sicuro di voler eliminare questo piano?\");'>Elimina</a>
-                        </div>
-                    </li>";
-            }
-            echo "</ul>";
-        } else {
-            echo "<p>Non hai ancora creato piani di studio.</p>";
+    echo '<div class="header-with-button">';
+    echo '<h2><a href="my_piani.php" class="btn-primary">I miei piani di studio</a></h2>';
+    echo '</div>';
+    
+    if ($num > 0) {
+        echo "<ul class='item-list'>";
+        // contenuto della lista
+        echo "</ul>";
+    } else {
+        echo "<p>Non hai ancora creato piani di studio.</p>";
+    
+
+
         }
         
-        // --- POI MOSTRA I FORM DI CREAZIONE/MODIFICA SE L'UTENTE È LOGGATO ---
-        
-        // Form per modificare un piano di studio (mostrato solo quando si clicca "Modifica")
-        if (isset($_GET['edit'])) {
-            $piano->id = $_GET['edit'];
-            $piano_info = $piano->readOne();
-            
-            // Verifica se l'utente è il proprietario o admin
-            if($piano_info && ($piano_info['user_id'] == $_SESSION['user_id'] || $_SESSION['is_admin'])) {
-                echo "<div id='editFormContainer'>";
-                echo "<h2>Modifica Piano di Studio</h2>";
-                echo "<form action='' method='POST'>";
-                echo "<input type='hidden' name='id' value='" . $piano->id . "'>";
-                echo "<label for='nome'>Nome</label>";
-                echo "<input type='text' name='nome' value='" . $piano_info['nome'] . "' required>";
-                echo "<label for='descrizione'>Descrizione</label>";
-                echo "<textarea name='descrizione' required>" . $piano_info['descrizione'] . "</textarea>";
-                
-                // Selector for visibility
-                echo "<label for='visibility'>Visibilità</label>";
-                echo "<select name='visibility'>";
-                echo "<option value='private' " . ($piano_info['visibility'] == 'private' ? "selected" : "") . ">Privato</option>";
-                echo "<option value='public' " . ($piano_info['visibility'] == 'public' ? "selected" : "") . ">Pubblico</option>";
-                echo "</select>";
-                
-                echo "<button type='submit' name='update'>Aggiorna Piano</button>";
-                echo "<a href='index.php' class='btn-secondary'>Annulla</a>";
-                echo "</form>";
-                echo "</div>";
-            } else {
-                echo "<div class='message error'>Non hai i permessi per modificare questo piano di studio.</div>";
-            }
-        }
-        
+          
         // Form per creare un nuovo piano di studio (inizialmente nascosto)
         echo "<div id='createFormContainer' style='display: none;'>";
         echo "<h2>Crea Nuovo Piano di Studio</h2>";
