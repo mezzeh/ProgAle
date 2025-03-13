@@ -61,7 +61,24 @@ function gestioneCommentiPiani($db, $piano_id) {
     $redirect_base = "view_piano.php?id={$piano_id}";
     return gestioneCommenti($db, 'piano', $piano_id, $redirect_base);
 }
+/**
+ * Funzione per gestire i commenti degli esercizi
+ */
+function gestioneCommentiEsercizi($db, $esercizio_id) {
+    $redirect_base = "view_esercizio.php?id={$esercizio_id}";
+    return gestioneCommenti($db, 'esercizio', $esercizio_id, $redirect_base);
+}
 
+/**
+ * Funzione per renderizzare i commenti degli esercizi
+ */
+function renderCommentiEsercizi($db, $esercizio_id) {
+    $redirect_param = "id={$esercizio_id}";
+    renderCommenti($db, 'esercizio', $esercizio_id, $redirect_param);
+    
+    // Include gli script JS
+    include 'comment_scripts.php';
+}
 /**
  * Funzione per renderizzare i commenti dei piani di studio
  */
