@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Includi header
 include_once '../ui/includes/header.php';
 
@@ -6,7 +7,6 @@ include_once '../ui/includes/header.php';
 include_once '../config/database.php';
 include_once '../models/piano_di_studio.php';
 include_once '../models/esame.php';
-include_once '../models/commento.php';
 
 // Verifica se è stato specificato un piano
 if (!isset($_GET['id'])) {
@@ -146,14 +146,14 @@ if(isset($_GET['delete_comment']) && isset($_SESSION['user_id'])) {
                         <div class='item-actions'>";
                 
                 if (isset($_SESSION['user_id'])) {
-                    echo "<a href='esami.php?esame_id=$id'>Visualizza Esame</a>";
+                    echo "<a href='view_esame.php?id=$id'>Visualizza Argomenti</a>";
                     
                     // Mostra opzioni di modifica se l'utente è proprietario o admin
                     if ($piano_info['user_id'] == $_SESSION['user_id'] || $_SESSION['is_admin']) {
                         echo " | <a href='esami.php?edit=$id&piano_id=" . $piano_info['id'] . "'>Modifica</a>";
                     }
                 } else {
-                    echo "<a href='esami.php?esame_id=$id'>Visualizza Esame</a>";
+                    echo "<a href='view_esame.php?id=$id'>Visualizza Argomenti</a>";
                 }
                 
                 echo "</div>
@@ -177,99 +177,5 @@ if(isset($_GET['delete_comment']) && isset($_SESSION['user_id'])) {
     </div>
     <?php endif; ?>
 </div>
-
-<!-- Sezione Commenti -->
-<div class="comments-section">
-    <h3>Commenti (<?php echo $comment_count; ?>)</h3>
-    
-    <?php if(isset($_SESSION['user_id'])): ?>
-    <!-- Form per aggiungere un commento -->
-    <div class="comment-form">
-        <form action="" method="POST">
-            <input type="hidden" name="comment_tipo" value="piano">
-            <input type="hidden" name="comment_elemento_id" value="<?php echo $piano_info['id']; ?>">
-            <textarea name="comment_text" placeholder="Aggiungi un commento..." required></textarea>
-            <button type="submit" name="add_comment" class="btn-primary">Commenta</button>
-        </form>
-    </div>
-    <?php else: ?>
-    <p><a href="login.php">Accedi</a> per aggiungere un commento.</p>
-    <?php endif; ?>
-    
-    <!-- Lista dei commenti -->
-    <div class="comments-list">
-        <?php
-        $stmt = $commento->readByElemento('piano', $piano_info['id']);
-        
-        if($stmt->rowCount() > 0) {
-            while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-                echo '<div class="comment-item" id="comment-'.$row['id'].'">';
-                echo '<div class="comment-header">';
-                echo '<span class="comment-author">'.$row['username'].'</span>';
-                echo '<span class="comment-date">'.date('d/m/Y H:i', strtotime($row['data_creazione'])).'</span>';
-                echo '</div>';
-                echo '<div class="comment-content">'.$row['testo'].'</div>';
-                
-                // Opzioni per modificare/eliminare (solo per l'autore o admin)
-                if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $row['user_id'] || $_SESSION['is_admin'])) {
-                    echo '<div class="comment-actions">';
-                    echo '<a href="#" class="edit-comment-btn" data-id="'.$row['id'].'">Modifica</a> | ';
-                    echo '<a href="?id='.$piano_info['id'].'&delete_comment='.$row['id'].'" 
-                          onclick="return confirm(\'Sei sicuro di voler eliminare questo commento?\');">Elimina</a>';
-                    echo '</div>';
-                    
-                    // Form nascosto per la modifica (verrà mostrato con JavaScript)
-                    echo '<div class="edit-comment-form" id="edit-form-'.$row['id'].'" style="display:none;">';
-                    echo '<form action="" method="POST">';
-                    echo '<input type="hidden" name="comment_id" value="'.$row['id'].'">';
-                    echo '<textarea name="comment_text" required>'.$row['testo'].'</textarea>';
-                    echo '<button type="submit" name="update_comment" class="btn-primary">Aggiorna</button>';
-                    echo '<button type="button" class="cancel-edit btn-secondary">Annulla</button>';
-                    echo '</form>';
-                    echo '</div>';
-                }
-                
-                echo '</div>';
-            }
-        } else {
-            echo '<p>Nessun commento presente. Sii il primo a commentare!</p>';
-        }
-        ?>
-    </div>
-</div>
-
-<!-- JavaScript per la gestione dei commenti -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Gestione pulsanti di modifica
-    const editButtons = document.querySelectorAll('.edit-comment-btn');
-    editButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const commentId = this.getAttribute('data-id');
-            const commentContent = document.querySelector(`#comment-${commentId} .comment-content`);
-            const editForm = document.querySelector(`#edit-form-${commentId}`);
-            
-            // Nascondi il contenuto e mostra il form
-            commentContent.style.display = 'none';
-            editForm.style.display = 'block';
-        });
-    });
-    
-    // Gestione pulsanti annulla modifica
-    const cancelButtons = document.querySelectorAll('.cancel-edit');
-    cancelButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const form = this.closest('.edit-comment-form');
-            const commentId = form.id.replace('edit-form-', '');
-            const commentContent = document.querySelector(`#comment-${commentId} .comment-content`);
-            
-            // Nascondi il form e mostra il contenuto
-            form.style.display = 'none';
-            commentContent.style.display = 'block';
-        });
-    });
-});
-</script>
 
 <?php include_once '../ui/includes/footer.php'; ?>
