@@ -19,11 +19,11 @@ Data negli esami; Possibilita di programmare lo studio degli argomenti, con rice
 
 Piano di lavoro per il sistema di gestione dei piani di studio
 Fase 1: Autenticazione e Gestione Base degli Utenti (Già in corso)
-
++++++++++++++++++++++++
 Sistema di login/registrazione utenti
 Ruoli utente (admin/user)
 Gestione dei piani di studio personali e visibilità (pubblico/privato)
-
++++++++++++++++++++++++++++++++++
 Fase 2: Sistema di Commenti e Interazione
 
 Commenti ai piani di studio, argomenti e sottoargomenti
@@ -71,3 +71,12 @@ avere un calendario che si collega ai planner
 
     Fase 7:
     fare un disegno del css 
+
+
+
+*****************
+Implementare un sistema di notifiche per gli aggiornamenti nei piani condivisi
+Aggiungere funzionalità per esportare i piani di studio in PDF o altri formati
+Implementare la possibilità di commentare i vari elementi (come menzionato nei file di pianificazione)
+Aggiungere un sistema di tagging per facilitare la categorizzazione e la ricerca
+Implementare un calendario per la pianificazione dello studio (già previsto nei piani futuri)
