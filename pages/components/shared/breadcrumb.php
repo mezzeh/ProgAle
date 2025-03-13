@@ -1,7 +1,11 @@
 <?php
 // File: pages/components/shared/breadcrumb.php
 
-// Funzione per generare il breadcrumb
+/**
+ * Genera un breadcrumb a partire da un array di elementi
+ * 
+ * @param array $items Array di elementi del breadcrumb nella forma [['text' => 'Testo', 'link' => 'url'], ...]
+ */
 function generaBreadcrumb($items) {
     echo "<div class='breadcrumb'>";
     echo "<ul>";
@@ -14,19 +18,5 @@ function generaBreadcrumb($items) {
     }
     echo "</ul>";
     echo "</div>";
-}
-
-// Visualizzazione breadcrumb se necessario
-if ($esame_id) {
-    $esame->id = $esame_id;
-    $esame_info = $esame->readOne();
-    
-    $breadcrumb_items = [
-        ['text' => 'Piani di Studio', 'link' => 'index.php'],
-        ['text' => 'Esami', 'link' => 'esami.php'],
-        ['text' => $esame_info['nome']]
-    ];
-    
-    generaBreadcrumb($breadcrumb_items);
 }
 ?>

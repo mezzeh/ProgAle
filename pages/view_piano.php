@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Includi header
 include_once '../ui/includes/header.php';
 
@@ -6,6 +7,8 @@ include_once '../ui/includes/header.php';
 include_once '../config/database.php';
 include_once '../models/piano_di_studio.php';
 include_once '../models/esame.php';
+include_once '../models/comments.php';
+include_once 'components/comments/comments.php';
 
 // Verifica se è stato specificato un piano
 if (!isset($_GET['id'])) {
@@ -126,5 +129,29 @@ $creator = $user_row ? $user_row['username'] : "Utente sconosciuto";
     </div>
     <?php endif; ?>
 </div>
+<?php
+// Assicurati di aver incluso questi file all'inizio di view_piano.php
+
+
+// Gestione e rendering dei commenti
+$piano_id = $piano_info['id'];
+
+// Gestione dei commenti (aggiunta, modifica, eliminazione)
+$risultato_commenti = gestioneCommentiPiani($db, $piano_id);
+
+// Se c'è un risultato con redirect, esegui il redirect
+if ($risultato_commenti && isset($risultato_commenti['redirect'])) {
+    header("Location: " . $risultato_commenti['redirect']);
+    exit;
+}
+
+// Mostra eventuali messaggi
+if ($risultato_commenti && !empty($risultato_commenti['message'])) {
+    echo "<div class='message {$risultato_commenti['message_class']}'>{$risultato_commenti['message']}</div>";
+}
+ob_end_flush();
+// Rendering dei commenti
+renderCommentiPiani($db, $piano_id);
+?>
 
 <?php include_once '../ui/includes/footer.php'; ?>

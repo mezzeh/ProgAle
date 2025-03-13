@@ -9,8 +9,8 @@ include_once '../config/database.php';
 include_once '../models/argomento.php';
 include_once '../models/esame.php';
 include_once '../models/piano_di_studio.php';
-include_once '../../models/commento.php';
 
+//
 // Connessione al database
 $database = new Database();
 $db = $database->getConnection();
@@ -29,7 +29,20 @@ $piano = new PianoDiStudio($db);
 // Parametri GET
 $esame_id = isset($_GET['esame_id']) ? $_GET['esame_id'] : null;
 $edit_id = isset($_GET['edit']) ? $_GET['edit'] : null;
+// Inizializza esame_info
+$esame_info = null;
 
+// Carica le informazioni sull'esame se è specificato un ID
+if ($esame_id) {
+    $esame->id = $esame_id;
+    $esame_info = $esame->readOne();
+    
+    if (empty($esame_info)) {
+        echo "<div class='message error'>Esame non trovato.</div>";
+        include_once '../ui/includes/footer.php';
+        exit;
+    }
+}
 // Includi handler per le operazioni CRUD
 include_once 'handlers/argomento_handler.php';
 
@@ -66,9 +79,10 @@ if ($num > 0) {
         echo "<div class='item-meta'>Importanza: {$livello_importanza}</div>";
         echo "<div class='item-description'>" . htmlspecialchars($descrizione) . "</div>";
         
-        echo "<div class='item-actions'>";
-        echo "<a href='sottoargomenti.php?argomento_id={$id}'>Sottoargomenti</a>";
-        
+       echo "<div class='item-actions'>";
+echo "<a href='view_argomento.php?id={$id}'>Visualizza</a> | "; // Aggiungi questo link
+echo "<a href='sottoargomenti.php?argomento_id={$id}'>Sottoargomenti</a>";
+
         // Azioni di modifica/eliminazione condizionali
         if ($esame_id && verificaPermessiPiano($db, $esame_id)) {
             echo " | <a href='?edit={$id}&esame_id={$esame_id}'>Modifica</a>";
@@ -87,29 +101,24 @@ if ($edit_id) {
 } else {
     include_once 'components/forms/create_argomento.php';
 }
-
-// Gestione dei commenti
-if ($esame_id) {
-    include_once 'sezioni/commenti.php';
-    
-    // Gestione dei commenti
+/*  //Gestione dei commenti
+if ($esame_id && isset($argomento->id)) {
     $risultato_commenti = gestioneCommentiArgomenti($db, $esame_id, $argomento->id);
-
+    
     // Se c'è un risultato con redirect, esegui il redirect
     if ($risultato_commenti && isset($risultato_commenti['redirect'])) {
         header("Location: " . $risultato_commenti['redirect']);
         exit;
     }
-
+    
     // Mostra eventuali messaggi
     if ($risultato_commenti && !empty($risultato_commenti['message'])) {
         echo "<div class='message {$risultato_commenti['message_class']}'>{$risultato_commenti['message']}</div>";
     }
-
+    
     // Rendering dei commenti
     renderCommentiArgomenti($db, $esame_id, $argomento->id);
-}
-
+} */
 ob_end_flush();
 
 include_once '../ui/includes/footer.php';
