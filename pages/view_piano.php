@@ -95,14 +95,14 @@ $creator = $user_row ? $user_row['username'] : "Utente sconosciuto";
                         <div class='item-actions'>";
                 
                 if (isset($_SESSION['user_id'])) {
-                    echo "<a href='view_esame.php?id=$id'>Visualizza Argomenti</a>";
+                    echo "<a href='esami.php?id=$id'>Visualizza Argomenti</a>";
                     
                     // Mostra opzioni di modifica se l'utente è proprietario o admin
                     if ($piano_info['user_id'] == $_SESSION['user_id'] || $_SESSION['is_admin']) {
                         echo " | <a href='esami.php?edit=$id&piano_id=" . $piano_info['id'] . "'>Modifica</a>";
                     }
                 } else {
-                    echo "<a href='view_esame.php?id=$id'>Visualizza Argomenti</a>";
+                    echo "<a href='esame.php?id=$id'>Visualizza Argomenti</a>";
                 }
                 
                 echo "</div>
