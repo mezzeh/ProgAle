@@ -123,18 +123,26 @@ if ($num > 0) {
 echo "<!-- GET Parameters: ";
 print_r($_GET);
 echo " -->";
-
-// Includi i form
+// Sostituisci questa parte
 if (isset($_GET['edit'])) {
-    echo "<!-- Attempting to include edit form -->";
-    if (file_exists('components/forms/edit_esame.php')) {
-        echo "<!-- Edit form file exists -->";
-        include_once 'components/forms/edit_esame.php';
+    include_once 'components/forms/edit_esame.php';
+} else {
+    include_once 'components/forms/create_esame.php';
+}
+
+// Con questa versione temporanea di debug
+if (isset($_GET['edit'])) {
+    echo "Tentativo di modificare esame ID: " . htmlspecialchars($_GET['edit']);
+    
+    // Verifica esistenza file
+    $edit_form_path = 'components/forms/edit_esame.php';
+    if (file_exists($edit_form_path)) {
+        echo " - File trovato";
+        include_once $edit_form_path;
     } else {
-        echo "<!-- ERROR: Edit form file does not exist -->";
+        echo " - ERRORE: File non trovato";
     }
 } else {
-    echo "<!-- Attempting to include create form -->";
     include_once 'components/forms/create_esame.php';
 }
 
