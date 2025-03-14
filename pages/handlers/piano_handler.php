@@ -20,16 +20,27 @@ if (isset($_POST['create']) && isset($_SESSION['user_id'])) {
         $message_class = "error";
     }
 }
-
 // --- Gestione della modifica di un piano di studio ---
 if (isset($_POST['update']) && isset($_SESSION['user_id'])) {
+    // Make sure piano object is properly initialized
+    if (!isset($piano) || $piano === null) {
+        $piano = new PianoDiStudio($db);
+    }
+    
+    // Set the properties before using them
     $piano->id = $_POST['id'];
     $piano->nome = $_POST['nome'];
     $piano->descrizione = $_POST['descrizione'];
-    $piano->visibility = $_POST['visibility'];
-
-    // Verifica se l'utente è il proprietario o admin
-    $owner_info = $piano->readOne();
+    $piano->visibility = isset($_POST['visibility']) ? $_POST['visibility'] : 'private';
+    
+    // Debug
+    error_log("Updating piano: " . print_r($_POST, true));
+    
+    // Verify ownership before updating
+    $temp_piano = new PianoDiStudio($db);
+    $temp_piano->id = $_POST['id'];
+    $owner_info = $temp_piano->readOne();
+    
     if($owner_info && ($owner_info['user_id'] == $_SESSION['user_id'] || isset($_SESSION['is_admin']) && $_SESSION['is_admin'])) {
         if ($piano->update()) {
             $message = "Piano di studio aggiornato con successo!";

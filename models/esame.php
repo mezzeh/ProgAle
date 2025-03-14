@@ -13,7 +13,36 @@ class Esame {
     public function __construct($db) {
         $this->conn = $db;
     }
+    public function readOne() {
+    $query = "SELECT e.*, p.nome as piano_nome 
+              FROM " . $this->table_name . " e
+              LEFT JOIN piani_di_studio p ON e.piano_id = p.id
+              WHERE e.id = :id 
+              LIMIT 0,1";
     
+    $stmt = $this->conn->prepare($query);
+    $stmt->bindParam(":id", $this->id);
+    
+    try {
+        $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($row) {
+            $this->piano_id = $row['piano_id'];
+            $this->nome = $row['nome'];
+            $this->codice = $row['codice'];
+            $this->crediti = $row['crediti'];
+            $this->descrizione = $row['descrizione'];
+            return $row;
+        }
+        
+        return null; // Restituisci null invece di un array vuoto
+    } catch(PDOException $e) {
+        // Gestisci eventuali errori di database
+        error_log('Errore nel recupero dell\'esame: ' . $e->getMessage());
+        return null;
+    }
+}
     // CREATE
     public function create() {
         $query = "INSERT INTO " . $this->table_name . " 
@@ -64,33 +93,6 @@ class Esame {
         
         return $stmt;
     }
-    
-    // READ ONE
-    public function readOne() {
-        $query = "SELECT e.*, p.nome as piano_nome 
-                  FROM " . $this->table_name . " e
-                  LEFT JOIN piani_di_studio p ON e.piano_id = p.id
-                  WHERE e.id = :id 
-                  LIMIT 0,1";
-        
-        $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(":id", $this->id);
-        $stmt->execute();
-        
-        $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        
-        if ($row) {
-            $this->piano_id = $row['piano_id'];
-            $this->nome = $row['nome'];
-            $this->codice = $row['codice'];
-            $this->crediti = $row['crediti'];
-            $this->descrizione = $row['descrizione'];
-            return $row;
-        }
-        
-        return [];
-    }
-    
     // UPDATE
     public function update() {
         $query = "UPDATE " . $this->table_name . "

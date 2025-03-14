@@ -95,7 +95,7 @@ if ($num > 0) {
                 <div class='item-meta'>Livello di profondità: {$livello_profondita}</div>
                 <div class='item-description'>" . htmlspecialchars($descrizione) . "</div>
                 <div class='item-actions'>
-                    <a href='view_sottoargomento.php?id={$id}'>Visualizza</a> | 
+                    <a href='view_pages/view_sottoargomento.php?id={$id}'>Visualizza</a> | 
                     <a href='esercizi.php?sottoargomento_id={$id}'>Esercizi</a>";
         
         // Azioni di modifica/eliminazione

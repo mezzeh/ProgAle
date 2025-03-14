@@ -45,7 +45,7 @@ if ($stmt && $stmt->rowCount() > 0) {
             'id' => $row['id'],
             'type' => 'piano',
             'name' => $row['nome'],
-            'url' => 'esami.php?piano_id=' . $row['id'],
+            'url' => 'view_pages/view_piano.php?id=' . $row['id'],
             'description' => substr($row['descrizione'], 0, 100) . '...'
         ];
     }
@@ -61,8 +61,8 @@ if ($stmt && $stmt->rowCount() > 0) {
             'id' => $row['id'],
             'type' => 'esame',
             'name' => $row['nome'],
-            'url' => 'argomenti.php?esame_id=' . $row['id'],
-            'description' => 'Anno: ' . $row['anno'] . ', Semestre: ' . $row['semestre'] . ', Crediti: ' . $row['crediti']
+            'url' => 'view_pages/view_esame.php?id=' . $row['id'],
+            'description' => 'Codice: ' . $row['codice'] . ', Crediti: ' . $row['crediti']
         ];
     }
 }
@@ -76,8 +76,8 @@ if ($stmt && $stmt->rowCount() > 0) {
         $results[] = [
             'id' => $row['id'],
             'type' => 'argomento',
-            'name' => $row['nome'],
-            'url' => 'argomenti.php?esame_id=' . $row['esame_id'] . '&argomento_id=' . $row['id'],
+            'name' => $row['titolo'],
+            'url' => 'view_pages/view_argomento.php?id=' . $row['id'],
             'description' => substr($row['descrizione'], 0, 100) . '...'
         ];
     }

@@ -26,10 +26,24 @@ if ($argomento_id && isset($_SESSION['user_id'])) {
             <?php endfor; ?>
         </select>
         
+        
+        
         <button type='submit' name='create'>Crea Sottoargomento</button>
         <button type='button' id='cancelCreateBtn' class='btn-secondary'>Annulla</button>
     </form>
 </div>
+
+<!-- Inizializza i dati per l'autocompletamento -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inizializza gli array vuoti per l'autocompletamento
+        window.preselectedArgomenti = [];
+        window.preselectedSottoargomenti = [];
+    });
+</script>
+
+<!-- Includi lo script per l'autocompletamento -->
+<script src="../ui/js/prerequisiti-autocomplete.js"></script>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {

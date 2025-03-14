@@ -5,6 +5,25 @@
 if (isset($_GET['edit']) && isset($_SESSION['user_id'])) {
     $sottoargomento->id = $_GET['edit'];
     if ($sottoargomento->readOne()) {
+        // Ottieni gli argomenti prerequisiti
+        $argomenti_prereq = $sottoargomento->getArgomentiPrerequisiti($sottoargomento->id);
+        $argomenti_prereq_array = [];
+        while ($row = $argomenti_prereq->fetch(PDO::FETCH_ASSOC)) {
+            $argomenti_prereq_array[] = [
+                'id' => $row['id'],
+                'text' => $row['titolo']
+            ];
+        }
+        
+        // Ottieni i sottoargomenti prerequisiti
+        $sottoargomenti_prereq = $sottoargomento->getSottoargomentiPrerequisiti($sottoargomento->id);
+        $sottoargomenti_prereq_array = [];
+        while ($row = $sottoargomenti_prereq->fetch(PDO::FETCH_ASSOC)) {
+            $sottoargomenti_prereq_array[] = [
+                'id' => $row['id'],
+                'text' => $row['titolo']
+            ];
+        }
 ?>
 <div id='editFormContainer'>
     <h2>Modifica Sottoargomento</h2>
@@ -49,6 +68,20 @@ if (isset($_GET['edit']) && isset($_SESSION['user_id'])) {
         <a href='sottoargomenti.php<?php echo ($argomento_id ? "?argomento_id=$argomento_id" : ""); ?>' class='btn-secondary'>Annulla</a>
     </form>
 </div>
+
+<!-- Inizializza i dati per l'autocompletamento -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inizializza gli argomenti prerequisiti preselezionati
+        window.preselectedArgomenti = <?php echo json_encode($argomenti_prereq_array); ?>;
+        
+        // Inizializza i sottoargomenti prerequisiti preselezionati
+        window.preselectedSottoargomenti = <?php echo json_encode($sottoargomenti_prereq_array); ?>;
+    });
+</script>
+
+<!-- Includi lo script per l'autocompletamento -->
+<script src="../ui/js/prerequisiti-autocomplete.js"></script>
 <?php
     }
 }

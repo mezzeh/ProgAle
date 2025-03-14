@@ -91,32 +91,40 @@ class PianoDiStudio {
         return [];
     }
     
-    // UPDATE
- public function update() 
- {
+        public function update() 
+{
     try {
+        // Check if required properties exist
+        if (!isset($this->id) || !isset($this->nome) || !isset($this->descrizione) || !isset($this->visibility)) {
+            error_log("Update failed: Required properties missing");
+            return false;
+        }
+        
         $query = "UPDATE " . $this->table_name . "
                   SET nome = :nome, descrizione = :descrizione, visibility = :visibility
                   WHERE id = :id";
+        
         $stmt = $this->conn->prepare($query);
+        
+        // Sanitization
         $this->nome = htmlspecialchars(strip_tags($this->nome));
         $this->descrizione = htmlspecialchars(strip_tags($this->descrizione));
         $this->visibility = htmlspecialchars(strip_tags($this->visibility));
         $this->id = htmlspecialchars(strip_tags($this->id));
+        
+        // Binding
         $stmt->bindParam(':nome', $this->nome);
         $stmt->bindParam(':descrizione', $this->descrizione);
         $stmt->bindParam(':visibility', $this->visibility);
         $stmt->bindParam(':id', $this->id);
         
-        // Debug info
-        if (!$stmt->execute()) {
-            $errorInfo = $stmt->errorInfo();
-            error_log("SQL Error: " . implode(', ', $errorInfo));
-            return false;
-        }
-        return true;
-    } catch (PDOException $e) {
-        error_log("PDO Exception: " . $e->getMessage());
+        // Debug
+        error_log("Updating piano: ID={$this->id}, Nome={$this->nome}");
+        
+        // Execute and check result
+        return $stmt->execute();
+    } catch (Exception $e) {
+        error_log("Error in update: " . $e->getMessage());
         return false;
     }
 }

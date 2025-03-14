@@ -29,7 +29,7 @@ Fase 2: Sistema di Commenti e Interazione
 Commenti ai piani di studio, argomenti e sottoargomenti
 Visualizzazione dei commenti per elemento
 Possibilità di modificare/eliminare i propri commenti
-
++++++++++++++++++++++++++++++++++++++
 Fase 3: Riferimenti tra Elementi
 
 Collegamenti tra requisiti e argomenti esistenti

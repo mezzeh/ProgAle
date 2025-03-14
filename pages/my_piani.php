@@ -55,7 +55,7 @@ if ($num > 0) {
                 <div class='item-meta'>Visibilità: $visibility_text</div>
                 <div class='item-description'>" . htmlspecialchars($descrizione) . "</div>
                 <div class='item-actions'>
-                    <a href='view_piano.php?id=$id'>Visualizza</a> | 
+                    <a href='view_pages/view_piano.php?id=$id'>Visualizza</a> | 
                     <a href='esami.php?piano_id=$id'>Esami</a> | 
                     <a href='?edit=$id&from=my'>Modifica</a> | 
                     <a href='?delete=$id&from=my' onclick='return confirm(\"Sei sicuro di voler eliminare questo piano?\");'>Elimina</a>

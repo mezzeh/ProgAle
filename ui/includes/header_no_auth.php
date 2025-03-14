@@ -1,5 +1,16 @@
 <?php
 session_start();
+
+// Calcola il percorso base in base alla posizione della pagina
+$base_path = '';
+$current_path = $_SERVER['PHP_SELF'];
+if (strpos($current_path, '/pages/view_') !== false) {
+    $base_path = '../../'; // Per pagine in sottocartelle
+} elseif (strpos($current_path, '/pages/components/') !== false) {
+    $base_path = '../../../'; // Per componenti ancora più in profondità
+} else {
+    $base_path = '../'; // Percorso standard per pagine in /pages/
+}
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -7,7 +18,7 @@ session_start();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestione Piani di Studio</title>
-    <link rel="stylesheet" href="../ui/css/style.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>ui/css/style.css">
 </head>
 <body>
     <div class="container">
