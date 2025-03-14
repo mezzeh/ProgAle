@@ -61,7 +61,7 @@ if (!$db) {
                     <div class='item-meta'>Creato da: " . htmlspecialchars($creator) . "</div>
                     <div class='item-description'>" . htmlspecialchars($descrizione) . "</div>
                     <div class='item-actions'>
-                        <a href='view_piano.php?id=$id'>Visualizza</a>";
+                        <a href='view_pages/view_piano.php?id=$id'>Visualizza</a>";
             
             // Mostra i pulsanti di modifica solo se l'utente è loggato ed è il proprietario o admin
             if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $user_id || isset($_SESSION['is_admin']) && $_SESSION['is_admin'])) {

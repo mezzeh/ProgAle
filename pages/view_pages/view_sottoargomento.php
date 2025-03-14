@@ -1,17 +1,17 @@
 <?php
-// File: pages/view_sottoargomento.php
+// File: pages/view_pages/view_sottoargomento.php
 
 ob_start();
 
 // Includi header
-include_once '../ui/includes/header.php';
+include_once '../../ui/includes/header.php'; // Aggiornato il percorso
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/sottoargomento.php';
-include_once '../models/argomento.php';
-include_once '../models/esame.php';
-include_once '../models/esercizio.php';
+include_once '../../config/database.php'; // Aggiornato il percorso
+include_once '../../models/sottoargomento.php'; // Aggiornato il percorso
+include_once '../../models/argomento.php'; // Aggiornato il percorso
+include_once '../../models/esame.php'; // Aggiornato il percorso
+include_once '../../models/esercizio.php'; // Aggiornato il percorso
 
 // Connessione al database
 $database = new Database();
@@ -19,7 +19,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -34,7 +34,7 @@ $sottoargomento_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$sottoargomento_id) {
     echo "<div class='message error'>Nessun sottoargomento specificato.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -44,7 +44,7 @@ $sottoargomento_info = $sottoargomento->readOne();
 
 if (!$sottoargomento_info) {
     echo "<div class='message error'>Sottoargomento non trovato.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -57,11 +57,11 @@ $esame->id = $argomento_info['esame_id'];
 $esame_info = $esame->readOne();
 
 // Includi breadcrumb
-include_once 'components/shared/breadcrumb.php';
+include_once '../components/shared/breadcrumb.php'; // Aggiornato il percorso
 
 // Genera il breadcrumb
 $breadcrumb_items = [
-    ['text' => 'Home', 'link' => 'index.php'],
+    ['text' => 'Home', 'link' => '../index.php'], // Aggiornato il percorso
     ['text' => $esame_info['nome'], 'link' => 'view_esame.php?id=' . $esame_info['id']],
     ['text' => $argomento_info['titolo'], 'link' => 'view_argomento.php?id=' . $argomento_info['id']],
     ['text' => $sottoargomento_info['titolo']]
@@ -112,17 +112,17 @@ generaBreadcrumb($breadcrumb_items);
         } else {
             echo "<p>Nessun esercizio trovato per questo sottoargomento.</p>";
             if (isset($_SESSION['user_id'])) {
-                echo "<a href='esercizi.php?sottoargomento_id={$sottoargomento_id}' class='btn-primary'>Aggiungi Esercizi</a>";
+                echo "<a href='../esercizi.php?sottoargomento_id={$sottoargomento_id}' class='btn-primary'>Aggiungi Esercizi</a>"; // Aggiornato il percorso
             }
         }
         ?>
     </div>
     
     <div class="sottoargomento-actions">
-        <a href="esercizi.php?sottoargomento_id=<?php echo $sottoargomento_id; ?>" class="btn-primary">Gestisci Esercizi</a>
+        <a href="../esercizi.php?sottoargomento_id=<?php echo $sottoargomento_id; ?>" class="btn-primary">Gestisci Esercizi</a> <!-- Aggiornato il percorso -->
         
         <?php if (isset($_SESSION['user_id'])): ?>
-            <a href="sottoargomenti.php?edit=<?php echo $sottoargomento_id; ?>&argomento_id=<?php echo $argomento_info['id']; ?>" class="btn-secondary">Modifica Sottoargomento</a>
+            <a href="../sottoargomenti.php?edit=<?php echo $sottoargomento_id; ?>&argomento_id=<?php echo $argomento_info['id']; ?>" class="btn-secondary">Modifica Sottoargomento</a> <!-- Aggiornato il percorso -->
         <?php endif; ?>
     </div>
 </div>
@@ -130,5 +130,5 @@ generaBreadcrumb($breadcrumb_items);
 <?php
 ob_end_flush();
 
-include_once '../ui/includes/footer.php';
+include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
 ?>

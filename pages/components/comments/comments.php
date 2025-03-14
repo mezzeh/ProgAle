@@ -2,7 +2,7 @@
 // File: pages/components/comments/comments.php
 
 // Includi i componenti necessari
-include_once 'handlers/comment_handler.php';
+include_once '../handlers/comment_handler.php';
 include_once 'comment_list.php';
 include_once 'comment_scripts.php';
 
@@ -11,7 +11,7 @@ include_once 'comment_scripts.php';
  * Mantiene la vecchia interfaccia per evitare di modificare tutto il codice esistente
  */function gestioneCommentiArgomenti($db, $esame_id, $argomento_id) {
     // Modifica il reindirizzamento per puntare alla pagina di dettaglio
-    $redirect_base = "view_argomento.php?id={$argomento_id}";
+    $redirect_base = "view_pages/view_argomento.php?id={$argomento_id}";
     return gestioneCommenti($db, 'argomento', $argomento_id, $redirect_base);
 }
 
@@ -58,14 +58,14 @@ function renderCommentiPiani($db, $piano_id) {
  * Funzione per gestire i commenti dei piani di studio
  */
 function gestioneCommentiPiani($db, $piano_id) {
-    $redirect_base = "view_piano.php?id={$piano_id}";
+    $redirect_base = "view_pages/view_piano.php?id={$piano_id}";
     return gestioneCommenti($db, 'piano', $piano_id, $redirect_base);
 }
 /**
  * Funzione per gestire i commenti degli esercizi
  */
 function gestioneCommentiEsercizi($db, $esercizio_id) {
-    $redirect_base = "view_esercizio.php?id={$esercizio_id}";
+    $redirect_base = "view_pages/view_esercizio.php?id={$esercizio_id}";
     return gestioneCommenti($db, 'esercizio', $esercizio_id, $redirect_base);
 }
 

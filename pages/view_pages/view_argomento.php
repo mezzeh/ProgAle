@@ -2,15 +2,15 @@
 ob_start();
 
 // Includi header
-include_once '../ui/includes/header.php';
+include_once '../../ui/includes/header.php'; // Aggiornato il percorso
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/argomento.php';
-include_once '../models/esame.php';
-include_once '../models/piano_di_studio.php';
-include_once '../models/comments.php';
-include_once 'components/comments/comments.php';
+include_once '../../config/database.php'; // Aggiornato il percorso
+include_once '../../models/argomento.php'; // Aggiornato il percorso
+include_once '../../models/esame.php'; // Aggiornato il percorso
+include_once '../../models/piano_di_studio.php'; // Aggiornato il percorso
+include_once '../../models/comments.php'; // Aggiornato il percorso
+include_once '../components/comments/comments.php'; // Aggiornato il percorso
 
 // Connessione al database
 $database = new Database();
@@ -18,7 +18,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -32,7 +32,7 @@ $argomento_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$argomento_id) {
     echo "<div class='message error'>Nessun argomento specificato.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -42,7 +42,7 @@ $argomento_info = $argomento->readOne();
 
 if (!$argomento_info) {
     echo "<div class='message error'>Argomento non trovato.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -53,9 +53,9 @@ $esame_info = $esame->readOne();
 // Creare il breadcrumb
 echo "<div class='breadcrumb'>";
 echo "<ul>";
-echo "<li><a href='index.php'>Piani di Studio</a></li>";
-echo "<li><a href='esami.php?piano_id=" . $esame_info['piano_id'] . "'>Esami</a></li>";
-echo "<li><a href='argomenti.php?esame_id=" . $esame_info['id'] . "'>" . htmlspecialchars($esame_info['nome']) . "</a></li>";
+echo "<li><a href='../index.php'>Piani di Studio</a></li>"; // Aggiornato il percorso
+echo "<li><a href='../esami.php?piano_id=" . $esame_info['piano_id'] . "'>Esami</a></li>"; // Aggiornato il percorso
+echo "<li><a href='../argomenti.php?esame_id=" . $esame_info['id'] . "'>" . htmlspecialchars($esame_info['nome']) . "</a></li>"; // Aggiornato il percorso
 echo "<li>" . htmlspecialchars($argomento_info['titolo']) . "</li>";
 echo "</ul>";
 echo "</div>";
@@ -67,7 +67,7 @@ echo "<div class='item-meta'>Importanza: " . $argomento_info['livello_importanza
 echo "<div class='item-description'>" . htmlspecialchars($argomento_info['descrizione']) . "</div>";
 
 echo "<div class='item-actions'>";
-echo "<a href='sottoargomenti.php?argomento_id=" . $argomento_info['id'] . "' class='btn-primary'>Visualizza Sottoargomenti</a>";
+echo "<a href='../sottoargomenti.php?argomento_id=" . $argomento_info['id'] . "' class='btn-primary'>Visualizza Sottoargomenti</a>"; // Aggiornato il percorso
 
 // Dopo aver caricato le informazioni sull'esame, aggiungi:
 // Carica informazioni sul piano di studio
@@ -79,7 +79,7 @@ if (isset($_SESSION['user_id']) && (
     (isset($_SESSION['is_admin']) && $_SESSION['is_admin']) || 
     ($piano_info && $piano_info['user_id'] == $_SESSION['user_id'])
 )) {
-    echo " <a href='argomenti.php?edit=" . $argomento_info['id'] . "&esame_id=" . $argomento_info['esame_id'] . "' class='btn-secondary'>Modifica Argomento</a>";
+    echo " <a href='../argomenti.php?edit=" . $argomento_info['id'] . "&esame_id=" . $argomento_info['esame_id'] . "' class='btn-secondary'>Modifica Argomento</a>"; // Aggiornato il percorso
 }
 echo "</div>";
 echo "</div>";
@@ -103,5 +103,5 @@ renderCommentiArgomenti($db, $argomento_info['esame_id'], $argomento_id);
 
 ob_end_flush();
 
-include_once '../ui/includes/footer.php';
+include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
 ?>

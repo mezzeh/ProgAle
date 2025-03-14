@@ -80,7 +80,7 @@ if ($num > 0) {
         echo "<div class='item-description'>" . htmlspecialchars($descrizione) . "</div>";
         
        echo "<div class='item-actions'>";
-echo "<a href='view_argomento.php?id={$id}'>Visualizza</a> | "; // Aggiungi questo link
+echo "<a href='view_pages/view_argomento.php?id={$id}'>Visualizza</a> | "; // Aggiungi questo link
 echo "<a href='sottoargomenti.php?argomento_id={$id}'>Sottoargomenti</a>";
 
         // Azioni di modifica/eliminazione condizionali

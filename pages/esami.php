@@ -83,7 +83,7 @@ if ($num > 0) {
                 {$piano_info_display}
                 <div class='item-description'>" . htmlspecialchars($descrizione) . "</div>
                 <div class='item-actions'>
-                    <a href='view_esame.php?id={$id}'>Visualizza</a> | 
+                    <a href='view_pages/view_esame.php?id={$id}'>Visualizza</a> | 
                     <a href='argomenti.php?esame_id={$id}'>Argomenti</a>";
         
         // Azioni di modifica/eliminazione condizionali
