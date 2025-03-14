@@ -1,10 +1,6 @@
 <?php
 session_start();
 
-// Determina il percorso base dell'applicazione
-$base_path = '/ProgAle'; // Modifica questo percorso in base alla tua configurazione
-$css_path = $base_path . '/ui/css/style.css';
-
 // Pagine accessibili a tutti (anche senza login)
 $public_pages = ['index.php', 'login.php', 'register.php', 'view_piano.php', 'view_esame.php', 'view_argomento.php'];
 
@@ -14,7 +10,7 @@ $requires_auth = !in_array($current_page, $public_pages);
 
 // Se la pagina richiede autenticazione e l'utente non è loggato, reindirizza al login
 if($requires_auth && !isset($_SESSION['user_id'])) {
-    header("Location: {$base_path}/pages/login.php");
+    header("Location: login.php");
     exit;
 }
 ?>
@@ -24,7 +20,8 @@ if($requires_auth && !isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestione Piani di Studio</title>
-    <link rel="stylesheet" href="<?php echo $css_path; ?>">
+    <link rel="stylesheet" href="../ui/css/style.css">
+    <link rel="stylesheet" href="../ui/css/search.css">
 </head>
 <body>
     <div class="container">
@@ -33,24 +30,25 @@ if($requires_auth && !isset($_SESSION['user_id'])) {
             
             <nav>
                 <ul class="main-menu">
-                    <li><a href="<?php echo $base_path; ?>/pages/index.php">Home</a></li>
+                    <li><a href="index.php">Home</a></li>
                     <?php if(isset($_SESSION['user_id'])): ?>
-                        <li><a href="<?php echo $base_path; ?>/pages/my_piani.php">I Miei Piani</a></li>
-                        <li><a href="<?php echo $base_path; ?>/pages/esami.php">Esami</a></li>
-                        <li><a href="<?php echo $base_path; ?>/pages/argomenti.php">Argomenti</a></li>
-                        <li><a href="<?php echo $base_path; ?>/pages/sottoargomenti.php">Sottoargomenti</a></li>
-                        <li><a href="<?php echo $base_path; ?>/pages/esercizi.php">Esercizi</a></li>
-                        <li><a href="<?php echo $base_path; ?>/pages/formule.php">Formule</a></li>
+                        <li><a href="my_piani.php">I Miei Piani</a></li>
+                        <li><a href="esami.php">Esami</a></li>
+                        <li><a href="argomenti.php">Argomenti</a></li>
+                        <li><a href="sottoargomenti.php">Sottoargomenti</a></li>
+                        <li><a href="esercizi.php">Esercizi</a></li>
+                        <li><a href="requisiti.php">Requisiti</a></li>
+                        <li><a href="formule.php">Formule</a></li>
                         <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
-                            <li><a href="<?php echo $base_path; ?>/pages/admin/users.php">Gestione Utenti</a></li>
+                            <li><a href="admin/users.php">Gestione Utenti</a></li>
                         <?php endif; ?>
-                        <li><a href="<?php echo $base_path; ?>/pages/logout.php">Logout</a></li>
+                        <li><a href="logout.php">Logout</a></li>
                     <?php else: ?>
-                        <li><a href="<?php echo $base_path; ?>/pages/login.php">Accedi</a></li>
-                        <li><a href="<?php echo $base_path; ?>/pages/register.php">Registrati</a></li>
+                        <li><a href="login.php">Accedi</a></li>
+                        <li><a href="register.php">Registrati</a></li>
                     <?php endif; ?>
                     <li class="search-item">
-                        <form action="<?php echo $base_path; ?>/pages/search.php" method="GET" class="search-form">
+                        <form action="search.php" method="GET" class="search-form">
                             <input type="text" name="q" placeholder="Cerca in tutto il sistema..." required>
                             <button type="submit">Cerca</button>
                         </form>
@@ -66,3 +64,6 @@ if($requires_auth && !isset($_SESSION['user_id'])) {
             <?php endif; ?>
         </header>
         <main>
+            
+        <!-- Aggiungiamo lo script per la ricerca in tempo reale -->
+        <script src="../ui/js/search.js"></script>
