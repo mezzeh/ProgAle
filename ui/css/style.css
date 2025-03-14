@@ -671,4 +671,121 @@ form button {
         display: block;
         text-align: center;
     }
+        /* Badge per argomenti e sottoargomenti */
+        .badge {
+            display: inline-block;
+            padding: 3px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+    
+        .badge-argomento {
+            background-color: #4CAF50;
+            /* Verde per gli argomenti */
+        }
+    
+        .badge-sottoargomento {
+            background-color: #2196F3;
+            /* Blu per i sottoargomenti */
+        }
+    
+        /* Container dei prerequisiti selezionati */
+        .selected-prerequisites-container {
+            margin-bottom: 20px;
+        }
+    
+        .selected-prerequisites {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            padding: 10px;
+            min-height: 50px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    
+        /* Tag per i prerequisiti selezionati */
+        .selected-tag {
+            display: flex;
+            align-items: center;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 5px 10px;
+            font-size: 14px;
+        }
+    
+        .selected-tag span {
+            margin-right: 5px;
+        }
+    
+        .remove-tag {
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 16px;
+            padding: 0 5px;
+            margin-left: 5px;
+        }
+    
+        .remove-tag:hover {
+            color: #ff5252;
+        }
+    
+        /* Messaggi nell'interfaccia */
+        .no-results,
+        .error {
+            padding: 10px;
+            text-align: center;
+            color: #666;
+        }
+    
+        .error {
+            color: #ff5252;
+        }
+                /* Stili per la sezione dei prerequisiti - da aggiungere al file ui/css/style.css */
+        
+                .prerequisites-section {
+                    margin-top: 20px;
+                    padding: 15px;
+                    background-color: #f9f9f9;
+                    border: 1px solid #ddd;
+                    border-radius: 4px;
+                }
+        
+                .prerequisite-group {
+                    margin-bottom: 15px;
+                }
+        
+                .prerequisite-group h4 {
+                    margin-top: 0;
+                    margin-bottom: 10px;
+                    color: #555;
+                    border-bottom: 1px solid #eee;
+                    padding-bottom: 5px;
+                }
+        
+                .prerequisites-list {
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0;
+                }
+        
+                .prerequisites-list li {
+                    margin-bottom: 5px;
+                    padding: 5px;
+                    background-color: white;
+                    border: 1px solid #eee;
+                    border-radius: 4px;
+                    display: flex;
+                    align-items: center;
+                }
+        
+                .prerequisites-list .badge {
+                    margin-right: 10px;
+                }
 }

@@ -168,5 +168,116 @@ class SottoArgomento {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         return $row['total_rows'];
     }
+    
+    // ... codice esistente ...
+    
+    // NUOVI METODI PER GESTIRE LE RELAZIONI DEI PREREQUISITI
+    
+    // Aggiunge un argomento come prerequisito per questo sottoargomento
+    public function addArgomentoPrerequisito($sottoargomento_id, $argomento_id) {
+        $query = "INSERT INTO sottoargomento_argomento_prerequisito 
+                  (sottoargomento_id, argomento_id) 
+                  VALUES (:sottoargomento_id, :argomento_id)";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sottoargomento_id', $sottoargomento_id);
+        $stmt->bindParam(':argomento_id', $argomento_id);
+        
+        return $stmt->execute();
+    }
+    
+    // Aggiunge un altro sottoargomento come prerequisito per questo sottoargomento
+    public function addSottoargomentoPrerequisito($sottoargomento_id, $prerequisito_id) {
+        $query = "INSERT INTO sottoargomento_sottoargomento_prerequisito 
+                  (sottoargomento_id, prerequisito_id) 
+                  VALUES (:sottoargomento_id, :prerequisito_id)";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sottoargomento_id', $sottoargomento_id);
+        $stmt->bindParam(':prerequisito_id', $prerequisito_id);
+        
+        return $stmt->execute();
+    }
+    
+    // Rimuove un argomento prerequisito
+    public function removeArgomentoPrerequisito($sottoargomento_id, $argomento_id) {
+        $query = "DELETE FROM sottoargomento_argomento_prerequisito 
+                  WHERE sottoargomento_id = :sottoargomento_id 
+                  AND argomento_id = :argomento_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sottoargomento_id', $sottoargomento_id);
+        $stmt->bindParam(':argomento_id', $argomento_id);
+        
+        return $stmt->execute();
+    }
+    
+    // Rimuove un sottoargomento prerequisito
+    public function removeSottoargomentoPrerequisito($sottoargomento_id, $prerequisito_id) {
+        $query = "DELETE FROM sottoargomento_sottoargomento_prerequisito 
+                  WHERE sottoargomento_id = :sottoargomento_id 
+                  AND prerequisito_id = :prerequisito_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sottoargomento_id', $sottoargomento_id);
+        $stmt->bindParam(':prerequisito_id', $prerequisito_id);
+        
+        return $stmt->execute();
+    }
+    
+    // Rimuove tutti gli argomenti prerequisiti
+    public function removeAllArgomentiPrerequisiti($sottoargomento_id) {
+        $query = "DELETE FROM sottoargomento_argomento_prerequisito 
+                  WHERE sottoargomento_id = :sottoargomento_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sottoargomento_id', $sottoargomento_id);
+        
+        return $stmt->execute();
+    }
+    
+    // Rimuove tutti i sottoargomenti prerequisiti
+    public function removeAllSottoargomentiPrerequisiti($sottoargomento_id) {
+        $query = "DELETE FROM sottoargomento_sottoargomento_prerequisito 
+                  WHERE sottoargomento_id = :sottoargomento_id";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sottoargomento_id', $sottoargomento_id);
+        
+        return $stmt->execute();
+    }
+    
+    // Ottiene tutti gli argomenti prerequisiti
+    public function getArgomentiPrerequisiti($sottoargomento_id) {
+        $query = "SELECT a.id, a.titolo, a.descrizione, a.esame_id 
+                  FROM argomenti a
+                  JOIN sottoargomento_argomento_prerequisito sap 
+                  ON a.id = sap.argomento_id
+                  WHERE sap.sottoargomento_id = :sottoargomento_id
+                  ORDER BY a.titolo";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sottoargomento_id', $sottoargomento_id);
+        $stmt->execute();
+        
+        return $stmt;
+    }
+    
+    // Ottiene tutti i sottoargomenti prerequisiti
+    public function getSottoargomentiPrerequisiti($sottoargomento_id) {
+        $query = "SELECT s.id, s.titolo, s.descrizione, s.argomento_id 
+                  FROM sottoargomenti s
+                  JOIN sottoargomento_sottoargomento_prerequisito ssp 
+                  ON s.id = ssp.prerequisito_id
+                  WHERE ssp.sottoargomento_id = :sottoargomento_id
+                  ORDER BY s.titolo";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':sottoargomento_id', $sottoargomento_id);
+        $stmt->execute();
+        
+        return $stmt;
+    }
+
 }
 ?>

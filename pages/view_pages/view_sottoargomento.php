@@ -82,7 +82,63 @@ generaBreadcrumb($breadcrumb_items);
             <?php echo nl2br(htmlspecialchars($sottoargomento_info['descrizione'])); ?>
         </div>
     </div>
+    <?php
+// Aggiungi questa sezione in pages/view_pages/view_sottoargomento.php dopo la descrizione del sottoargomento
+
+// Mostra i prerequisiti
+echo "<div class='prerequisites-section'>";
+echo "<h3>Prerequisiti</h3>";
+
+// Ottieni gli argomenti prerequisiti
+$argomenti_prereq = $sottoargomento->getArgomentiPrerequisiti($sottoargomento_id);
+$sottoargomenti_prereq = $sottoargomento->getSottoargomentiPrerequisiti($sottoargomento_id);
+
+$has_prerequisites = false;
+
+// Mostra argomenti prerequisiti
+if ($argomenti_prereq && $argomenti_prereq->rowCount() > 0) {
+    echo "<div class='prerequisite-group'>";
+    echo "<h4>Argomenti</h4>";
+    echo "<ul class='prerequisites-list'>";
     
+    while ($row = $argomenti_prereq->fetch(PDO::FETCH_ASSOC)) {
+        echo "<li>";
+        echo "<span class='badge badge-argomento'>A</span> ";
+        echo "<a href='view_argomento.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['titolo']) . "</a>";
+        echo "</li>";
+    }
+    
+    echo "</ul>";
+    echo "</div>";
+    
+    $has_prerequisites = true;
+}
+
+// Mostra sottoargomenti prerequisiti
+if ($sottoargomenti_prereq && $sottoargomenti_prereq->rowCount() > 0) {
+    echo "<div class='prerequisite-group'>";
+    echo "<h4>Sottoargomenti</h4>";
+    echo "<ul class='prerequisites-list'>";
+    
+    while ($row = $sottoargomenti_prereq->fetch(PDO::FETCH_ASSOC)) {
+        echo "<li>";
+        echo "<span class='badge badge-sottoargomento'>S</span> ";
+        echo "<a href='view_sottoargomento.php?id=" . $row['id'] . "'>" . htmlspecialchars($row['titolo']) . "</a>";
+        echo "</li>";
+    }
+    
+    echo "</ul>";
+    echo "</div>";
+    
+    $has_prerequisites = true;
+}
+
+if (!$has_prerequisites) {
+    echo "<p>Questo sottoargomento non ha prerequisiti.</p>";
+}
+
+echo "</div>";
+?>
     <div class="related-exercises">
         <h3>Esercizi relativi a questo sottoargomento</h3>
         

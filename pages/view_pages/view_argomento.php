@@ -46,6 +46,48 @@ if (!$argomento_info) {
     exit;
 }
 
+// Aggiungi questa sezione in pages/view_pages/view_argomento.php dopo i dettagli dell'argomento
+
+// Mostra i requisiti collegati a questo argomento
+echo "<div class='related-requisiti'>";
+echo "<h3>Requisiti correlati</h3>";
+
+// Query per ottenere i requisiti associati a questo argomento
+$query = "SELECT r.id, r.descrizione, r.esercizio_id, e.titolo as esercizio_titolo
+          FROM requisiti r
+          JOIN requisito_argomento ra ON r.id = ra.requisito_id
+          LEFT JOIN esercizi e ON r.esercizio_id = e.id
+          WHERE ra.argomento_id = :argomento_id
+          ORDER BY e.titolo, r.id";
+
+$stmt = $db->prepare($query);
+$stmt->bindParam(':argomento_id', $argomento_id);
+$stmt->execute();
+
+if ($stmt->rowCount() > 0) {
+    echo "<ul class='item-list'>";
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<li>
+                <div class='item-description'>" . htmlspecialchars($row['descrizione']) . "</div>";
+        
+        if (!empty($row['esercizio_titolo'])) {
+            echo "<div class='item-meta'>Esercizio: <a href='view_esercizio.php?id=" . $row['esercizio_id'] . "'>" . 
+                 htmlspecialchars($row['esercizio_titolo']) . "</a></div>";
+        }
+        
+        echo "<div class='item-actions'>
+                <a href='../requisiti.php?edit=" . $row['id'] . "'>Modifica</a>
+              </div>
+            </li>";
+    }
+    echo "</ul>";
+} else {
+    echo "<p>Nessun requisito collegato a questo argomento.</p>";
+}
+
+echo "</div>";
+
+
 // Carica le informazioni sull'esame
 $esame->id = $argomento_info['esame_id'];
 $esame_info = $esame->readOne();

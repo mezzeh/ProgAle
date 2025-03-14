@@ -5,6 +5,25 @@
 if (isset($_GET['edit']) && isset($_SESSION['user_id'])) {
     $sottoargomento->id = $_GET['edit'];
     if ($sottoargomento->readOne()) {
+        // Ottieni gli argomenti prerequisiti
+        $argomenti_prereq = $sottoargomento->getArgomentiPrerequisiti($sottoargomento->id);
+        $argomenti_prereq_array = [];
+        while ($row = $argomenti_prereq->fetch(PDO::FETCH_ASSOC)) {
+            $argomenti_prereq_array[] = [
+                'id' => $row['id'],
+                'text' => $row['titolo']
+            ];
+        }
+        
+        // Ottieni i sottoargomenti prerequisiti
+        $sottoargomenti_prereq = $sottoargomento->getSottoargomentiPrerequisiti($sottoargomento->id);
+        $sottoargomenti_prereq_array = [];
+        while ($row = $sottoargomenti_prereq->fetch(PDO::FETCH_ASSOC)) {
+            $sottoargomenti_prereq_array[] = [
+                'id' => $row['id'],
+                'text' => $row['titolo']
+            ];
+        }
 ?>
 <div id='editFormContainer'>
     <h2>Modifica Sottoargomento</h2>
@@ -45,10 +64,43 @@ if (isset($_GET['edit']) && isset($_SESSION['user_id'])) {
             <?php endfor; ?>
         </select>
         
+        <!-- Sezione per prerequisiti -->
+        <h3>Prerequisiti</h3>
+        <div class="prerequisiti-section">
+            <div class="search-container">
+                <label for="prerequisiti-search">Cerca argomenti o sottoargomenti</label>
+                <input type="text" id="prerequisiti-search" placeholder="Cerca prerequisiti...">
+                <div id="search-results" class="search-results-dropdown"></div>
+            </div>
+            
+            <div class="selected-prerequisites-container">
+                <label>Prerequisiti selezionati</label>
+                <div id="selected-prerequisites" class="selected-prerequisites"></div>
+            </div>
+            
+            <!-- Input nascosti per memorizzare gli ID selezionati -->
+            <input type="hidden" id="selected-argomenti" name="argomenti_prereq" value='<?php echo json_encode(array_column($argomenti_prereq_array, 'id')); ?>'>
+            <input type="hidden" id="selected-sottoargomenti" name="sottoargomenti_prereq" value='<?php echo json_encode(array_column($sottoargomenti_prereq_array, 'id')); ?>'>
+        </div>
+        
         <button type='submit' name='update'>Aggiorna Sottoargomento</button>
         <a href='sottoargomenti.php<?php echo ($argomento_id ? "?argomento_id=$argomento_id" : ""); ?>' class='btn-secondary'>Annulla</a>
     </form>
 </div>
+
+<!-- Inizializza i dati per l'autocompletamento -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Inizializza gli argomenti prerequisiti preselezionati
+        window.preselectedArgomenti = <?php echo json_encode($argomenti_prereq_array); ?>;
+        
+        // Inizializza i sottoargomenti prerequisiti preselezionati
+        window.preselectedSottoargomenti = <?php echo json_encode($sottoargomenti_prereq_array); ?>;
+    });
+</script>
+
+<!-- Includi lo script per l'autocompletamento -->
+<script src="../ui/js/prerequisiti-autocomplete.js"></script>
 <?php
     }
 }
