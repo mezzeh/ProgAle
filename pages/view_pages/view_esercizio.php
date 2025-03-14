@@ -1,20 +1,20 @@
 <?php
-// File: pages/view_esercizio.php
+// File: pages/view_pages/view_esercizio.php
 
 ob_start();
 
 // Includi header
-include_once '../ui/includes/header_view.php';
+include_once '../../ui/includes/header.php';
 
 // Includi file di configurazione e modelli
-include_once '../config/database.php';
-include_once '../models/esercizio.php';
-include_once '../models/sottoargomento.php';
-include_once '../models/argomento.php';
-include_once '../models/esame.php';
-include_once '../models/esercizio_correlato.php';
-include_once '../models/comments.php';
-include_once 'components/comments/comments.php';
+include_once '../../config/database.php';
+include_once '../../models/esercizio.php';
+include_once '../../models/sottoargomento.php';
+include_once '../../models/argomento.php';
+include_once '../../models/esame.php';
+include_once '../../models/esercizio_correlato.php';
+include_once '../../models/comments.php';
+include_once '../components/comments/comments.php';
 
 // Connessione al database
 $database = new Database();
@@ -22,7 +22,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php';
     exit;
 }
 
@@ -38,7 +38,7 @@ $esercizio_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$esercizio_id) {
     echo "<div class='message error'>Nessun esercizio specificato.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php';
     exit;
 }
 
@@ -48,7 +48,7 @@ $esercizio_info = $esercizio->readOne();
 
 if (!$esercizio_info) {
     echo "<div class='message error'>Esercizio non trovato.</div>";
-    include_once '../ui/includes/footer.php';
+    include_once '../../ui/includes/footer.php';
     exit;
 }
 
@@ -65,11 +65,11 @@ $esame->id = $argomento_info['esame_id'];
 $esame_info = $esame->readOne();
 
 // Includi breadcrumb
-include_once 'components/shared/breadcrumb.php';
+include_once '../components/shared/breadcrumb.php';
 
 // Genera il breadcrumb
 $breadcrumb_items = [
-    ['text' => 'Home', 'link' => 'index.php'],
+    ['text' => 'Home', 'link' => '../index.php'],
     ['text' => $esame_info['nome'], 'link' => 'view_esame.php?id=' . $esame_info['id']],
     ['text' => $argomento_info['titolo'], 'link' => 'view_argomento.php?id=' . $argomento_info['id']],
     ['text' => $sottoargomento_info['titolo'], 'link' => 'view_sottoargomento.php?id=' . $sottoargomento_info['id']],
@@ -110,7 +110,7 @@ generaBreadcrumb($breadcrumb_items);
         </div>
     </div>
     
-    <!-- Nuova sezione per gli esercizi correlati -->
+    <!-- Sezione per gli esercizi correlati -->
     <div class="esercizi-correlati">
         <h3>Esercizi Correlati</h3>
         <?php
@@ -136,11 +136,11 @@ generaBreadcrumb($breadcrumb_items);
     </div>
     
     <div class="esercizio-actions">
-        <a href="requisiti.php?esercizio_id=<?php echo $esercizio_info['id']; ?>" class="btn-primary">Requisiti</a>
+        <a href="../requisiti.php?esercizio_id=<?php echo $esercizio_info['id']; ?>" class="btn-primary">Requisiti</a>
         
         <?php if (isset($_SESSION['user_id'])): ?>
-            <a href="esercizi_correlati.php?esercizio_id=<?php echo $esercizio_info['id']; ?>" class="btn-primary">Gestisci Esercizi Correlati</a>
-            <a href="esercizi.php?edit=<?php echo $esercizio_info['id']; ?>&sottoargomento_id=<?php echo $sottoargomento_info['id']; ?>" class="btn-secondary">Modifica Esercizio</a>
+            <a href="../esercizi_correlati.php?esercizio_id=<?php echo $esercizio_info['id']; ?>" class="btn-primary">Gestisci Esercizi Correlati</a>
+            <a href="../esercizi.php?edit=<?php echo $esercizio_info['id']; ?>&sottoargomento_id=<?php echo $sottoargomento_info['id']; ?>" class="btn-secondary">Modifica Esercizio</a>
         <?php endif; ?>
     </div>
 </div>
@@ -184,5 +184,5 @@ renderCommentiEsercizi($db, $esercizio_id);
 
 ob_end_flush();
 
-include_once '../ui/includes/footer.php';
+include_once '../../ui/includes/footer.php';
 ?>

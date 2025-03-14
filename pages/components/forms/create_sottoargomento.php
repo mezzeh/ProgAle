@@ -26,24 +26,7 @@ if ($argomento_id && isset($_SESSION['user_id'])) {
             <?php endfor; ?>
         </select>
         
-        <!-- Sezione per prerequisiti -->
-        <h3>Prerequisiti</h3>
-        <div class="prerequisiti-section">
-            <div class="search-container">
-                <label for="prerequisiti-search">Cerca argomenti o sottoargomenti</label>
-                <input type="text" id="prerequisiti-search" placeholder="Cerca prerequisiti...">
-                <div id="search-results" class="search-results-dropdown"></div>
-            </div>
-            
-            <div class="selected-prerequisites-container">
-                <label>Prerequisiti selezionati</label>
-                <div id="selected-prerequisites" class="selected-prerequisites"></div>
-            </div>
-            
-            <!-- Input nascosti per memorizzare gli ID selezionati -->
-            <input type="hidden" id="selected-argomenti" name="argomenti_prereq" value='[]'>
-            <input type="hidden" id="selected-sottoargomenti" name="sottoargomenti_prereq" value='[]'>
-        </div>
+        
         
         <button type='submit' name='create'>Crea Sottoargomento</button>
         <button type='button' id='cancelCreateBtn' class='btn-secondary'>Annulla</button>

@@ -65,7 +65,7 @@ include_once '../components/shared/breadcrumb.php';
 $breadcrumb_items = [
     ['text' => 'Home', 'link' => '../index.php'],
     ['text' => $esame_info['nome'], 'link' => '../view_esame.php?id=' . $esame_info['id']],
-    ['text' => $argomento_info['titolo'], 'link' => '../view_argomento.php?id=' . $argomento_info['id']],
+    ['text' => $argomento_info['titolo'], 'link' => '../view_pages/view_argomento.php?id=' . $argomento_info['id']],
     ['text' => $sottoargomento_info['titolo']]
 ];
 generaBreadcrumb($breadcrumb_items);
@@ -104,7 +104,7 @@ generaBreadcrumb($breadcrumb_items);
                     $link_url = '';
                     
                     if ($row['requisito_tipo'] === 'argomento') {
-                        $link_url = '../view_argomento.php?id=' . $row['requisito_id'];
+                        $link_url = '../view_pages/view_argomento.php?id=' . $row['requisito_id'];
                     } else if ($row['requisito_tipo'] === 'sottoargomento') {
                         $link_url = 'view_sottoargomento.php?id=' . $row['requisito_id'];
                     }
@@ -146,7 +146,7 @@ generaBreadcrumb($breadcrumb_items);
                         <div class='item-meta'>Difficoltà: $difficolta_text</div>
                         <div class='item-description'>" . nl2br(htmlspecialchars(substr($testo, 0, 150))) . (strlen($testo) > 150 ? "..." : "") . "</div>
                         <div class='item-actions'>
-                            <a href='../view_esercizio.php?id=$id'>Visualizza Esercizio</a>
+                            <a href='view_esercizio.php?id=$id'>Visualizza Esercizio</a>
                         </div>
                     </li>";
             }

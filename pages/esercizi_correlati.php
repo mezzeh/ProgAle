@@ -159,7 +159,7 @@ if (!empty($message)) {
                     Tipo di relazione: <?php echo ucfirst($row['tipo_relazione']); ?>
                 </div>
                 <div class="item-actions">
-                    <a href="view_esercizio.php?id=<?php echo $row['esercizio_correlato_id']; ?>">
+                    <a href="view_pages/view_esercizio.php?id=<?php echo $row['esercizio_correlato_id']; ?>">
                         Visualizza Esercizio
                     </a> | 
                     <a href="?esercizio_id=<?php echo $esercizio_id; ?>&delete=<?php echo $row['id']; ?>" 

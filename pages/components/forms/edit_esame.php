@@ -35,8 +35,9 @@ if (isset($_SESSION['user_id']) && $edit_id) {
             <!-- Se siamo in una pagina di piano specifico -->
             <input type='hidden' name='piano_id' value='<?php echo $piano_id; ?>'>
             <div class='form-group'>
-                <label>Piano di Studio</label>
-                <div class='form-control-static'><?php echo htmlspecialchars($piano_info['nome']); ?></div>
+                <label>Piano di Studio</label><?php if (isset($row_piano) && $row_piano): ?>
+    <option value='<?php echo $row_piano['id']; ?>'><?php echo htmlspecialchars($row_piano['nome']); ?></option>
+<?php endif; ?>
             </div>
         <?php else: ?>
             <!-- Mostra menu a tendina dei piani -->
