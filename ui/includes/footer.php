@@ -4,6 +4,6 @@
         </footer>
     </div>
     <!-- Script JavaScript -->
-    <script src="<?php echo $base_path; ?>ui/js/form-manager.js"></script>
+    <script src="<?php echo $base_path; ?>ui/js/common.js"></script>
 </body>
 </html>

@@ -60,28 +60,35 @@ h2 {
     text-decoration: none;
     padding: 10px 15px;
     transition: background-color 0.3s;
+    margin-left: 0;
 }
 
 .main-menu a:hover {
     background-color: #555;
     text-decoration: none;
     color: white;
-}
+}/* Stili per la ricerca nel menu - versione moderata */
 
-/* Stili per la ricerca nel menu */
+/* Contenitore principale della ricerca */
 .search-item {
+    position: relative;
     margin-left: auto;
     padding: 8px 15px;
+    max-width: 300px;
 }
 
+/* Form di ricerca */
 .search-form {
+    position: relative;
     display: flex;
+    width: 100%;
     margin: 0 !important;
     padding: 0 !important;
     background: none !important;
     box-shadow: none !important;
 }
 
+/* Campo di input */
 .search-form input[type="text"] {
     padding: 6px 10px;
     border: none;
@@ -92,6 +99,7 @@ h2 {
     font-size: 14px;
 }
 
+/* Pulsante di ricerca */
 .search-form button {
     padding: 6px 10px;
     border: none;
@@ -104,6 +112,91 @@ h2 {
     font-size: 14px;
 }
 
+.search-form button:hover {
+    background-color: #45a049;
+}
+
+/* Dropdown dei risultati di ricerca */
+.search-results-dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 300px;
+    overflow-y: auto;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 0 0 4px 4px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    margin-top: 2px;
+    resize: none;
+}
+
+/* Elementi di risultato */
+.search-result-item {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.2s;
+}
+
+.search-result-item:last-child {
+    border-bottom: none;
+}
+
+.search-result-item:hover {
+    background-color: #f5f5f5;
+}
+
+.search-result-item a {
+    display: flex;
+    align-items: flex-start;
+    color: inherit;
+    text-decoration: none;
+    margin: 0;
+}
+
+/* Icona del risultato */
+.result-icon {
+    font-size: 18px;
+    margin-right: 10px;
+    width: 24px;
+    text-align: center;
+}
+
+/* Contenuto del risultato */
+.result-content {
+    flex: 1;
+}
+
+/* Titolo del risultato */
+.result-title {
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+.result-title strong {
+    background-color: #ffeb3b;
+    padding: 0 2px;
+}
+
+/* Tipo di risultato */
+.result-type {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 3px;
+}
+
+/* Descrizione del risultato */
+.result-description {
+    font-size: 13px;
+    color: #555;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+}
 /* Formattazione form */
 form {
     background-color: white;
@@ -243,31 +336,6 @@ footer {
     font-size: 14px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .main-menu {
-        flex-direction: column;
-    }
-
-    .search-item {
-        margin-left: 0;
-        width: 100%;
-        padding: 10px;
-    }
-
-    .search-form {
-        width: 100%;
-    }
-
-    .search-form input[type="text"] {
-        width: 100%;
-    }
-
-    .container {
-        width: 95%;
-    }
-}
-
 /* Stili per liste di elementi con metadati */
 .item-list li {
     padding: 15px;
@@ -317,6 +385,27 @@ footer {
 .btn-secondary:hover {
     background-color: #e4e4e4;
     text-decoration: none;
+}
+
+/* Stili per i pulsanti */
+.btn-primary {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    text-decoration: none;
+    margin-left: 0;
+}
+
+.btn-primary:hover {
+    background-color: #45a049;
+    text-decoration: none;
+    color: white;
 }
 
 /* Livelli di importanza per argomenti */
@@ -460,26 +549,6 @@ footer {
     margin-left: 10px;
 }
 
-/* Stili per i pulsanti */
-.btn-primary {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s;
-    text-decoration: none;
-}
-
-.btn-primary:hover {
-    background-color: #45a049;
-    text-decoration: none;
-    color: white;
-}
-
 /* Stili per i container dei form */
 #createFormContainer,
 #editFormContainer {
@@ -489,125 +558,6 @@ footer {
     padding: 20px;
     margin-top: 30px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* Stili per i risultati di ricerca */
-.search-results li {
-    margin-bottom: 15px;
-    border-left: 3px solid #4CAF50;
-}
-
-.search-results .item-title {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.search-results .item-description {
-    font-size: 14px;
-    color: #555;
-}
-
-/* Stili per checkbox group */
-.checkbox-group {
-    display: flex;
-    flex-wrap: wrap;
-    margin-bottom: 15px;
-}
-
-.checkbox-label {
-    display: flex;
-    align-items: center;
-    margin-right: 15px;
-    margin-bottom: 8px;
-    font-weight: normal;
-}
-
-.checkbox-label input[type="checkbox"] {
-    width: auto;
-    margin-right: 5px;
-    margin-bottom: 0;
-}
-
-/* Stili per form-group static */
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-control-static {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f4f4f4;
-}
-
-/* Fix per la visualizzazione dei form */
-form button {
-    margin-right: 10px;
-}
-
-/* Fix per link nei menu e altre parti dell'interfaccia */
-.main-menu a {
-    margin-left: 0;
-}
-
-.btn-primary {
-    margin-left: 0;
-}
-
-/* Esame section per la visualizzazione */
-.esame-section {
-    margin-bottom: 30px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    background-color: #f9f9f9;
-}
-
-.esame-section h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    color: #333;
-}
-
-/* Fix per form all'interno di elementi del menu */
-.main-menu li form {
-    background: none;
-    box-shadow: none;
-    padding: 0;
-    margin: 0;
-}
-
-.main-menu li button {
-    margin: 0;
-}
-
-/* Fix per current-image */
-.current-image {
-    margin-bottom: 10px;
-}
-
-.current-image img {
-    border: 1px solid #ddd;
-    padding: 3px;
-    background: white;
-}
-/* Stili per le sezioni di ricerca */
-.search-section {
-    margin-bottom: 30px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 15px;
-    background-color: #f9f9f9;
-}
-
-.search-section h3 {
-    margin-top: 0;
-    margin-bottom: 15px;
-    padding-bottom: 10px;
-    border-bottom: 1px solid #eee;
-    color: #333;
 }
 
 /* Stili per i risultati di ricerca */
@@ -659,8 +609,253 @@ form button {
     border-radius: 2px;
 }
 
-/* Responsive per i risultati di ricerca */
+/* Stili per checkbox group */
+.checkbox-group {
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 15px;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    margin-right: 15px;
+    margin-bottom: 8px;
+    font-weight: normal;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin-right: 5px;
+    margin-bottom: 0;
+}
+
+/* Stili per form-group static */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-control-static {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f4f4f4;
+}
+
+/* Fix per la visualizzazione dei form */
+form button {
+    margin-right: 10px;
+}
+
+/* Esame section per la visualizzazione */
+.esame-section {
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.esame-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+/* Fix per form all'interno di elementi del menu */
+.main-menu li form {
+    background: none;
+    box-shadow: none;
+    padding: 0;
+    margin: 0;
+}
+
+.main-menu li button {
+    margin: 0;
+}
+
+/* Fix per current-image */
+.current-image {
+    margin-bottom: 10px;
+}
+
+.current-image img {
+    border: 1px solid #ddd;
+    padding: 3px;
+    background: white;
+}
+
+/* Stili per le sezioni di ricerca */
+.search-section {
+    margin-bottom: 30px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    background-color: #f9f9f9;
+}
+
+.search-section h3 {
+    margin-top: 0;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+}
+
+/* Badge per argomenti e sottoargomenti */
+.badge {
+    display: inline-block;
+    padding: 3px 6px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.badge-argomento {
+    background-color: #4CAF50;
+    /* Verde per gli argomenti */
+}
+
+.badge-sottoargomento {
+    background-color: #2196F3;
+    /* Blu per i sottoargomenti */
+}
+
+/* Container dei prerequisiti selezionati */
+.selected-prerequisites-container {
+    margin-bottom: 20px;
+}
+
+.selected-prerequisites {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 10px;
+    min-height: 50px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+/* Tag per i prerequisiti selezionati */
+.selected-tag {
+    display: flex;
+    align-items: center;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 5px 10px;
+    font-size: 14px;
+}
+
+.selected-tag span {
+    margin-right: 5px;
+}
+
+.remove-tag {
+    background: none;
+    border: none;
+    color: #666;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 0 5px;
+    margin-left: 5px;
+}
+
+.remove-tag:hover {
+    color: #ff5252;
+}
+
+/* Messaggi nell'interfaccia */
+.no-results {
+    padding: 10px;
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+/* Stili per la sezione dei prerequisiti */
+.prerequisites-section {
+    margin-top: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.prerequisite-group {
+    margin-bottom: 15px;
+}
+
+.prerequisite-group h4 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #555;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 5px;
+}
+
+.prerequisites-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.prerequisites-list li {
+    margin-bottom: 5px;
+    padding: 5px;
+    background-color: white;
+    border: 1px solid #eee;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+}
+
+.prerequisites-list .badge {
+    margin-right: 10px;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
+    .main-menu {
+        flex-direction: column;
+    }
+
+    .search-item {
+        margin-left: 0;
+        width: 100%;
+        padding: 10px;
+        max-width: 100%;
+    }
+
+    .search-form {
+        width: 100%;
+    }
+
+    .search-form input[type="text"] {
+        width: 100%;
+    }
+
+    .search-results-dropdown {
+        position: fixed;
+        top: auto;
+        left: 0;
+        right: 0;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .result-description {
+        max-width: 100%;
+    }
+
+    .container {
+        width: 95%;
+    }
+
     .search-results .item-actions {
         flex-direction: column;
         gap: 5px;
@@ -671,329 +866,4 @@ form button {
         display: block;
         text-align: center;
     }
-        /* Badge per argomenti e sottoargomenti */
-        .badge {
-            display: inline-block;
-            padding: 3px 6px;
-            border-radius: 3px;
-            font-size: 12px;
-            font-weight: bold;
-            color: white;
-        }
-    
-        .badge-argomento {
-            background-color: #4CAF50;
-            /* Verde per gli argomenti */
-        }
-    
-        .badge-sottoargomento {
-            background-color: #2196F3;
-            /* Blu per i sottoargomenti */
-        }
-    
-        /* Container dei prerequisiti selezionati */
-        .selected-prerequisites-container {
-            margin-bottom: 20px;
-        }
-    
-        .selected-prerequisites {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            padding: 10px;
-            min-height: 50px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-    
-        /* Tag per i prerequisiti selezionati */
-        .selected-tag {
-            display: flex;
-            align-items: center;
-            background-color: white;
-            border: 1px solid #ddd;
-            border-radius: 20px;
-            padding: 5px 10px;
-            font-size: 14px;
-        }
-    
-        .selected-tag span {
-            margin-right: 5px;
-        }
-    
-        .remove-tag {
-            background: none;
-            border: none;
-            color: #666;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 0 5px;
-            margin-left: 5px;
-        }
-    
-        .remove-tag:hover {
-            color: #ff5252;
-        }
-    
-        /* Messaggi nell'interfaccia */
-        .no-results,
-        .error {
-            padding: 10px;
-            text-align: center;
-            color: #666;
-        }
-    
-        .error {
-            color: #ff5252;
-        }
-                /* Stili per la sezione dei prerequisiti - da aggiungere al file ui/css/style.css */
-        
-                .prerequisites-section {
-                    margin-top: 20px;
-                    padding: 15px;
-                    background-color: #f9f9f9;
-                    border: 1px solid #ddd;
-                    border-radius: 4px;
-                }
-        
-                .prerequisite-group {
-                    margin-bottom: 15px;
-                }
-        
-                .prerequisite-group h4 {
-                    margin-top: 0;
-                    margin-bottom: 10px;
-                    color: #555;
-                    border-bottom: 1px solid #eee;
-                    padding-bottom: 5px;
-                }
-        
-                .prerequisites-list {
-                    list-style-type: none;
-                    padding: 0;
-                    margin: 0;
-                }
-        
-                .prerequisites-list li {
-                    margin-bottom: 5px;
-                    padding: 5px;
-                    background-color: white;
-                    border: 1px solid #eee;
-                    border-radius: 4px;
-                    display: flex;
-                    align-items: center;
-                }
-        
-                .prerequisites-list .badge {
-                    margin-right: 10px;
-                }
-                                /* Stili per il sistema di ricerca in tempo reale */
-                
-                                /* Container dei risultati di ricerca */
-                                .search-results-dropdown {
-                                    position: absolute;
-                                    top: 100%;
-                                    right: 0;
-                                    width: 350px;
-                                    max-height: 400px;
-                                    overflow-y: auto;
-                                    background-color: white;
-                                    border: 1px solid #ddd;
-                                    border-radius: 4px;
-                                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                                    z-index: 1000;
-                                    display: none;
-                                    margin-top: 5px;
-                                }
-                
-                                /* Posizionamento relativo per il form di ricerca */
-                                .search-form {
-                                    position: relative;
-                                }
-                
-                                /* Stile per ciascun elemento di risultato */
-                                .search-result-item {
-                                    display: flex;
-                                    padding: 10px 15px;
-                                    border-bottom: 1px solid #eee;
-                                    cursor: pointer;
-                                    transition: background-color 0.2s;
-                                }
-                
-                                .search-result-item:last-child {
-                                    border-bottom: none;
-                                }
-                
-                                .search-result-item:hover {
-                                    background-color: #f5f5f5;
-                                }
-                
-                                /* Icona del risultato */
-                                .result-icon {
-                                    font-size: 24px;
-                                    margin-right: 12px;
-                                    display: flex;
-                                    align-items: center;
-                                }
-                
-                                /* Contenuto del risultato */
-                                .result-content {
-                                    flex: 1;
-                                }
-                
-                                .result-title {
-                                    font-weight: bold;
-                                    margin-bottom: 3px;
-                                    color: #333;
-                                }
-                
-                                .result-type {
-                                    font-size: 12px;
-                                    color: #666;
-                                    margin-bottom: 3px;
-                                }
-                
-                                .result-description {
-                                    font-size: 13px;
-                                    color: #777;
-                                    white-space: nowrap;
-                                    overflow: hidden;
-                                    text-overflow: ellipsis;
-                                }
-                
-                                /* Stile per nessun risultato */
-                                .no-results {
-                                    padding: 15px;
-                                    text-align: center;
-                                    color: #666;
-                                    font-style: italic;
-                                }
-                
-                                /* Stile per evidenziare le corrispondenze */
-                                .highlight {
-                                    background-color: #ffffc0;
-                                    padding: 0 2px;
-                                    border-radius: 2px;
-                                }
-                
-                                /* Responsive per mobile */
-                                @media (max-width: 768px) {
-                                    .search-results-dropdown {
-                                        width: 100%;
-                                        max-width: 100%;
-                                        position: fixed;
-                                        top: 60px;
-                                        left: 0;
-                                        right: 0;
-                                        border-radius: 0;
-                                        border-left: none;
-                                        border-right: none;
-                                    }
-                                }
-                                                                /* Add these search styles to the end of your style.css file */
-                                
-                                                                /* Stili per il sistema di ricerca in tempo reale */
-                                
-                                                                /* Container dei risultati di ricerca */
-                                                                .search-results-dropdown {
-                                                                    position: absolute;
-                                                                    top: 100%;
-                                                                    right: 0;
-                                                                    width: 350px;
-                                                                    max-height: 400px;
-                                                                    overflow-y: auto;
-                                                                    background-color: white;
-                                                                    border: 1px solid #ddd;
-                                                                    border-radius: 4px;
-                                                                    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-                                                                    z-index: 1000;
-                                                                    display: none;
-                                                                    margin-top: 5px;
-                                                                }
-                                
-                                                                /* Posizionamento relativo per il form di ricerca */
-                                                                .search-form {
-                                                                    position: relative;
-                                                                }
-                                
-                                                                /* Stile per ciascun elemento di risultato */
-                                                                .search-result-item {
-                                                                    display: flex;
-                                                                    padding: 10px 15px;
-                                                                    border-bottom: 1px solid #eee;
-                                                                    cursor: pointer;
-                                                                    transition: background-color 0.2s;
-                                                                }
-                                
-                                                                .search-result-item:last-child {
-                                                                    border-bottom: none;
-                                                                }
-                                
-                                                                .search-result-item:hover {
-                                                                    background-color: #f5f5f5;
-                                                                }
-                                
-                                                                /* Icona del risultato */
-                                                                .result-icon {
-                                                                    font-size: 24px;
-                                                                    margin-right: 12px;
-                                                                    display: flex;
-                                                                    align-items: center;
-                                                                }
-                                
-                                                                /* Contenuto del risultato */
-                                                                .result-content {
-                                                                    flex: 1;
-                                                                }
-                                
-                                                                .result-title {
-                                                                    font-weight: bold;
-                                                                    margin-bottom: 3px;
-                                                                    color: #333;
-                                                                }
-                                
-                                                                .result-type {
-                                                                    font-size: 12px;
-                                                                    color: #666;
-                                                                    margin-bottom: 3px;
-                                                                }
-                                
-                                                                .result-description {
-                                                                    font-size: 13px;
-                                                                    color: #777;
-                                                                    white-space: nowrap;
-                                                                    overflow: hidden;
-                                                                    text-overflow: ellipsis;
-                                                                }
-                                
-                                                                /* Stile per nessun risultato */
-                                                                .no-results {
-                                                                    padding: 15px;
-                                                                    text-align: center;
-                                                                    color: #666;
-                                                                    font-style: italic;
-                                                                }
-                                
-                                                                /* Stile per evidenziare le corrispondenze */
-                                                                .highlight {
-                                                                    background-color: #ffffc0;
-                                                                    padding: 0 2px;
-                                                                    border-radius: 2px;
-                                                                }
-                                
-                                                                /* Responsive per mobile */
-                                                                @media (max-width: 768px) {
-                                                                    .search-results-dropdown {
-                                                                        width: 100%;
-                                                                        max-width: 100%;
-                                                                        position: fixed;
-                                                                        top: 60px;
-                                                                        left: 0;
-                                                                        right: 0;
-                                                                        border-radius: 0;
-                                                                        border-left: none;
-                                                                        border-right: none;
-                                                                    }
-                                                                }
 }

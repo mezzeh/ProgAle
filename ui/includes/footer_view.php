@@ -4,7 +4,6 @@
         </footer>
     </div>
     <!-- Script JavaScript -->
-    <script src="../../ui/js/form-manager.js"></script>
-    <script src="../../ui/js/search.js"></script>
+    <script src="../../ui/js/common.js"></script>
 </body>
 </html>

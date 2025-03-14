@@ -50,6 +50,8 @@ if($requires_auth && !isset($_SESSION['user_id'])) {
                         <form action="../../pages/search.php" method="GET" class="search-form">
                             <input type="text" name="q" placeholder="Cerca in tutto il sistema..." required>
                             <button type="submit">Cerca</button>
+                            <!-- Container per i risultati della ricerca in tempo reale -->
+                            <div id="search-results" class="search-results-dropdown"></div>
                         </form>
                     </li>
                 </ul>
