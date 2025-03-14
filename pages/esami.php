@@ -88,7 +88,7 @@ if ($num > 0) {
         
         // Azioni di modifica/eliminazione condizionali
         if (isset($_SESSION['user_id']) && verificaPermessiPiano($db, isset($piano_id) ? $piano_id : $piano_id)) {
-            echo " | <a href='?edit={$id}" . ($piano_id ? "&piano_id={$piano_id}" : "") . "'>Modifica</a>";
+            echo " | <a href='?edit={$id}" . ($piano_id ? "&piano_id={$piano_id}" : "") . "'>Modificaa</a>";
             echo " | <a href='?delete={$id}" . ($piano_id ? "&piano_id={$piano_id}" : "") . "' onclick='return confirm(\"Sei sicuro di voler eliminare questo esame?\");'>Elimina</a>";
         }
         

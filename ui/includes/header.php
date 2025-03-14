@@ -40,7 +40,6 @@ if($requires_auth && !isset($_SESSION['user_id'])) {
                         <li><a href="<?php echo $base_path; ?>/pages/argomenti.php">Argomenti</a></li>
                         <li><a href="<?php echo $base_path; ?>/pages/sottoargomenti.php">Sottoargomenti</a></li>
                         <li><a href="<?php echo $base_path; ?>/pages/esercizi.php">Esercizi</a></li>
-                        <li><a href="<?php echo $base_path; ?>/pages/requisiti.php">Requisiti</a></li>
                         <li><a href="<?php echo $base_path; ?>/pages/formule.php">Formule</a></li>
                         <?php if(isset($_SESSION['is_admin']) && $_SESSION['is_admin']): ?>
                             <li><a href="<?php echo $base_path; ?>/pages/admin/users.php">Gestione Utenti</a></li>
