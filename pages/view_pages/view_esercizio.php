@@ -1,19 +1,20 @@
 <?php
-// File: pages/view_pages/view_esercizio.php
+// File: pages/view_esercizio.php
 
 ob_start();
 
 // Includi header
-include_once '../../ui/includes/header.php'; // Aggiornato il percorso
+include_once '../ui/includes/header.php';
 
 // Includi file di configurazione e modelli
-include_once '../../config/database.php'; // Aggiornato il percorso
-include_once '../../models/esercizio.php'; // Aggiornato il percorso
-include_once '../../models/sottoargomento.php'; // Aggiornato il percorso
-include_once '../../models/argomento.php'; // Aggiornato il percorso
-include_once '../../models/esame.php'; // Aggiornato il percorso
-include_once '../../models/comments.php'; // Aggiornato il percorso
-include_once '../components/comments/comments.php'; // Aggiornato il percorso
+include_once '../config/database.php';
+include_once '../models/esercizio.php';
+include_once '../models/sottoargomento.php';
+include_once '../models/argomento.php';
+include_once '../models/esame.php';
+include_once '../models/esercizio_correlato.php';
+include_once '../models/comments.php';
+include_once 'components/comments/comments.php';
 
 // Connessione al database
 $database = new Database();
@@ -21,7 +22,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
+    include_once '../ui/includes/footer.php';
     exit;
 }
 
@@ -30,13 +31,14 @@ $esercizio = new Esercizio($db);
 $sottoargomento = new SottoArgomento($db);
 $argomento = new Argomento($db);
 $esame = new Esame($db);
+$esercizioCorrelato = new EsercizioCorrelato($db);
 
 // Parametri GET
 $esercizio_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$esercizio_id) {
     echo "<div class='message error'>Nessun esercizio specificato.</div>";
-    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
+    include_once '../ui/includes/footer.php';
     exit;
 }
 
@@ -46,7 +48,7 @@ $esercizio_info = $esercizio->readOne();
 
 if (!$esercizio_info) {
     echo "<div class='message error'>Esercizio non trovato.</div>";
-    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
+    include_once '../ui/includes/footer.php';
     exit;
 }
 
@@ -63,14 +65,14 @@ $esame->id = $argomento_info['esame_id'];
 $esame_info = $esame->readOne();
 
 // Includi breadcrumb
-include_once '../components/shared/breadcrumb.php'; // Aggiornato il percorso
+include_once 'components/shared/breadcrumb.php';
 
 // Genera il breadcrumb
 $breadcrumb_items = [
-    ['text' => 'Home', 'link' => '../index.php'], // Aggiornato il percorso
+    ['text' => 'Home', 'link' => 'index.php'],
     ['text' => $esame_info['nome'], 'link' => 'view_esame.php?id=' . $esame_info['id']],
     ['text' => $argomento_info['titolo'], 'link' => 'view_argomento.php?id=' . $argomento_info['id']],
-    ['text' => $sottoargomento_info['titolo'], 'link' => '../sottoargomenti.php?argomento_id=' . $argomento_info['id']], // Aggiornato il percorso
+    ['text' => $sottoargomento_info['titolo'], 'link' => 'view_sottoargomento.php?id=' . $sottoargomento_info['id']],
     ['text' => $esercizio_info['titolo']]
 ];
 generaBreadcrumb($breadcrumb_items);
@@ -108,11 +110,37 @@ generaBreadcrumb($breadcrumb_items);
         </div>
     </div>
     
+    <!-- Nuova sezione per gli esercizi correlati -->
+    <div class="esercizi-correlati">
+        <h3>Esercizi Correlati</h3>
+        <?php
+        // Carica gli esercizi correlati
+        $correlati = $esercizioCorrelato->readByEsercizio($esercizio_id);
+        $correlati_count = $correlati->rowCount();
+        
+        if ($correlati_count > 0):
+        ?>
+        <ul class="correlati-list">
+            <?php while ($row = $correlati->fetch(PDO::FETCH_ASSOC)): ?>
+                <li>
+                    <a href="view_esercizio.php?id=<?php echo $row['esercizio_correlato_id']; ?>">
+                        <?php echo htmlspecialchars($row['esercizio_correlato_titolo']); ?>
+                    </a>
+                    <span class="relazione-tipo">(<?php echo ucfirst($row['tipo_relazione']); ?>)</span>
+                </li>
+            <?php endwhile; ?>
+        </ul>
+        <?php else: ?>
+        <p>Nessun esercizio correlato per questo esercizio.</p>
+        <?php endif; ?>
+    </div>
+    
     <div class="esercizio-actions">
-        <a href="../requisiti.php?esercizio_id=<?php echo $esercizio_info['id']; ?>" class="btn-primary">Requisiti</a> <!-- Aggiornato il percorso -->
+        <a href="requisiti.php?esercizio_id=<?php echo $esercizio_info['id']; ?>" class="btn-primary">Requisiti</a>
         
         <?php if (isset($_SESSION['user_id'])): ?>
-            <a href="../esercizi.php?edit=<?php echo $esercizio_info['id']; ?>&sottoargomento_id=<?php echo $sottoargomento_info['id']; ?>" class="btn-secondary">Modifica Esercizio</a> <!-- Aggiornato il percorso -->
+            <a href="esercizi_correlati.php?esercizio_id=<?php echo $esercizio_info['id']; ?>" class="btn-primary">Gestisci Esercizi Correlati</a>
+            <a href="esercizi.php?edit=<?php echo $esercizio_info['id']; ?>&sottoargomento_id=<?php echo $sottoargomento_info['id']; ?>" class="btn-secondary">Modifica Esercizio</a>
         <?php endif; ?>
     </div>
 </div>
@@ -156,5 +184,5 @@ renderCommentiEsercizi($db, $esercizio_id);
 
 ob_end_flush();
 
-include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
+include_once '../ui/includes/footer.php';
 ?>
