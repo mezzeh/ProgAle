@@ -4,7 +4,7 @@
 ob_start();
 
 // Includi header
-include_once '../ui/includes/header.php';
+include_once '../ui/includes/header_view.php';
 
 // Includi file di configurazione e modelli
 include_once '../config/database.php';

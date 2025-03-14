@@ -19,5 +19,13 @@ class Database {
         
         return $this->conn;
     }
+    // Helper function to get the correct path to a page
+function getPagePath($page) {
+    if (strpos($_SERVER['PHP_SELF'], 'view_pages') !== false) {
+        return "../pages/$page";
+    } else {
+        return $page;
+    }
+}
 }
 ?>

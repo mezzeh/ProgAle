@@ -26,8 +26,8 @@ function renderCommenti($db, $tipo_elemento, $elemento_id, $redirect_param) {
             </form>
         </div>
         <?php else: ?>
-        <p><a href="login.php">Accedi</a> per aggiungere un commento.</p>
-        <?php endif; ?>
+            <p><a href="<?php echo getPagePath('login.php'); ?>">Accedi</a> per aggiungere un commento.</p>    
+<?php endif; ?>
         
         <div class="comments-list">
             <?php

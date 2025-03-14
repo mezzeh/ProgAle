@@ -8,6 +8,9 @@ include_once '../models/esercizio.php';
 include_once '../models/sottoargomento.php';
 include_once '../models/argomento.php';
 include_once '../models/esame.php';
+include_once '../models/esercizio_correlato.php';
+include_once '../models/comments.php';
+include_once 'components/comments/comments.php';
 
 // Connessione al database
 $database = new Database();
@@ -108,7 +111,7 @@ if ($num > 0) {
                     " . nl2br(htmlspecialchars(substr($testo, 0, 200))) . (strlen($testo) > 200 ? "..." : "") . "
                 </div>
                 <div class='item-actions'>
-                    <a href='view_esercizio.php?id=$id'>Visualizza</a> | 
+                    <a href='view_pages/view_esercizio.php?id=$id'>Visualizza</a> | 
                     <a href='requisiti.php?esercizio_id=$id'>Requisiti</a>";
         
         // Azioni di modifica/eliminazione

@@ -4,7 +4,7 @@
 ob_start();
 
 // Includi header - correzione percorsi
-include_once '../../ui/includes/header.php';
+include_once '../../ui/includes/header_view.php';
 
 // Includi file di configurazione e modelli - correzione percorsi
 include_once '../../config/database.php';

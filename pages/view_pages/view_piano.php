@@ -1,7 +1,7 @@
 <?php
 ob_start();
 // Includi header
-include_once '../../ui/includes/header.php'; // Aggiornato il percorso
+include_once '../../ui/includes/header_view.php'; // Aggiornato il percorso
 
 // Includi file di configurazione e modelli
 include_once '../../config/database.php'; // Aggiornato il percorso
