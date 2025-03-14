@@ -19,7 +19,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -34,7 +34,7 @@ $sottoargomento_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$sottoargomento_id) {
     echo "<div class='message error'>Nessun sottoargomento specificato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -44,7 +44,7 @@ $sottoargomento_info = $sottoargomento->readOne();
 
 if (!$sottoargomento_info) {
     echo "<div class='message error'>Sottoargomento non trovato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -186,5 +186,5 @@ echo "</div>";
 <?php
 ob_end_flush();
 
-include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
 ?>

@@ -2,7 +2,7 @@
 ob_start();
 
 // Includi header
-include_once '../../ui/includes/header.php'; // Aggiornato il percorso
+include_once '../../ui/includes/header_view.php'; // Aggiornato il percorso
 
 // Includi file di configurazione e modelli
 include_once '../../config/database.php'; // Aggiornato il percorso
@@ -18,7 +18,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -32,7 +32,7 @@ $argomento_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$argomento_id) {
     echo "<div class='message error'>Nessun argomento specificato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -42,7 +42,7 @@ $argomento_info = $argomento->readOne();
 
 if (!$argomento_info) {
     echo "<div class='message error'>Argomento non trovato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -145,5 +145,5 @@ renderCommentiArgomenti($db, $argomento_info['esame_id'], $argomento_id);
 
 ob_end_flush();
 
-include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
 ?>

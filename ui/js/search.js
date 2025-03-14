@@ -5,15 +5,23 @@ document.addEventListener('DOMContentLoaded', function () {
     // Elementi della ricerca
     const searchInput = document.querySelector('.search-form input[type="text"]');
     const searchForm = document.querySelector('.search-form');
+    const searchResults = document.getElementById('search-results');
 
-    // Creazione del container dei risultati di ricerca
-    let searchResults = document.getElementById('search-results');
-    if (!searchResults) {
-        searchResults = document.createElement('div');
-        searchResults.id = 'search-results';
-        searchResults.className = 'search-results-dropdown';
-        searchForm.appendChild(searchResults);
+    if (!searchInput || !searchResults) {
+        console.error('Elementi di ricerca non trovati nella pagina');
+        return;
     }
+
+    // Determina il percorso base per l'API di ricerca
+    let apiPath = '../api/search.php';
+
+    // Adatta il percorso in base al nome del file corrente
+    const currentPage = window.location.pathname.split('/').pop();
+    if (currentPage.startsWith('view_')) {
+        apiPath = '../api/search.php'; // Manteniamo lo stesso percorso per le pagine view_
+    }
+
+    console.log('Sistema di ricerca inizializzato, API path:', apiPath);
 
     // Imposta un timeout per il debouncing della ricerca
     let searchTimeout = null;
@@ -32,13 +40,6 @@ document.addEventListener('DOMContentLoaded', function () {
         'argomento': 'Argomento'
     };
 
-    if (!searchInput) {
-        console.error('Elemento di ricerca non trovato nella pagina');
-        return;
-    }
-
-    console.log('Sistema di ricerca inizializzato');
-
     // Gestione dell'input di ricerca
     searchInput.addEventListener('input', function () {
         const query = this.value.trim();
@@ -56,8 +57,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Imposta un nuovo timeout per evitare troppe richieste
         searchTimeout = setTimeout(function () {
-            fetch('../api/search.php?q=' + encodeURIComponent(query))
-                .then(response => response.json())
+            fetch(apiPath + '?q=' + encodeURIComponent(query))
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Errore di rete: ' + response.status);
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     // Mostra i risultati
                     if (data.length > 0) {
@@ -91,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 })
                 .catch(error => {
                     console.error('Errore nella ricerca:', error);
-                    searchResults.innerHTML = '<div class="no-results">Errore nella ricerca</div>';
+                    searchResults.innerHTML = '<div class="no-results">Errore nella ricerca: ' + error.message + '</div>';
                     searchResults.style.display = 'block';
                 });
         }, 300); // Attesa di 300ms dopo l'ultimo input

@@ -21,7 +21,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -36,7 +36,7 @@ $esercizio_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$esercizio_id) {
     echo "<div class='message error'>Nessun esercizio specificato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -46,7 +46,7 @@ $esercizio_info = $esercizio->readOne();
 
 if (!$esercizio_info) {
     echo "<div class='message error'>Esercizio non trovato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -156,5 +156,5 @@ renderCommentiEsercizi($db, $esercizio_id);
 
 ob_end_flush();
 
-include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
 ?>

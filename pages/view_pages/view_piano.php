@@ -12,7 +12,7 @@ include_once '../../models/comments.php'; // Aggiunto per risolvere l'errore "Cl
 // Verifica se è stato specificato un piano
 if (!isset($_GET['id'])) {
     echo "<div class='message error'>Piano di studio non specificato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -22,7 +22,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -34,7 +34,7 @@ $piano_info = $piano->readOne();
 // Verifica se il piano esiste e se l'utente può visualizzarlo
 if (!$piano_info) {
     echo "<div class='message error'>Piano di studio non trovato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -43,7 +43,7 @@ if ($piano_info['visibility'] == 'private' &&
     (!isset($_SESSION['user_id']) || 
      ($piano_info['user_id'] != $_SESSION['user_id'] && !$_SESSION['is_admin']))) {
     echo "<div class='message error'>Non hai i permessi per visualizzare questo piano di studio.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -179,4 +179,4 @@ if(isset($_GET['delete_comment']) && isset($_SESSION['user_id'])) {
     <?php endif; ?>
 </div>
 
-<?php include_once '../../ui/includes/footer.php'; // Aggiornato il percorso ?>
+<?php include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso ?>

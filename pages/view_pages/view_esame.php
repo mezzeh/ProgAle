@@ -19,7 +19,7 @@ $db = $database->getConnection();
 
 if (!$db) {
     echo "<div class='message error'>Problema di connessione al database.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -32,7 +32,7 @@ $esame_id = isset($_GET['id']) ? $_GET['id'] : null;
 
 if (!$esame_id) {
     echo "<div class='message error'>Nessun esame specificato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -42,7 +42,7 @@ $esame_info = $esame->readOne();
 
 if (!$esame_info) {
     echo "<div class='message error'>Esame non trovato.</div>";
-    include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+    include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
     exit;
 }
 
@@ -95,5 +95,5 @@ renderCommentiEsami($db, $esame_id);
 
 ob_end_flush();
 
-include_once '../../ui/includes/footer.php'; // Aggiornato il percorso
+include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso
 ?>

@@ -1,9 +1,16 @@
 <?php
 session_start();
 
-// Determina il percorso base dell'applicazione
-$base_path = '/ProgAle'; // Modifica questo percorso in base alla tua configurazione
-$css_path = $base_path . '/ui/css/style.css';
+// Calcola il percorso base in base alla posizione della pagina
+$base_path = '';
+$current_path = $_SERVER['PHP_SELF'];
+if (strpos($current_path, '/pages/view_') !== false) {
+    $base_path = '../../'; // Per pagine in sottocartelle
+} elseif (strpos($current_path, '/pages/components/') !== false) {
+    $base_path = '../../../'; // Per componenti ancora più in profondità
+} else {
+    $base_path = '../'; // Percorso standard per pagine in /pages/
+}
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -11,7 +18,7 @@ $css_path = $base_path . '/ui/css/style.css';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestione Piani di Studio</title>
-    <link rel="stylesheet" href="<?php echo $css_path; ?>">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>ui/css/style.css">
 </head>
 <body>
     <div class="container">
@@ -20,9 +27,9 @@ $css_path = $base_path . '/ui/css/style.css';
             <!-- Menu semplificato per pagine che non richiedono autenticazione -->
             <nav>
                 <ul class="main-menu">
-                    <li><a href="<?php echo $base_path; ?>/pages/index.php">Home</a></li>
-                    <li><a href="<?php echo $base_path; ?>/pages/login.php">Accedi</a></li>
-                    <li><a href="<?php echo $base_path; ?>/pages/register.php">Registrati</a></li>
+                    <li><a href="../pages/index.php">Home</a></li>
+                    <li><a href="login.php">Accedi</a></li>
+                    <li><a href="register.php">Registrati</a></li>
                 </ul>
             </nav>
         </header>
