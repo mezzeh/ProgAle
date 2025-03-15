@@ -20,7 +20,15 @@ if($requires_auth && !isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestione Piani di Studio</title>
-    <link rel="stylesheet" href="../../ui/css/style.css">
+   <style>
+<?php
+  // Percorso per le pagine view che sono in una sottocartella
+  $css_file = $_SERVER['DOCUMENT_ROOT'] . '/ProgAle/ui/css/style.css';
+  if (file_exists($css_file)) {
+    echo file_get_contents($css_file);
+  }
+?>
+</style>
 </head>
 <body>
     <div class="container">

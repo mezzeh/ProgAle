@@ -14,15 +14,16 @@ if($requires_auth && !isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Determina il percorso base corretto in base al nome del file
-$base_path = "";
-if (strpos($current_page, 'view_') === 0) {
-    // Pagine view_
-    $base_path = "../../";
-} else {
-    // Pagine standard
-    $base_path = "../";
-}
+// Determina il percorso base corretto in base al nome del file$base_path = "";
+$current_path = $_SERVER['PHP_SELF'];
+$project_root = "/ProgAle/"; // Imposta qui la cartella base del tuo progetto
+
+// Conta quanti livelli di directory ci sono dopo la radice del progetto
+$path_after_root = substr($current_path, strpos($current_path, $project_root) + strlen($project_root));
+$dir_levels = count(explode('/', trim($path_after_root, '/'))) - 1;
+
+// Genera il percorso base corretto
+$base_path = str_repeat("../", $dir_levels);
 ?>
 <!DOCTYPE html>
 <html lang="it">
@@ -30,8 +31,22 @@ if (strpos($current_page, 'view_') === 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestione Piani di Studio</title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>ui/css/style.css?v=<?php echo filemtime($base_path.'ui/css/style.css'); ?>">
-    <!-- Aggiungi qui eventuali altri file CSS -->
+    <style>
+<?php
+  // Leggi il contenuto del file CSS e incorporalo direttamente
+  $css_file = $_SERVER['DOCUMENT_ROOT'] . '/ProgAle/ui/css/style.css';
+  if (file_exists($css_file)) {
+    echo file_get_contents($css_file);
+  } else {
+    // Fallback se il percorso diretto non funziona
+    $relative_path = $base_path . 'ui/css/style.css';
+    $relative_file = realpath(dirname(__FILE__) . '/' . $relative_path);
+    if (file_exists($relative_file)) {
+      echo file_get_contents($relative_file);
+    }
+  }
+?>
+</style>
 </head>
 <body>
     <div class="container">
