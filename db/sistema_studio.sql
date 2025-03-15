@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 14, 2025 at 12:30 AM
+-- Generation Time: Mar 15, 2025 at 01:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -66,27 +66,16 @@ CREATE TABLE `commenti` (
 --
 
 INSERT INTO `commenti` (`id`, `user_id`, `tipo_elemento`, `elemento_id`, `testo`, `data_creazione`, `data_modifica`) VALUES
-(1, 4, 'piano', 1, 'Pezzo di merda', '2025-03-13 13:56:04', NULL),
-(2, 4, 'argomento', 1, 'testolo sei un babbo', '2025-03-13 14:45:56', NULL),
-(3, 4, 'argomento', 1, 'testolo sei un babbo', '2025-03-13 14:47:56', NULL),
-(4, 4, 'argomento', 1, 'fd', '2025-03-13 14:48:03', NULL),
-(5, 4, 'piano', 2, 'dio', '2025-03-13 15:02:22', NULL),
-(6, 4, 'esame', 1, 'test\r\n', '2025-03-13 15:05:54', NULL),
-(7, 4, 'argomento', 0, 'commento\r\n', '2025-03-13 15:17:17', NULL),
-(8, 4, 'argomento', 0, 'commento\r\n', '2025-03-13 15:22:46', NULL),
-(9, 4, 'argomento', 0, 'commento\r\n', '2025-03-13 15:23:43', NULL),
-(10, 4, 'argomento', 0, 'tesiamo', '2025-03-13 15:23:52', NULL),
-(11, 4, 'argomento', 0, 'testamemmo\r\n', '2025-03-13 15:24:02', NULL),
-(12, 1, 'esame', 3, 'fdsafdsa', '2025-03-13 22:55:26', NULL),
-(13, 1, 'esame', 3, 'non ho capito', '2025-03-13 22:55:41', NULL),
-(14, 1, 'esame', 3, 'fdsa', '2025-03-13 22:57:13', NULL),
-(15, 1, 'argomento', 4, 'fdsafdsa', '2025-03-13 22:58:59', NULL),
-(16, 1, 'piano', 2, 'fdsafds', '2025-03-13 23:08:47', NULL),
-(17, 1, 'piano', 2, 'fdsafds', '2025-03-13 23:09:36', NULL),
-(18, 1, 'piano', 2, 'fdsa', '2025-03-13 23:09:39', NULL),
-(19, 1, 'piano', 2, 'fdas', '2025-03-13 23:09:41', NULL),
-(20, 1, 'esame', 1, 'fds', '2025-03-13 23:11:04', NULL),
-(21, 1, 'esercizio', 1, 'fd', '2025-03-13 23:24:33', NULL);
+(1, 3, 'piano', 1, 'Pezzo di merda', '2025-03-15 00:16:39', NULL),
+(2, 3, 'argomento', 1, 'testolo sei un babbo', '2025-03-15 00:16:39', NULL),
+(3, 3, 'argomento', 1, 'testolo sei un babbo', '2025-03-15 00:16:39', NULL),
+(4, 3, 'argomento', 1, 'fd', '2025-03-15 00:16:39', NULL),
+(5, 3, 'piano', 2, 'dio', '2025-03-15 00:16:39', NULL),
+(6, 3, 'esame', 1, 'test', '2025-03-15 00:16:39', NULL),
+(7, 1, 'esame', 3, 'fdsafdsa', '2025-03-15 00:16:39', NULL),
+(8, 1, 'esame', 3, 'non ho capito', '2025-03-15 00:16:39', NULL),
+(9, 1, 'argomento', 4, 'fdsafdsa', '2025-03-15 00:16:39', NULL),
+(10, 1, 'esercizio', 1, 'fd', '2025-03-15 00:16:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -139,6 +128,20 @@ INSERT INTO `esercizi` (`id`, `sottoargomento_id`, `titolo`, `testo`, `soluzione
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `esercizio_correlato`
+--
+
+CREATE TABLE `esercizio_correlato` (
+  `id` int(11) NOT NULL,
+  `esercizio_id` int(11) NOT NULL,
+  `esercizio_correlato_id` int(11) NOT NULL,
+  `tipo_relazione` varchar(50) NOT NULL,
+  `data_creazione` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `formula_argomento`
 --
 
@@ -181,9 +184,9 @@ CREATE TABLE `piani_di_studio` (
 --
 
 INSERT INTO `piani_di_studio` (`id`, `nome`, `descrizione`, `data_creazione`, `user_id`, `visibility`) VALUES
-(1, '5^info', 'Piano per completare la 5^ superiore', '2025-03-13 13:38:26', 1, 'public'),
-(2, 'Mio piano', 'fda', '2025-03-13 14:57:15', 4, 'public'),
-(3, 'fdsa', 'fdsa', '2025-03-13 22:51:20', 1, 'private');
+(1, '5^info', 'Piano per completare la 5^ superiore', '2025-03-15 00:16:39', 1, 'public'),
+(2, 'Mio piano', 'fda', '2025-03-15 00:16:39', 3, 'public'),
+(3, 'fdsa', 'fdsa', '2025-03-15 00:16:39', 1, 'private');
 
 -- --------------------------------------------------------
 
@@ -195,6 +198,17 @@ CREATE TABLE `requisiti` (
   `id` int(11) NOT NULL,
   `esercizio_id` int(11) NOT NULL,
   `descrizione` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `requisito_argomento`
+--
+
+CREATE TABLE `requisito_argomento` (
+  `requisito_id` int(11) NOT NULL,
+  `argomento_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -224,6 +238,42 @@ INSERT INTO `sottoargomenti` (`id`, `argomento_id`, `titolo`, `descrizione`, `li
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sottoargomento_argomento_prerequisito`
+--
+
+CREATE TABLE `sottoargomento_argomento_prerequisito` (
+  `sottoargomento_id` int(11) NOT NULL,
+  `argomento_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sottoargomento_requisito`
+--
+
+CREATE TABLE `sottoargomento_requisito` (
+  `id` int(11) NOT NULL,
+  `sottoargomento_id` int(11) NOT NULL,
+  `requisito_tipo` varchar(50) NOT NULL,
+  `requisito_id` int(11) NOT NULL,
+  `data_creazione` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sottoargomento_sottoargomento_prerequisito`
+--
+
+CREATE TABLE `sottoargomento_sottoargomento_prerequisito` (
+  `sottoargomento_id` int(11) NOT NULL,
+  `prerequisito_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -241,9 +291,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`, `created_at`) VALUES
-(1, 'fra', '$2y$10$Q3i5LI1cz0N8fg9B1ChumeUdZbVxkrCBIsuFoI8vkzoA0e7ue5q5S', 'fraff@gmail.com', 'user', '2025-03-12 19:36:10'),
-(3, 'admin', '$2y$10$GFyFe.FrTjJZfdb98WY5w.DOfLeeK4Gdfa2Wgi93BO5jRoW2zgBfG', 'admin@example.com', 'admin', '2025-03-12 19:41:20'),
-(4, 'mezze', '$2y$10$nzBf0bCklAceusPLqCU/ruifsi6vNt/zfqOBpoHtVXe2yqoTdzgcq', 'ff.@ff.it', 'user', '2025-03-13 13:55:39');
+(1, 'admin', '$2y$10$GFyFe.FrTjJZfdb98WY5w.DOfLeeK4Gdfa2Wgi93BO5jRoW2zgBfG', 'admin@example.com', 'admin', '2025-03-15 00:16:39'),
+(2, 'fra', '$2y$10$Q3i5LI1cz0N8fg9B1ChumeUdZbVxkrCBIsuFoI8vkzoA0e7ue5q5S', 'fraff@gmail.com', 'user', '2025-03-15 00:16:39'),
+(3, 'mezze', '$2y$10$nzBf0bCklAceusPLqCU/ruifsi6vNt/zfqOBpoHtVXe2yqoTdzgcq', 'ff.@ff.it', 'user', '2025-03-15 00:16:39');
 
 --
 -- Indexes for dumped tables
@@ -279,6 +329,14 @@ ALTER TABLE `esercizi`
   ADD KEY `idx_esercizi_sottoargomento` (`sottoargomento_id`);
 
 --
+-- Indexes for table `esercizio_correlato`
+--
+ALTER TABLE `esercizio_correlato`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_esercizio` (`esercizio_id`),
+  ADD KEY `idx_esercizio_correlato` (`esercizio_correlato_id`);
+
+--
 -- Indexes for table `formula_argomento`
 --
 ALTER TABLE `formula_argomento`
@@ -307,11 +365,39 @@ ALTER TABLE `requisiti`
   ADD KEY `idx_requisiti_esercizio` (`esercizio_id`);
 
 --
+-- Indexes for table `requisito_argomento`
+--
+ALTER TABLE `requisito_argomento`
+  ADD PRIMARY KEY (`requisito_id`,`argomento_id`),
+  ADD KEY `argomento_id` (`argomento_id`);
+
+--
 -- Indexes for table `sottoargomenti`
 --
 ALTER TABLE `sottoargomenti`
   ADD PRIMARY KEY (`id`),
   ADD KEY `idx_sottoargomenti_argomento` (`argomento_id`);
+
+--
+-- Indexes for table `sottoargomento_argomento_prerequisito`
+--
+ALTER TABLE `sottoargomento_argomento_prerequisito`
+  ADD PRIMARY KEY (`sottoargomento_id`,`argomento_id`),
+  ADD KEY `idx_argomento` (`argomento_id`);
+
+--
+-- Indexes for table `sottoargomento_requisito`
+--
+ALTER TABLE `sottoargomento_requisito`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `idx_sottoargomento` (`sottoargomento_id`);
+
+--
+-- Indexes for table `sottoargomento_sottoargomento_prerequisito`
+--
+ALTER TABLE `sottoargomento_sottoargomento_prerequisito`
+  ADD PRIMARY KEY (`sottoargomento_id`,`prerequisito_id`),
+  ADD KEY `idx_prerequisito` (`prerequisito_id`);
 
 --
 -- Indexes for table `users`
@@ -335,7 +421,7 @@ ALTER TABLE `argomenti`
 -- AUTO_INCREMENT for table `commenti`
 --
 ALTER TABLE `commenti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `esami`
@@ -348,6 +434,12 @@ ALTER TABLE `esami`
 --
 ALTER TABLE `esercizi`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `esercizio_correlato`
+--
+ALTER TABLE `esercizio_correlato`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `formule`
@@ -374,10 +466,16 @@ ALTER TABLE `sottoargomenti`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
+-- AUTO_INCREMENT for table `sottoargomento_requisito`
+--
+ALTER TABLE `sottoargomento_requisito`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Constraints for dumped tables
@@ -408,6 +506,13 @@ ALTER TABLE `esercizi`
   ADD CONSTRAINT `esercizi_ibfk_1` FOREIGN KEY (`sottoargomento_id`) REFERENCES `sottoargomenti` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `esercizio_correlato`
+--
+ALTER TABLE `esercizio_correlato`
+  ADD CONSTRAINT `esercizio_correlato_ibfk_1` FOREIGN KEY (`esercizio_id`) REFERENCES `esercizi` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `esercizio_correlato_ibfk_2` FOREIGN KEY (`esercizio_correlato_id`) REFERENCES `esercizi` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `formula_argomento`
 --
 ALTER TABLE `formula_argomento`
@@ -427,10 +532,37 @@ ALTER TABLE `requisiti`
   ADD CONSTRAINT `requisiti_ibfk_1` FOREIGN KEY (`esercizio_id`) REFERENCES `esercizi` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `requisito_argomento`
+--
+ALTER TABLE `requisito_argomento`
+  ADD CONSTRAINT `requisito_argomento_ibfk_1` FOREIGN KEY (`requisito_id`) REFERENCES `requisiti` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `requisito_argomento_ibfk_2` FOREIGN KEY (`argomento_id`) REFERENCES `argomenti` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `sottoargomenti`
 --
 ALTER TABLE `sottoargomenti`
   ADD CONSTRAINT `sottoargomenti_ibfk_1` FOREIGN KEY (`argomento_id`) REFERENCES `argomenti` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `sottoargomento_argomento_prerequisito`
+--
+ALTER TABLE `sottoargomento_argomento_prerequisito`
+  ADD CONSTRAINT `sottoargomento_argomento_prerequisito_ibfk_1` FOREIGN KEY (`sottoargomento_id`) REFERENCES `sottoargomenti` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `sottoargomento_argomento_prerequisito_ibfk_2` FOREIGN KEY (`argomento_id`) REFERENCES `argomenti` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `sottoargomento_requisito`
+--
+ALTER TABLE `sottoargomento_requisito`
+  ADD CONSTRAINT `sottoargomento_requisito_ibfk_1` FOREIGN KEY (`sottoargomento_id`) REFERENCES `sottoargomenti` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `sottoargomento_sottoargomento_prerequisito`
+--
+ALTER TABLE `sottoargomento_sottoargomento_prerequisito`
+  ADD CONSTRAINT `sottoargomento_sottoargomento_prerequisito_ibfk_1` FOREIGN KEY (`sottoargomento_id`) REFERENCES `sottoargomenti` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `sottoargomento_sottoargomento_prerequisito_ibfk_2` FOREIGN KEY (`prerequisito_id`) REFERENCES `sottoargomenti` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
