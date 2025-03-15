@@ -7,7 +7,7 @@
  * @param PDO $db Connessione al database
  * @param string $tipo_elemento Tipo di elemento (es. 'argomento', 'esame', 'piano')
  * @param int $elemento_id ID dell'elemento a cui è associato il commento
- * @param string $redirect_param Parametro di reindirizzamento (es. 'esame_id=5')
+ * @param string $redirect_param Parametro di reindirizzamento (es. 'id=5')
  */
 function renderCommenti($db, $tipo_elemento, $elemento_id, $redirect_param) {
     $commento = new Commento($db);
@@ -26,8 +26,8 @@ function renderCommenti($db, $tipo_elemento, $elemento_id, $redirect_param) {
             </form>
         </div>
         <?php else: ?>
-            <p><a href="<?php echo getPagePath('login.php'); ?>">Accedi</a> per aggiungere un commento.</p>    
-<?php endif; ?>
+            <p><a href="../login.php">Accedi</a> per aggiungere un commento.</p>    
+        <?php endif; ?>
         
         <div class="comments-list">
             <?php
@@ -42,7 +42,7 @@ function renderCommenti($db, $tipo_elemento, $elemento_id, $redirect_param) {
                     echo '</div>';
                     echo '<div class="comment-content">'.htmlspecialchars($row_commento['testo']).'</div>';
                     
-                    // Opzioni per modificare/eliminare
+                    // Opzioni per modificare/eliminare solo per l'autore del commento o admin
                     if(isset($_SESSION['user_id']) && 
                        ($_SESSION['user_id'] == $row_commento['user_id'] || 
                         (isset($_SESSION['is_admin']) && $_SESSION['is_admin']))) {
@@ -71,6 +71,43 @@ function renderCommenti($db, $tipo_elemento, $elemento_id, $redirect_param) {
             ?>
         </div>
     </div>
+    
+    <!-- Script per gestire la modifica dei commenti -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gestione pulsanti di modifica
+        const editButtons = document.querySelectorAll('.edit-comment-btn');
+        editButtons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault(); // Previene l'azione predefinita del link
+                const commentId = this.getAttribute('data-id');
+                const commentContent = document.querySelector('#comment-' + commentId + ' .comment-content');
+                const editForm = document.querySelector('#edit-form-' + commentId);
+                
+                if (commentContent && editForm) {
+                    commentContent.style.display = 'none';
+                    editForm.style.display = 'block';
+                }
+            });
+        });
+        
+        // Gestione pulsanti annulla modifica
+        const cancelButtons = document.querySelectorAll('.cancel-edit');
+        cancelButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const form = this.closest('.edit-comment-form');
+                if (form) {
+                    const commentId = form.id.replace('edit-form-', '');
+                    const commentContent = document.querySelector('#comment-' + commentId + ' .comment-content');
+                    
+                    if (commentContent) {
+                        form.style.display = 'none';
+                        commentContent.style.display = 'block';
+                    }
+                }
+            });
+        });
+    });
+    </script>
     <?php
 }
-?>
