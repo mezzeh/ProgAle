@@ -866,4 +866,294 @@ form button {
         display: block;
         text-align: center;
     }
+        /* Responsive CSS per dispositivi mobili */
+    
+        /* Media query per tablet e dispositivi di medie dimensioni */
+        @media (max-width: 992px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+    
+            /* Menu di navigazione più compatto */
+            .main-menu {
+                padding: 5px;
+            }
+    
+            /* Adatta gli elementi del form */
+            form {
+                padding: 15px;
+            }
+    
+            /* Griglia delle formule con meno colonne */
+            .formula-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+    
+            /* Rendi la intestazione con pulsante più compatta */
+            .header-with-button {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            .header-with-button button {
+                margin-top: 10px;
+                margin-left: 0;
+            }
+        }
+    
+        /* Media query per smartphone e dispositivi piccoli */
+        @media (max-width: 768px) {
+    
+            /* Menu principale a schermo intero */
+            .main-menu {
+                flex-direction: column;
+                width: 100%;
+            }
+    
+            .main-menu li {
+                width: 100%;
+            }
+    
+            .main-menu a {
+                padding: 12px 15px;
+                width: 100%;
+                text-align: left;
+                border-bottom: 1px solid #444;
+            }
+    
+            .main-menu li:last-child a {
+                border-bottom: none;
+            }
+    
+            /* Campo di ricerca a larghezza piena */
+            .search-item {
+                width: 100%;
+                padding: 10px 0;
+            }
+    
+            .search-form {
+                width: 100%;
+            }
+    
+            .search-form input[type="text"] {
+                width: 80%;
+                flex-grow: 1;
+            }
+    
+            /* Risultati di ricerca a schermo intero */
+            .search-results-dropdown {
+                width: 100%;
+                left: 0;
+                right: 0;
+                max-height: 60vh;
+                position: fixed;
+                top: 60px;
+            }
+    
+            /* Lista elementi a visualizzazione compatta */
+            .item-list li {
+                padding: 12px;
+            }
+    
+            .item-actions {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+    
+            .item-actions a {
+                display: inline-block;
+                margin-bottom: 5px;
+            }
+    
+            /* Form a schermo intero */
+            #createFormContainer,
+            #editFormContainer {
+                width: 100%;
+                box-sizing: border-box;
+                border-radius: 0;
+                margin-top: 20px;
+            }
+    
+            /* Breadcrumb semplificato */
+            .breadcrumb {
+                flex-wrap: wrap;
+                padding: 8px;
+            }
+    
+            .breadcrumb li {
+                margin-bottom: 5px;
+            }
+    
+            /* Rimuovi i margini di profondità negli elenchi annidati su mobile */
+            .depth-1,
+            .depth-2,
+            .depth-3,
+            .depth-4,
+            .depth-5 {
+                margin-left: 0 !important;
+            }
+    
+            /* Imposta tutti i bottoni alla stessa larghezza */
+            button,
+            .btn-primary,
+            .btn-secondary {
+                width: 100%;
+                margin-bottom: 8px;
+                margin-left: 0;
+                text-align: center;
+            }
+    
+            /* Spaziatura per i commenti */
+            .comment-item {
+                padding: 10px;
+            }
+    
+            .comment-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            .comment-date {
+                margin-top: 5px;
+            }
+    
+            /* Checkbox e radio più grandi per facilità di tocco */
+            input[type="checkbox"],
+            input[type="radio"] {
+                transform: scale(1.3);
+                margin-right: 10px;
+            }
+    
+            /* Migliora la visualizzazione mobile delle formule */
+            .formula-expression {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding: 8px;
+            }
+    
+            /* Rendi i modal/dialog responsive */
+            .modal-dialog {
+                width: 95%;
+                margin: 10px auto;
+            }
+    
+            /* Migliora la visualizzazione dei tag selezionati nei requisiti */
+            .selected-tag {
+                margin-bottom: 5px;
+                width: 100%;
+                justify-content: space-between;
+            }
+    
+            /* Stile migliorato per la lista dei prerequisiti */
+            .prerequisites-list li {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+    
+            .prerequisites-list .badge {
+                margin-bottom: 5px;
+            }
+        }
+    
+        /* Media query per dispositivi molto piccoli */
+        @media (max-width: 480px) {
+            .container {
+                width: 100%;
+                padding: 10px;
+            }
+    
+            h1 {
+                font-size: 24px;
+            }
+    
+            h2 {
+                font-size: 20px;
+            }
+    
+            .item-title {
+                font-size: 16px;
+            }
+    
+            /* Riduci padding ovunque per risparmiare spazio */
+            .item-list li,
+            form,
+            .comment-item {
+                padding: 10px;
+            }
+    
+            input,
+            textarea,
+            select,
+            button {
+                padding: 8px;
+                font-size: 14px;
+            }
+    
+            /* Migliora ulteriormente l'esperienza su schermi molto piccoli */
+            .breadcrumb li:not(:last-child) {
+                display: none;
+                /* Mostra solo l'ultimo elemento del breadcrumb */
+            }
+    
+            .breadcrumb li:first-child {
+                display: inline;
+                /* Mostra comunque la home */
+            }
+    
+            .breadcrumb li:first-child::after {
+                content: '...›';
+            }
+    
+            /* Semplifica il menu a icone in modalità molto piccolo */
+            .user-info {
+                font-size: 12px;
+            }
+        }
+    
+        /* Fix per la visualizzazione di Safari mobile */
+        @supports (-webkit-overflow-scrolling: touch) {
+    
+            /* Risolve problemi con le aree di input in Safari */
+            input,
+            textarea,
+            select {
+                -webkit-appearance: none;
+                -moz-appearance: none;
+                -ms-appearance: none;
+                appearance: none;
+                border-radius: 0;
+            }
+    
+            /* Fix per il contenuto che scompare sotto la tastiera virtuale */
+            body {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+    
+        /* Fix per Android e Chrome mobile */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            font-size: 16px;
+            /* Evita lo zoom automatico su input focus */
+        }
+    
+        /* Stile per visualizzazione con orientamento orizzontale */
+        @media (max-width: 992px) and (orientation: landscape) {
+            .main-menu {
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+    
+            .main-menu li {
+                width: auto;
+            }
+    
+            .search-results-dropdown {
+                max-height: 40vh;
+            }
+        }
 }

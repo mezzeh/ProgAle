@@ -30,7 +30,7 @@ if (strpos($current_page, 'view_') === 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Gestione Piani di Studio</title>
-    <link rel="stylesheet" href="<?php echo $base_path; ?>ui/css/style.css">
+    <link rel="stylesheet" href="<?php echo $base_path; ?>ui/css/style.css?v=<?php echo filemtime($base_path.'ui/css/style.css'); ?>">
     <!-- Aggiungi qui eventuali altri file CSS -->
 </head>
 <body>

@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="../ui/css/style.css?v=1234">
+
 <?php
 // Includi header
 include_once '../ui/includes/header.php';
