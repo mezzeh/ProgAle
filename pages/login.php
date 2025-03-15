@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Includi header (senza richiedere autenticazione)
 include_once '../ui/includes/header_no_auth.php';
 
@@ -39,6 +40,7 @@ if(isset($_POST['login'])) {
         $message_class = "error";
     }
 }
+ob_end_flush();
 ?>
 
 <div class="container">

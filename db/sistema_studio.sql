@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 15, 2025 at 01:19 AM
+-- Generation Time: Mar 15, 2025 at 11:29 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.0.30
 
@@ -40,10 +40,39 @@ CREATE TABLE `argomenti` (
 --
 
 INSERT INTO `argomenti` (`id`, `esame_id`, `titolo`, `descrizione`, `livello_importanza`) VALUES
-(1, 1, 'Studio di una funzione', 'Intero procedimento dello studio di una funzione', 5),
-(2, 2, 'testamento', 'testicolo', 3),
-(3, 1, 'fdsafds', 'fdsafds', 3),
-(4, 3, 'argomento', 'dsafd', 3);
+(1, 1, 'Introduzione a Java', 'Concetti base del linguaggio Java e ambiente di sviluppo', 5),
+(2, 1, 'Classi e Oggetti', 'Programmazione orientata agli oggetti in Java', 5),
+(3, 1, 'Array e Collections', 'Strutture dati fondamentali in Java', 4),
+(4, 1, 'Ereditarietà e Polimorfismo', 'Concetti avanzati di OOP', 4),
+(5, 1, 'Eccezioni', 'Gestione degli errori in Java', 3),
+(6, 2, 'Complessità Algoritmica', 'Notazione O e analisi della complessità', 5),
+(7, 2, 'Algoritmi di Ordinamento', 'QuickSort, MergeSort, HeapSort, etc.', 5),
+(8, 2, 'Alberi e Grafi', 'Rappresentazione e algoritmi su alberi e grafi', 4),
+(9, 2, 'Liste e Code', 'Implementazione e operazioni su liste, pile e code', 4),
+(10, 3, 'Modello Relazionale', 'Concetti fondamentali delle basi di dati relazionali', 5),
+(11, 3, 'SQL', 'Linguaggio di interrogazione dei database', 5),
+(12, 3, 'Normalizzazione', 'Forme normali e progettazione database', 4),
+(13, 3, 'Transazioni', 'Proprietà ACID e gestione delle transazioni', 3),
+(14, 4, 'Processi e Thread', 'Concetti di processo, thread e concorrenza', 5),
+(15, 4, 'Scheduling', 'Algoritmi di scheduling della CPU', 4),
+(16, 4, 'Gestione Memoria', 'Tecniche di gestione della memoria', 4),
+(17, 4, 'File System', 'Organizzazione e gestione dei file', 3),
+(18, 5, 'Limiti e Continuità', 'Definizioni e teoremi sui limiti', 5),
+(19, 5, 'Derivate', 'Calcolo differenziale e applicazioni', 5),
+(20, 5, 'Integrali', 'Calcolo integrale e applicazioni', 5),
+(21, 5, 'Serie Numeriche', 'Convergenza e divergenza di serie', 4),
+(22, 6, 'Vettori', 'Operazioni e proprietà dei vettori', 5),
+(23, 6, 'Matrici', 'Algebra delle matrici', 5),
+(24, 6, 'Sistemi Lineari', 'Risoluzione di sistemi di equazioni lineari', 4),
+(25, 6, 'Spazi Vettoriali', 'Basi, dimensione e trasformazioni lineari', 4),
+(26, 9, 'Cinematica', 'Studio del moto dei corpi', 5),
+(27, 9, 'Dinamica', 'Leggi di Newton e applicazioni', 5),
+(28, 9, 'Energia e Lavoro', 'Conservazione dell\'energia e teorema dell\'energia cinetica', 4),
+(29, 9, 'Momento Angolare', 'Conservazione del momento angolare', 3),
+(30, 10, 'Campo Elettrico', 'Legge di Coulomb e campo elettrico', 5),
+(31, 10, 'Campo Magnetico', 'Forza di Lorentz e campo magnetico', 5),
+(32, 10, 'Equazioni di Maxwell', 'Formulazione matematica dell\'elettromagnetismo', 4),
+(33, 10, 'Onde Elettromagnetiche', 'Propagazione delle onde EM', 3);
 
 -- --------------------------------------------------------
 
@@ -60,22 +89,6 @@ CREATE TABLE `commenti` (
   `data_creazione` timestamp NOT NULL DEFAULT current_timestamp(),
   `data_modifica` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `commenti`
---
-
-INSERT INTO `commenti` (`id`, `user_id`, `tipo_elemento`, `elemento_id`, `testo`, `data_creazione`, `data_modifica`) VALUES
-(1, 3, 'piano', 1, 'Pezzo di merda', '2025-03-15 00:16:39', NULL),
-(2, 3, 'argomento', 1, 'testolo sei un babbo', '2025-03-15 00:16:39', NULL),
-(3, 3, 'argomento', 1, 'testolo sei un babbo', '2025-03-15 00:16:39', NULL),
-(4, 3, 'argomento', 1, 'fd', '2025-03-15 00:16:39', NULL),
-(5, 3, 'piano', 2, 'dio', '2025-03-15 00:16:39', NULL),
-(6, 3, 'esame', 1, 'test', '2025-03-15 00:16:39', NULL),
-(7, 1, 'esame', 3, 'fdsafdsa', '2025-03-15 00:16:39', NULL),
-(8, 1, 'esame', 3, 'non ho capito', '2025-03-15 00:16:39', NULL),
-(9, 1, 'argomento', 4, 'fdsafdsa', '2025-03-15 00:16:39', NULL),
-(10, 1, 'esercizio', 1, 'fd', '2025-03-15 00:16:39', NULL);
 
 -- --------------------------------------------------------
 
@@ -99,9 +112,20 @@ CREATE TABLE `esami` (
 --
 
 INSERT INTO `esami` (`id`, `piano_id`, `nome`, `codice`, `crediti`, `descrizione`, `anno`, `semestre`) VALUES
-(1, 1, 'Prova Matematica', 'speranza', 4, 'Insieme di argomenti orali e pratici', NULL, NULL),
-(2, 2, 'test', 'fdsa', 6, 'dfsafs', NULL, NULL),
-(3, 3, 'fddfs', 'fdsa', 6, 'fdsa', NULL, NULL);
+(1, 1, 'Programmazione I', 'INF001', 12, 'Introduzione alla programmazione con Java', 1, 1),
+(2, 1, 'Algoritmi e Strutture Dati', 'INF002', 9, 'Algoritmi fondamentali e strutture dati', 1, 2),
+(3, 1, 'Basi di Dati', 'INF003', 9, 'Progettazione e implementazione di database relazionali', 2, 1),
+(4, 1, 'Sistemi Operativi', 'INF004', 6, 'Concetti fondamentali dei sistemi operativi', 2, 2),
+(5, 2, 'Analisi Matematica I', 'MAT001', 12, 'Limiti, derivate e integrali', 1, 1),
+(6, 2, 'Algebra Lineare', 'MAT002', 9, 'Vettori, matrici e sistemi lineari', 1, 2),
+(7, 2, 'Geometria', 'MAT003', 9, 'Geometria analitica e differenziale', 2, 1),
+(8, 2, 'Analisi Numerica', 'MAT004', 6, 'Metodi numerici per problemi matematici', 2, 2),
+(9, 3, 'Meccanica', 'FIS001', 12, 'Principi della meccanica classica', 1, 1),
+(10, 3, 'Elettromagnetismo', 'FIS002', 9, 'Teoria elettromagnetica di Maxwell', 1, 2),
+(11, 3, 'Termodinamica', 'FIS003', 9, 'Principi della termodinamica', 2, 1),
+(12, 4, 'Reti di Calcolatori', 'ING001', 9, 'Protocolli e architetture di rete', 1, 1),
+(13, 4, 'Ingegneria del Software', 'ING002', 9, 'Metodologie di sviluppo software', 1, 2),
+(14, 4, 'Intelligenza Artificiale', 'ING003', 6, 'Algoritmi e tecniche di AI', 2, 1);
 
 -- --------------------------------------------------------
 
@@ -123,7 +147,20 @@ CREATE TABLE `esercizi` (
 --
 
 INSERT INTO `esercizi` (`id`, `sottoargomento_id`, `titolo`, `testo`, `soluzione`, `difficolta`) VALUES
-(1, 3, 'Normal exercise', 'x - 2', 'x xsfjdsalf', 2);
+(1, 1, 'Dichiarazione Variabili', 'Scrivere un programma Java che dichiari e inizializzi variabili di tutti i tipi primitivi.', 'public class TipiPrimitivi {\n    public static void main(String[] args) {\n        byte b = 10;\n        short s = 100;\n        int i = 1000;\n        long l = 10000L;\n        float f = 3.14f;\n        double d = 3.14159;\n        char c = \'A\';\n        boolean bool = true;\n        \n        System.out.println(\"byte: \" + b);\n        System.out.println(\"short: \" + s);\n        System.out.println(\"int: \" + i);\n        System.out.println(\"long: \" + l);\n        System.out.println(\"float: \" + f);\n        System.out.println(\"double: \" + d);\n        System.out.println(\"char: \" + c);\n        System.out.println(\"boolean: \" + bool);\n    }\n}', 1),
+(2, 3, 'Ciclo For', 'Scrivere un programma Java che utilizzi un ciclo for per stampare i numeri da 1 a 10.', 'public class CicloFor {\n    public static void main(String[] args) {\n        for(int i = 1; i <= 10; i++) {\n            System.out.println(i);\n        }\n    }\n}', 1),
+(3, 3, 'Ciclo While', 'Scrivere un programma Java che utilizzi un ciclo while per calcolare la somma dei numeri da 1 a 100.', 'public class SommaWhile {\n    public static void main(String[] args) {\n        int sum = 0;\n        int i = 1;\n        while(i <= 100) {\n            sum += i;\n            i++;\n        }\n        System.out.println(\"La somma è: \" + sum);\n    }\n}', 2),
+(4, 5, 'Definizione Classe', 'Creare una classe Studente con attributi nome, cognome ed età, e un metodo per visualizzare le informazioni.', 'public class Studente {\n    private String nome;\n    private String cognome;\n    private int eta;\n    \n    public Studente(String nome, String cognome, int eta) {\n        this.nome = nome;\n        this.cognome = cognome;\n        this.eta = eta;\n    }\n    \n    public void visualizzaInfo() {\n        System.out.println(\"Nome: \" + nome);\n        System.out.println(\"Cognome: \" + cognome);\n        System.out.println(\"Età: \" + eta);\n    }\n}', 2),
+(5, 9, 'Array Somma', 'Scrivere un metodo che calcoli la somma degli elementi di un array di interi.', 'public static int sommaArray(int[] array) {\n    int somma = 0;\n    for(int elemento : array) {\n        somma += elemento;\n    }\n    return somma;\n}', 1),
+(6, 9, 'Array Max Min', 'Trovare il valore massimo e minimo in un array di interi.', 'public static void trovaMaxMin(int[] array) {\n    if(array.length == 0) {\n        System.out.println(\"Array vuoto\");\n        return;\n    }\n    \n    int max = array[0];\n    int min = array[0];\n    \n    for(int i = 1; i < array.length; i++) {\n        if(array[i] > max) {\n            max = array[i];\n        }\n        if(array[i] < min) {\n            min = array[i];\n        }\n    }\n    \n    System.out.println(\"Massimo: \" + max);\n    System.out.println(\"Minimo: \" + min);\n}', 2),
+(7, 17, 'QuickSort Implementazione', 'Implementare l\'algoritmo QuickSort per ordinare un array di interi.', 'public static void quickSort(int[] arr, int low, int high) {\n    if (low < high) {\n        int pi = partition(arr, low, high);\n        quickSort(arr, low, pi - 1);\n        quickSort(arr, pi + 1, high);\n    }\n}\n\nprivate static int partition(int[] arr, int low, int high) {\n    int pivot = arr[high];\n    int i = (low - 1);\n    for (int j = low; j < high; j++) {\n        if (arr[j] <= pivot) {\n            i++;\n            int temp = arr[i];\n            arr[i] = arr[j];\n            arr[j] = temp;\n        }\n    }\n    int temp = arr[i + 1];\n    arr[i + 1] = arr[high];\n    arr[high] = temp;\n    return i + 1;\n}', 3),
+(8, 29, 'Limite Funzione', 'Calcolare il limite di (x^2-1)/(x-1) per x che tende a 1.', 'Applichiamo la regola di de l\'Hôpital o scomponiamo:\n(x^2-1)/(x-1) = ((x-1)(x+1))/(x-1) = x+1 per x ≠ 1\n\nQuindi il limite per x→1 è:\nlim(x→1) (x^2-1)/(x-1) = lim(x→1) (x+1) = 1+1 = 2', 2),
+(9, 30, 'Continuità Funzione', 'Studiare la continuità della funzione f(x) = (x^2-9)/(x-3) nel punto x = 3.', 'La funzione f(x) = (x^2-9)/(x-3) = ((x-3)(x+3))/(x-3) = x+3 per x ≠ 3\n\nQuindi f(x) = x+3 per x ≠ 3, che è una funzione continua in tutti i punti tranne x = 3 dove non è definita.\n\nPer x = 3, il limite della funzione è:\nlim(x→3) f(x) = lim(x→3) (x+3) = 3+3 = 6\n\nPossiamo ridefinire la funzione come:\nf(x) = x+3 se x ≠ 3\nf(3) = 6\n\nCon questa definizione, la funzione diventa continua anche in x = 3.', 2),
+(10, 33, 'Derivata Funzione', 'Calcolare la derivata della funzione f(x) = x^3 + 2x^2 - 5x + 1.', 'Applichiamo le regole di derivazione:\nf\'(x) = 3x^2 + 4x - 5', 1),
+(11, 34, 'Derivata Composta', 'Calcolare la derivata della funzione f(x) = sin(x^2).', 'Applichiamo la regola della catena:\nf\'(x) = cos(x^2) · 2x = 2x · cos(x^2)', 2),
+(12, 37, 'Integrale Base', 'Calcolare l\'integrale indefinito di f(x) = 2x + 3.', '∫(2x + 3)dx = x^2 + 3x + C', 1),
+(13, 38, 'Integrazione per Parti', 'Calcolare l\'integrale indefinito di f(x) = x·e^x.', 'Usiamo il metodo di integrazione per parti: ∫u·dv = u·v - ∫v·du\nSia u = x e dv = e^x dx, allora du = dx e v = e^x\n\n∫x·e^x dx = x·e^x - ∫e^x dx = x·e^x - e^x + C = e^x(x-1) + C', 3),
+(14, 39, 'Area sotto curva', 'Calcolare l\'area della regione limitata dalla curva y = x^2 e dall\'asse x tra x = 0 e x = 2.', 'L\'area è data dall\'integrale definito:\n∫(0→2) x^2 dx = [x^3/3](0→2) = 2^3/3 - 0 = 8/3 ≈ 2.67', 2);
 
 -- --------------------------------------------------------
 
@@ -138,6 +175,23 @@ CREATE TABLE `esercizio_correlato` (
   `tipo_relazione` varchar(50) NOT NULL,
   `data_creazione` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `esercizio_correlato`
+--
+
+INSERT INTO `esercizio_correlato` (`id`, `esercizio_id`, `esercizio_correlato_id`, `tipo_relazione`, `data_creazione`) VALUES
+(1, 1, 2, 'prerequisito', '2025-03-15 10:27:57'),
+(2, 1, 3, 'correlato', '2025-03-15 10:27:57'),
+(3, 2, 3, 'correlato', '2025-03-15 10:27:57'),
+(4, 3, 4, 'prerequisito', '2025-03-15 10:27:57'),
+(5, 4, 5, 'successivo', '2025-03-15 10:27:57'),
+(6, 5, 6, 'correlato', '2025-03-15 10:27:57'),
+(7, 7, 8, 'successivo', '2025-03-15 10:27:57'),
+(8, 8, 9, 'correlato', '2025-03-15 10:27:57'),
+(9, 10, 11, 'correlato', '2025-03-15 10:27:57'),
+(10, 12, 13, 'prerequisito', '2025-03-15 10:27:57'),
+(11, 13, 14, 'correlato', '2025-03-15 10:27:57');
 
 -- --------------------------------------------------------
 
@@ -184,9 +238,10 @@ CREATE TABLE `piani_di_studio` (
 --
 
 INSERT INTO `piani_di_studio` (`id`, `nome`, `descrizione`, `data_creazione`, `user_id`, `visibility`) VALUES
-(1, '5^info', 'Piano per completare la 5^ superiore', '2025-03-15 00:16:39', 1, 'public'),
-(2, 'Mio piano', 'fda', '2025-03-15 00:16:39', 3, 'public'),
-(3, 'fdsa', 'fdsa', '2025-03-15 00:16:39', 1, 'private');
+(1, 'Piano Informatica Triennale', 'Piano di studi completo per il corso di laurea in Informatica', '2025-03-15 10:23:23', 2, 'public'),
+(2, 'Piano Matematica', 'Piano per il corso di laurea in Matematica', '2025-03-15 10:23:23', 3, 'public'),
+(3, 'Piano Fisica', 'Piano per il corso di laurea in Fisica', '2025-03-15 10:23:23', 5, 'public'),
+(4, 'Piano Ingegneria Informatica', 'Piano di studi per ingegneria informatica magistrale', '2025-03-15 10:23:23', 4, 'public');
 
 -- --------------------------------------------------------
 
@@ -200,6 +255,32 @@ CREATE TABLE `requisiti` (
   `descrizione` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `requisiti`
+--
+
+INSERT INTO `requisiti` (`id`, `esercizio_id`, `descrizione`) VALUES
+(1, 1, 'Conoscenza base del linguaggio Java'),
+(2, 1, 'Comprensione dei tipi di dati primitivi'),
+(3, 2, 'Conoscenza delle strutture di controllo'),
+(4, 2, 'Comprensione delle variabili e operatori'),
+(5, 3, 'Conoscenza delle strutture iterative'),
+(6, 3, 'Comprensione del concetto di accumulazione'),
+(7, 4, 'Conoscenza dei concetti di classe e oggetto'),
+(8, 4, 'Comprensione dell\'incapsulamento'),
+(9, 5, 'Conoscenza degli array'),
+(10, 5, 'Comprensione dei cicli for'),
+(11, 6, 'Conoscenza degli algoritmi di confronto'),
+(12, 7, 'Conoscenza approfondita degli algoritmi di ordinamento'),
+(13, 7, 'Comprensione della ricorsione'),
+(14, 8, 'Conoscenza dei limiti di funzioni'),
+(15, 9, 'Comprensione del concetto di continuità'),
+(16, 10, 'Conoscenza delle regole di derivazione di base'),
+(17, 11, 'Conoscenza della regola della catena per derivate'),
+(18, 12, 'Conoscenza dell\'integrazione indefinita'),
+(19, 13, 'Comprensione dell\'integrazione per parti'),
+(20, 14, 'Comprensione dell\'integrazione definita');
+
 -- --------------------------------------------------------
 
 --
@@ -210,6 +291,32 @@ CREATE TABLE `requisito_argomento` (
   `requisito_id` int(11) NOT NULL,
   `argomento_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `requisito_argomento`
+--
+
+INSERT INTO `requisito_argomento` (`requisito_id`, `argomento_id`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(4, 1),
+(5, 1),
+(6, 1),
+(7, 2),
+(8, 2),
+(9, 3),
+(10, 1),
+(11, 7),
+(12, 7),
+(13, 1),
+(14, 19),
+(15, 19),
+(16, 20),
+(17, 20),
+(18, 21),
+(19, 21),
+(20, 21);
 
 -- --------------------------------------------------------
 
@@ -230,10 +337,46 @@ CREATE TABLE `sottoargomenti` (
 --
 
 INSERT INTO `sottoargomenti` (`id`, `argomento_id`, `titolo`, `descrizione`, `livello_profondita`) VALUES
-(1, 1, 'Dominio', '', 2),
-(2, 1, 'Simmetrie', '', 2),
-(3, 1, 'Intero Studio di funzione', '', 1),
-(4, 2, 'safdf', 'dsaas', 1);
+(1, 1, 'Variabili e Tipi', 'Dichiarazione di variabili e tipi primitivi in Java', 1),
+(2, 1, 'Operatori', 'Operatori aritmetici, relazionali e logici', 1),
+(3, 1, 'Strutture di Controllo', 'If-else, switch, cicli for e while', 2),
+(4, 1, 'Input/Output', 'Lettura e scrittura da console e file', 2),
+(5, 2, 'Definizione di Classe', 'Creazione di classi e istanziazione di oggetti', 1),
+(6, 2, 'Attributi e Metodi', 'Membri di una classe e loro visibilità', 1),
+(7, 2, 'Costruttori', 'Definizione e overloading dei costruttori', 2),
+(8, 2, 'Incapsulamento', 'Principi di information hiding', 2),
+(9, 3, 'Array Monodimensionali', 'Dichiarazione e manipolazione di array', 1),
+(10, 3, 'Array Multidimensionali', 'Matrici e array di array', 2),
+(11, 3, 'ArrayList', 'Utilizzo delle liste dinamiche', 2),
+(12, 3, 'Set e Map', 'Insiemi e dizionari in Java', 3),
+(13, 6, 'Notazione O-grande', 'Definizione e proprietà della notazione asintotica', 1),
+(14, 6, 'Analisi di Algoritmi Iterativi', 'Tecniche per calcolare la complessità di cicli', 2),
+(15, 6, 'Analisi di Algoritmi Ricorsivi', 'Risoluzione di ricorrenze', 3),
+(16, 6, 'Classi di Complessità', 'P, NP e problemi intrattabili', 3),
+(17, 7, 'BubbleSort', 'Algoritmo di ordinamento a bolle', 1),
+(18, 7, 'QuickSort', 'Algoritmo di ordinamento veloce', 2),
+(19, 7, 'MergeSort', 'Algoritmo di ordinamento per fusione', 2),
+(20, 7, 'HeapSort', 'Algoritmo di ordinamento basato su heap', 3),
+(21, 10, 'Modello E-R', 'Progettazione concettuale con diagrammi E-R', 1),
+(22, 10, 'Tabelle e Relazioni', 'Struttura fisica del database relazionale', 1),
+(23, 10, 'Vincoli di Integrità', 'Chiavi primarie, foreign key e altri vincoli', 2),
+(24, 10, 'Query di Base', 'Interrogazioni SQL fondamentali', 2),
+(25, 11, 'SELECT', 'Interrogazioni di selezione dati', 1),
+(26, 11, 'JOIN', 'Congiunzioni tra tabelle', 2),
+(27, 11, 'GROUP BY', 'Aggregazione di dati', 2),
+(28, 11, 'Subquery', 'Query annidate', 3),
+(29, 19, 'Funzioni e Limiti', 'Concetto di limite e teoremi fondamentali', 1),
+(30, 19, 'Continuità', 'Funzioni continue e teoremi', 1),
+(31, 19, 'Limiti Notevoli', 'Limiti fondamentali e loro applicazioni', 2),
+(32, 19, 'Asintoti', 'Ricerca degli asintoti di una funzione', 2),
+(33, 20, 'Definizione di Derivata', 'Rapporto incrementale e derivata', 1),
+(34, 20, 'Regole di Derivazione', 'Derivate di funzioni elementari e composte', 1),
+(35, 20, 'Derivate Successive', 'Derivate di ordine superiore', 2),
+(36, 20, 'Applicazioni delle Derivate', 'Studio di funzione', 2),
+(37, 21, 'Integrale Indefinito', 'Primitive e proprietà degli integrali', 1),
+(38, 21, 'Metodi di Integrazione', 'Sostituzione, parti, fratti semplici', 2),
+(39, 21, 'Integrale Definito', 'Teorema fondamentale del calcolo', 2),
+(40, 21, 'Applicazioni degli Integrali', 'Calcolo di aree e volumi', 3);
 
 -- --------------------------------------------------------
 
@@ -291,9 +434,11 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `username`, `password`, `email`, `role`, `created_at`) VALUES
-(1, 'admin', '$2y$10$GFyFe.FrTjJZfdb98WY5w.DOfLeeK4Gdfa2Wgi93BO5jRoW2zgBfG', 'admin@example.com', 'admin', '2025-03-15 00:16:39'),
-(2, 'fra', '$2y$10$Q3i5LI1cz0N8fg9B1ChumeUdZbVxkrCBIsuFoI8vkzoA0e7ue5q5S', 'fraff@gmail.com', 'user', '2025-03-15 00:16:39'),
-(3, 'mezze', '$2y$10$nzBf0bCklAceusPLqCU/ruifsi6vNt/zfqOBpoHtVXe2yqoTdzgcq', 'ff.@ff.it', 'user', '2025-03-15 00:16:39');
+(1, 'admin', '$2y$10$GFyFe.FrTjJZfdb98WY5w.DOfLeeK4Gdfa2Wgi93BO5jRoW2zgBfG', 'admin@example.com', 'admin', '2025-03-15 10:23:23'),
+(2, 'mario_rossi', '$2y$10$Q3i5LI1cz0N8fg9B1ChumeUdZbVxkrCBIsuFoI8vkzoA0e7ue5q5S', 'mario.rossi@gmail.com', 'user', '2025-03-15 10:23:23'),
+(3, 'laura_bianchi', '$2y$10$nzBf0bCklAceusPLqCU/ruifsi6vNt/zfqOBpoHtVXe2yqoTdzgcq', 'laura.bianchi@gmail.com', 'user', '2025-03-15 10:23:23'),
+(4, 'marco_verdi', '$2y$10$W0xFNRqlP.lfNLP6dlPdmuOrdgLW5F1mp5YPeY.BM8UswjX3bR006', 'marco.verdi@gmail.com', 'user', '2025-03-15 10:23:23'),
+(5, 'giulia_neri', '$2y$10$EkVdb4wy7OwTKjDoA8LmEOKII4SR9wfON7J/LBnXK251L.x4XJqda', 'giulia.neri@gmail.com', 'user', '2025-03-15 10:23:23');
 
 --
 -- Indexes for dumped tables
@@ -415,31 +560,31 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `argomenti`
 --
 ALTER TABLE `argomenti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- AUTO_INCREMENT for table `commenti`
 --
 ALTER TABLE `commenti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `esami`
 --
 ALTER TABLE `esami`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `esercizi`
 --
 ALTER TABLE `esercizi`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `esercizio_correlato`
 --
 ALTER TABLE `esercizio_correlato`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `formule`
@@ -451,19 +596,19 @@ ALTER TABLE `formule`
 -- AUTO_INCREMENT for table `piani_di_studio`
 --
 ALTER TABLE `piani_di_studio`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `requisiti`
 --
 ALTER TABLE `requisiti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `sottoargomenti`
 --
 ALTER TABLE `sottoargomenti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `sottoargomento_requisito`
@@ -475,7 +620,7 @@ ALTER TABLE `sottoargomento_requisito`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Constraints for dumped tables
