@@ -7,7 +7,8 @@ include_once '../../ui/includes/header_view.php'; // Aggiornato il percorso
 include_once '../../config/database.php'; // Aggiornato il percorso
 include_once '../../models/piano_di_studio.php'; // Aggiornato il percorso
 include_once '../../models/esame.php'; // Aggiornato il percorso
-include_once '../../models/comments.php'; // Aggiunto per risolvere l'errore "Class Commento not found"
+include_once '../../models/comments.php'; // Aggiornato il percorso
+include_once '../components/comments/comments.php'; // Aggiornato il percorso
 
 // Verifica se è stato specificato un piano
 if (!isset($_GET['id'])) {
@@ -55,55 +56,18 @@ $user_stmt->execute();
 $user_row = $user_stmt->fetch(PDO::FETCH_ASSOC);
 $creator = $user_row ? $user_row['username'] : "Utente sconosciuto";
 
-// Crea un'istanza dell'oggetto commento qui
-$commento = new Commento($db);
-$comment_count = $commento->countByElemento('piano', $piano_info['id']);
+// Gestione dei commenti
+$risultato_commenti = gestioneCommentiPiani($db, $piano_info['id']);
 
-// Gestione aggiunta commento
-if(isset($_POST['add_comment']) && isset($_SESSION['user_id'])) {
-    $commento->user_id = $_SESSION['user_id'];
-    $commento->tipo_elemento = $_POST['comment_tipo'];
-    $commento->elemento_id = $_POST['comment_elemento_id'];
-    $commento->testo = $_POST['comment_text'];
-    
-    if($commento->create()) {
-        echo '<script>window.location.href = "view_piano.php?id='.$piano_info['id'].'&comment_added=1";</script>';
-        exit;
-    }
-}
-
-// Gestione aggiornamento commento
-if(isset($_POST['update_comment']) && isset($_SESSION['user_id'])) {
-    $commento->id = $_POST['comment_id'];
-    $commento->user_id = $_SESSION['user_id'];
-    $commento->testo = $_POST['comment_text'];
-    
-    // Se è admin, può modificare qualsiasi commento
-    if(isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
-        $commento->readOne();
-        $commento->update();
-    } else {
-        $commento->update();
-    }
-    
-    echo '<script>window.location.href = "view_piano.php?id='.$piano_info['id'].'&comment_updated=1";</script>';
+// Se c'è un risultato con redirect, esegui il redirect
+if ($risultato_commenti && isset($risultato_commenti['redirect'])) {
+    header("Location: " . $risultato_commenti['redirect']);
     exit;
 }
 
-// Gestione eliminazione commento
-if(isset($_GET['delete_comment']) && isset($_SESSION['user_id'])) {
-    $commento->id = $_GET['delete_comment'];
-    $commento->user_id = $_SESSION['user_id'];
-    
-    // Se è admin, può eliminare qualsiasi commento
-    if(isset($_SESSION['is_admin']) && $_SESSION['is_admin']) {
-        $commento->deleteByAdmin();
-    } else {
-        $commento->delete();
-    }
-    
-    echo '<script>window.location.href = "view_pages/view_piano.php?id='.$piano_info['id'].'&comment_deleted=1";</script>';
-    exit;
+// Mostra eventuali messaggi relativi ai commenti
+if ($risultato_commenti && !empty($risultato_commenti['message'])) {
+    echo "<div class='message {$risultato_commenti['message_class']}'>{$risultato_commenti['message']}</div>";
 }
 ?>
 
@@ -177,6 +141,11 @@ if(isset($_GET['delete_comment']) && isset($_SESSION['user_id'])) {
         <p>Per creare il tuo piano di studio, <a href="../login.php">accedi</a> o <a href="../register.php">registrati</a>.</p> <!-- Aggiornato il percorso -->
     </div>
     <?php endif; ?>
+    
+    <!-- Sezione Commenti -->
+    <div class="comments-section">
+        <?php renderCommentiPiani($db, $piano_info['id']); ?>
+    </div>
 </div>
 
 <?php include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso ?>
