@@ -92,3 +92,5 @@ come posso implementare il codice in un sito,
   configurare la mia macchina sql e php in modo che in questo 
   codice possa vedere in modo aggiornato tutto il database esistente, 
   o in futuro solo piccole parti 
+
+  https://a533-109-55-86-225.ngrok-free.app/ProgAle/pages/
