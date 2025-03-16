@@ -83,4 +83,12 @@ Implementare un calendario per la pianificazione dello studio (già previsto nei
 
 
 
-come posso implementare il codice in un sito, avende già la sua forma, per esempio mettendo una casella sul menù per passare alla visualizzazione di questo codice, implementandolo un progetto github, in cui, è presente anche il database.sql ma spiegami come dovrei configurare la mia macchina sql e php in modo che in questo codice possa vedere in modo aggiornato tutto il database esistente, o in futuro solo piccole parti 
+come posso implementare il codice in un sito,
+ avende già la sua forma;
+  per esempio mettendo 
+ una casella sul menù per passare ad una visualizzazione grafica degli elemnti(qurlla di prima), 
+ implementandolo, in cui
+  è presente anche il database.sql ma spiegami come dovrei
+  configurare la mia macchina sql e php in modo che in questo 
+  codice possa vedere in modo aggiornato tutto il database esistente, 
+  o in futuro solo piccole parti 
