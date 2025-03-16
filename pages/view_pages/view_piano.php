@@ -144,7 +144,4 @@ if ($risultato_commenti && !empty($risultato_commenti['message'])) {
     <?php renderCommentiPiani($db, $piano_info['id']); ?>
 </div>
 
-<?php
-ob_end_flush();
-include_once '../../ui/includes/footer_view.php';
-?>
+<?php include_once '../../ui/includes/footer_view.php'; // Aggiornato il percorso ?>
