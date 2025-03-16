@@ -80,3 +80,7 @@ Aggiungere funzionalità per esportare i piani di studio in PDF o altri formati
 Implementare la possibilità di commentare i vari elementi (come menzionato nei file di pianificazione)
 Aggiungere un sistema di tagging per facilitare la categorizzazione e la ricerca
 Implementare un calendario per la pianificazione dello studio (già previsto nei piani futuri)
+
+
+
+come posso implementare il codice in un sito, avende già la sua forma, per esempio mettendo una casella sul menù per passare alla visualizzazione di questo codice, implementandolo un progetto github, in cui, è presente anche il database.sql ma spiegami come dovrei configurare la mia macchina sql e php in modo che in questo codice possa vedere in modo aggiornato tutto il database esistente, o in futuro solo piccole parti 
