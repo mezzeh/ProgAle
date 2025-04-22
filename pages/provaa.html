@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizzazione Database sistema_studio</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .db-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .level {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+        .level-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: flex-start;
+        }
+        .entity {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 15px;
+            min-width: 250px;
+            max-width: 350px;
+            flex: 1;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .entity:hover {
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+            transform: translateY(-5px);
+        }
+        .entity-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #4a6fa5;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+        .entity-count {
+            background-color: #334e78;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+        }
+        .entity-content {
+            display: none;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .entity-content.active {
+            display: block;
+        }
+        .field {
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+        }
+        .field:last-child {
+            border-bottom: none;
+        }
+        .field-name {
+            font-weight: bold;
+            color: #555;
+        }
+        .field-type {
+            color: #888;
+            font-style: italic;
+        }
+        .level-title {
+            width: 100%;
+            text-align: center;
+            color: #4a6fa5;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-bottom: 2px solid #4a6fa5;
+            padding-bottom: 5px;
+        }
+        .children-container {
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .entity.users { background-color: #e3f2fd; }
+        .entity.piani_di_studio { background-color: #e8f5e9; }
+        .entity.esami { background-color: #fff3e0; }
+        .entity.argomenti { background-color: #f3e5f5; }
+        .entity.sottoargomenti { background-color: #e1f5fe; }
+        .entity.esercizi { background-color: #e0f2f1; }
+        .entity.formule { background-color: #fce4ec; }
+        .entity.commenti { background-color: #fff8e1; }
+        .entity.requisiti { background-color: #f1f8e9; }
+        
+        .toggle-button {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.2em;
+            cursor: pointer;
+        }
+        
+        .info-section {
+            margin-bottom: 30px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .toggle-all {
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-bottom: 20px;
+            font-size: 1em;
+        }
+        
+        .toggle-all:hover {
+            background-color: #3a5a8a;
+        }
+        
+        /* Styling for relationship lines */
+        .line-container {
+            position: relative;
+            width: 100%;
+            height: 20px;
+            margin: 5px 0;
+        }
+        
+        .line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background-color: #4a6fa5;
+        }
+        
+        .line::before {
+            content: "";
+            position: absolute;
+            top: -3px;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background-color: #4a6fa5;
+            border-radius: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .entity-identifier {
+            font-size: 0.8em;
+            color: #555;
+            margin-top: 5px;
+            text-align: right;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Database sistema_studio</h1>
+        
+        <div class="info-section">
+            <p>Questa visualizzazione mostra la struttura gerarchica del database sistema_studio, con gli elementi dello stesso livello disposti orizzontalmente per facilitare la scelta di cosa approfondire.</p>
+            <button class="toggle-all" id="toggleAll">Espandi/Comprimi Tutto</button>
+        </div>
+        
+        <div class="db-container">
+            <!-- Livello 1: Utenti -->
+            <div class="level">
+                <div class="level-title">Livello 1: Utenti</div>
+                <div class="level-items">
+                    <div class="entity users" data-entity-id="users">
+                        <div class="entity-title">
+                            <span>Utenti (users)</span>
+                            <span class="entity-count">4</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">int(11) PRIMARY KEY</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">username</span>
+                                <span class="field-type">varchar(50)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">password</span>
+                                <span class="field-type">varchar(255)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">email</span>
+                                <span class="field-type">varchar(100)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">role</span>
+                                <span class="field-type">varchar(20)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">created_at</span>
+                                <span class="field-type">timestamp</span>
+                            </div>
+                            <div class="entity-identifier">ID: users</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="line-container">
+                <div class="line"></div>
+            </div>
+            
+            <!-- Livello 2: Piani di Studio -->
+            <div class="level">
+                <div class="level-title">Livello 2: Piani di Studio</div>
+                <div class="level-items">
+                    <div class="entity piani_di_studio" data-entity-id="piano_1">
+                        <div class="entity-title">
+                            <span>Piano: 5^info</span>
+                            <span class="entity-count">ID: 1</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">1</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">nome</span>
+                                <span class="field-type">5^info</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">Piano per completare la 5^ superiore</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">user_id</span>
+                                <span class="field-type">1 (fra)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">visibility</span>
+                                <span class="field-type">public</span>
+                            </div>
+                            <div class="entity-identifier">ID: piano_1</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity piani_di_studio" data-entity-id="piano_2">
+                        <div class="entity-title">
+                            <span>Piano: Mio piano</span>
+                            <span class="entity-count">ID: 2</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">2</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">nome</span>
+                                <span class="field-type">Mio piano</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">fda</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">user_id</span>
+                                <span class="field-type">4 (mezze)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">visibility</span>
+                                <span class="field-type">public</span>
+                            </div>
+                            <div class="entity-identifier">ID: piano_2</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity piani_di_studio" data-entity-id="piano_3">
+                        <div class="entity-title">
+                            <span>Piano: fdsa</span>
+                            <span class="entity-count">ID: 3</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">3</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">nome</span>
+                                <span class="field-type">fdsa</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">fdsa</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">user_id</span>
+                                <span class="field-type">1 (fra)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">visibility</span>
+                                <span class="field-type">private</span>
+                            </div>
+                            <div class="entity-identifier">ID: piano_3</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="line-container">
+                <div class="line"></div>
+            </div>
+            
+            <!-- Livello 3: Esami -->
+            <div class="level">
+                <div class="level-title">Livello 3: Esami</div>
+                <div class="level-items">
+                    <div class="entity esami" data-entity-id="esame_1" data-parent="piano_1">
+                        <div class="entity-title">
+                            <span>Esame: Prova Matematica</span>
+                            <span class="entity-count">ID: 1</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">1</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">piano_id</span>
+                                <span class="field-type">1 (5^info)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">nome</span>
+                                <span class="field-type">Prova Matematica</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">codice</span>
+                                <span class="field-type">speranza</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">crediti</span>
+                                <span class="field-type">4</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">Insieme di argomenti orali e pratici</span>
+                            </div>
+                            <div class="entity-identifier">ID: esame_1, Piano: 5^info</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity esami" data-entity-id="esame_2" data-parent="piano_2">
+                        <div class="entity-title">
+                            <span>Esame: test</span>
+                            <span class="entity-count">ID: 2</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">2</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">piano_id</span>
+                                <span class="field-type">2 (Mio piano)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">nome</span>
+                                <span class="field-type">test</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">codice</span>
+                                <span class="field-type">fdsa</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">crediti</span>
+                                <span class="field-type">6</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">dfsafs</span>
+                            </div>
+                            <div class="entity-identifier">ID: esame_2, Piano: Mio piano</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity esami" data-entity-id="esame_3" data-parent="piano_3">
+                        <div class="entity-title">
+                            <span>Esame: fddfs</span>
+                            <span class="entity-count">ID: 3</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">3</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">piano_id</span>
+                                <span class="field-type">3 (fdsa)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">nome</span>
+                                <span class="field-type">fddfs</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">codice</span>
+                                <span class="field-type">fdsa</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">crediti</span>
+                                <span class="field-type">6</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">fdsa</span>
+                            </div>
+                            <div class="entity-identifier">ID: esame_3, Piano: fdsa</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="line-container">
+                <div class="line"></div>
+            </div>
+            
+            <!-- Livello 4: Argomenti -->
+            <div class="level">
+                <div class="level-title">Livello 4: Argomenti</div>
+                <div class="level-items">
+                    <div class="entity argomenti" data-entity-id="argomento_1" data-parent="esame_1">
+                        <div class="entity-title">
+                            <span>Argomento: Studio di una funzione</span>
+                            <span class="entity-count">ID: 1</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">1</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">esame_id</span>
+                                <span class="field-type">1 (Prova Matematica)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">titolo</span>
+                                <span class="field-type">Studio di una funzione</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">Intero procedimento dello studio di una funzione</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">livello_importanza</span>
+                                <span class="field-type">5</span>
+                            </div>
+                            <div class="entity-identifier">ID: argomento_1, Esame: Prova Matematica</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity argomenti" data-entity-id="argomento_2" data-parent="esame_2">
+                        <div class="entity-title">
+                            <span>Argomento: testamento</span>
+                            <span class="entity-count">ID: 2</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">2</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">esame_id</span>
+                                <span class="field-type">2 (test)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">titolo</span>
+                                <span class="field-type">testamento</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">testicolo</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">livello_importanza</span>
+                                <span class="field-type">3</span>
+                            </div>
+                            <div class="entity-identifier">ID: argomento_2, Esame: test</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity argomenti" data-entity-id="argomento_3" data-parent="esame_1">
+                        <div class="entity-title">
+                            <span>Argomento: fdsafds</span>
+                            <span class="entity-count">ID: 3</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">3</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">esame_id</span>
+                                <span class="field-type">1 (Prova Matematica)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">titolo</span>
+                                <span class="field-type">fdsafds</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">fdsafds</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">livello_importanza</span>
+                                <span class="field-type">3</span>
+                            </div>
+                            <div class="entity-identifier">ID: argomento_3, Esame: Prova Matematica</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity argomenti" data-entity-id="argomento_4" data-parent="esame_3">
+                        <div class="entity-title">
+                            <span>Argomento: argomento</span>
+                            <span class="entity-count">ID: 4</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">4</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">esame_id</span>
+                                <span class="field-type">3 (fddfs)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">titolo</span>
+                                <span class="field-type">argomento</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type">dsafd</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">livello_importanza</span>
+                                <span class="field-type">3</span>
+                            </div>
+                            <div class="entity-identifier">ID: argomento_4, Esame: fddfs</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="line-container">
+                <div class="line"></div>
+            </div>
+            
+            <!-- Livello 5: Sottoargomenti -->
+            <div class="level">
+                <div class="level-title">Livello 5: Sottoargomenti</div>
+                <div class="level-items">
+                    <div class="entity sottoargomenti" data-entity-id="sottoargomento_1" data-parent="argomento_1">
+                        <div class="entity-title">
+                            <span>Sottoargomento: Dominio</span>
+                            <span class="entity-count">ID: 1</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">1</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">argomento_id</span>
+                                <span class="field-type">1 (Studio di una funzione)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">titolo</span>
+                                <span class="field-type">Dominio</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type"></span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">livello_profondita</span>
+                                <span class="field-type">2</span>
+                            </div>
+                            <div class="entity-identifier">ID: sottoargomento_1, Argomento: Studio di una funzione</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity sottoargomenti" data-entity-id="sottoargomento_2" data-parent="argomento_1">
+                        <div class="entity-title">
+                            <span>Sottoargomento: Simmetrie</span>
+                            <span class="entity-count">ID: 2</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">2</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">argomento_id</span>
+                                <span class="field-type">1 (Studio di una funzione)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">titolo</span>
+                                <span class="field-type">Simmetrie</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type"></span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">livello_profondita</span>
+                                <span class="field-type">2</span>
+                            </div>
+                            <div class="entity-identifier">ID: sottoargomento_2, Argomento: Studio di una funzione</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity sottoargomenti" data-entity-id="sottoargomento_3" data-parent="argomento_1">
+                        <div class="entity-title">
+                            <span>Sottoargomento: Intero Studio di funzione</span>
+                            <span class="entity-count">ID: 3</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">3</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">argomento_id</span>
+                                <span class="field-type">1 (Studio di una funzione)</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">titolo</span>
+                                <span class="field-type">Intero Studio di funzione</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">descrizione</span>
+                                <span class="field-type"></span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">livello_profondita</span>
+                                <span class="field-type">1</span>
+                            </div>
+                            <div class="entity-identifier">ID: sottoargomento_3, Argomento: Studio di una funzione</div>
+                        </div>
+                    </div>
+                    
+                    <div class="entity sottoargomenti" data-entity-id="sottoargomento_4" data-parent="argomento_2">
+                        <div class="entity-title">
+                            <span>Sottoargomento: safdf</span>
+                            <span class="entity-count">ID: 4</span>
+                            <button class="toggle-button">+</button>
+                        </div>
+                        <div class="entity-content">
+                            <div class="field">
+                                <span class="field-name">id</span>
+                                <span class="field-type">4</span>
+                            </div>
+                            <div class="field">
+                                <span class="field-name">argomento_id</span>
+                                <span class="field-type">2 (testamento)
