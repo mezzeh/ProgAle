@@ -6,7 +6,7 @@ include_once '../ui/includes/header.php';
 include_once '../config/database.php';
 include_once '../models/piano_di_studio.php';
 
-// Inizializza variabili per messaggi
+// Inizializza variabili per messaggii
 $message = "";
 $message_class = "";
 
@@ -66,7 +66,7 @@ if (!$db) {
             // Mostra i pulsanti di modifica solo se l'utente è loggato ed è il proprietario o admin
             if(isset($_SESSION['user_id']) && ($_SESSION['user_id'] == $user_id || isset($_SESSION['is_admin']) && $_SESSION['is_admin'])) {
                 echo " | <a href='?edit=$id'>Modifica</a>";
-                echo " | <a href='?delete=$id' onclick='return confirm(\"Sei sicuro di voler eliminare questo piano?\");'>Elimina</a>";
+                echo " | <a href='?delete=$id' onclick='return confirm(\"Sei sicuro di voler trombare ed eliminare questo piano?\");'>Elimina</a>";
             }
             
             echo "</div>
