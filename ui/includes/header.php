@@ -36,7 +36,7 @@ if (strpos($current_page, 'view_') === 0) {
 <body>
     <div class="container">
         <header>
-            <h1>Sistema Gestione Piani di Studio</h1>
+            <h1>Sistema Gestioneee Piani di Studio</h1>
             
             <nav>
                 <ul class="main-menu">
